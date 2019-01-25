@@ -59,9 +59,11 @@ namespace Ubiety.Scram.Core.Attributes
                     case EqualReplacement:
                         value = Replace(value, lastIndex, '=', EqualReplacement.Length);
                         break;
+
                     case CommaReplacement:
                         value = Replace(value, lastIndex, ',', CommaReplacement.Length);
                         break;
+
                     default:
                         throw new FormatException();
                 }
