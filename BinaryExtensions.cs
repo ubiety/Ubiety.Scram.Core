@@ -37,7 +37,7 @@ namespace Ubiety.Scram.Core
             }
 
             var result = new byte[originalBytes.Length];
-            for (var i = 0; i < originalBytes.Length; i++)
+            for (var i = 0; i < originalBytes.Length; ++i)
             {
                 result[i] = (byte)(originalBytes[i] ^ compareBytes[i]);
             }

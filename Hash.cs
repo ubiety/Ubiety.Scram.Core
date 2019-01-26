@@ -73,7 +73,7 @@ namespace Ubiety.Scram.Core
             var iteration = ComputeHash(value, completeSalt);
             var final = iteration;
 
-            for (var i = 1; i < iterations; i++)
+            for (var i = 1; i < iterations; ++i)
             {
                 var temp = ComputeHash(iteration, value);
                 final = final.ExclusiveOr(temp);
