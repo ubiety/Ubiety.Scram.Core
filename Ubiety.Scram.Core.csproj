@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.0.2</Version>
+    <Version>1.0.0</Version>
     <Authors>coder2000</Authors>
     <PackageDescription>Implementation of SCRAM for .NET Standard 2.0</PackageDescription>
     <PackageLicenseUrl>https://github.com/ubiety/Ubiety.Scram.Core/blob/master/LICENSE</PackageLicenseUrl>
