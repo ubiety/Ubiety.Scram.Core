@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/saintedlama/versionize) for commit guidelines.
 
-<a name="1.0.0"></a>
+<a name="1.1.0"></a>
+## 1.1.0 (2019-1-27)
+
+### Bug Fixes
+
+* fix an error in calculating the password hash
+
+### Features
+
+* add testing project
+
 ## 1.0.0 (2019-1-26)
 
 ### Breaking Changes
