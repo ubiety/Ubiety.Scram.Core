@@ -61,7 +61,7 @@ namespace Ubiety.Scram.Core
             return hmacAlgorithm.ComputeHash(value);
         }
 
-        public byte[] ComputeHash(byte[] value, byte[] salt, int iterations)
+        public byte[] ComputeHash(byte[] password, byte[] salt, int iterations)
         {
             var one = BitConverter.GetBytes(1);
             if (BitConverter.IsLittleEndian)
@@ -70,12 +70,12 @@ namespace Ubiety.Scram.Core
             }
 
             var completeSalt = salt.Concat(one).ToArray();
-            var iteration = ComputeHash(value, completeSalt);
+            var iteration = ComputeHash(completeSalt, password);
             var final = iteration;
 
             for (var i = 1; i < iterations; ++i)
             {
-                var temp = ComputeHash(iteration, value);
+                var temp = ComputeHash(iteration, password);
                 final = final.ExclusiveOr(temp);
                 iteration = temp;
             }

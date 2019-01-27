@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Ubiety.Scram.Test/Ubiety.Scram.Test.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
