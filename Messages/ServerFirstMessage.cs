@@ -27,34 +27,50 @@ using System;
 using System.Linq;
 using Ubiety.Scram.Core.Attributes;
 
-namespace Ubiety.Scram.Core.Model
+namespace Ubiety.Scram.Core.Messages
 {
-    internal class ServerFinalMessage
+    public class ServerFirstMessage
     {
-        public ServerFinalMessage(ServerSignatureAttribute serverSignature)
+        public ServerFirstMessage(int iterations, string nonce, byte[] salt)
         {
-            ServerSignature = serverSignature;
+            Iterations = new IterationsAttribute(iterations);
+            Nonce = new NonceAttribute(nonce);
+            Salt = new SaltAttribute(salt);
         }
 
-        public ServerSignatureAttribute ServerSignature { get; }
+        private ServerFirstMessage(IterationsAttribute iterations, NonceAttribute nonce, SaltAttribute salt)
+        {
+            Iterations = iterations;
+            Nonce = nonce;
+            Salt = salt;
+        }
 
-        public static ServerFinalMessage ParseResponse(string response)
+        public ScramAttribute<int> Iterations { get; }
+
+        public ScramAttribute<string> Nonce { get; }
+
+        public ScramAttribute<byte[]> Salt { get; }
+
+        public static ServerFirstMessage ParseResponse(string response)
         {
             var parts = ScramAttribute.ParseAll(response.Split(','));
 
-            var error = parts.OfType<ErrorAttribute>().ToList();
-            if (error.Any())
+            var errors = parts.OfType<ErrorAttribute>();
+            if (errors.Any())
             {
                 throw new InvalidOperationException();
             }
 
-            var signature = parts.OfType<ServerSignatureAttribute>().ToList();
-            if (!signature.Any())
+            var iterations = parts.OfType<IterationsAttribute>().ToList();
+            var nonces = parts.OfType<NonceAttribute>().ToList();
+            var salts = parts.OfType<SaltAttribute>().ToList();
+
+            if (!iterations.Any() || !nonces.Any() || !salts.Any())
             {
                 throw new InvalidOperationException();
             }
 
-            return new ServerFinalMessage(signature.First());
+            return new ServerFirstMessage(iterations.First(), nonces.First(), salts.First());
         }
     }
 }

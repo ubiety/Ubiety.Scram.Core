@@ -25,24 +25,29 @@
 
 using Ubiety.Scram.Core.Attributes;
 
-namespace Ubiety.Scram.Core.Model
+namespace Ubiety.Scram.Core.Messages
 {
-    public class ClientFirstMessage
+    public class ClientFinalMessage
     {
-        public ClientFirstMessage(string username, string nonce)
+        public ClientFinalMessage(ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage)
         {
-            Username = new UserAttribute(username);
-            Nonce = new NonceAttribute(nonce);
+            Channel = new ChannelAttribute(clientFirstMessage.Gs2Header);
+            Nonce = new NonceAttribute(serverFirstMessage.Nonce.Value);
         }
 
-        public string Gs2Header { get; } = "n,,";
-
-        public UserAttribute Username { get; }
+        public ChannelAttribute Channel { get; }
 
         public NonceAttribute Nonce { get; }
 
-        public string BareMessage => $"{Username},{Nonce}";
+        public ClientProofAttribute Proof { get; private set; }
 
-        public string Message => $"{Gs2Header}{BareMessage}";
+        public string MessageWithoutProof => $"{Channel},{Nonce}";
+
+        public string Message => $"{MessageWithoutProof},{Proof}";
+
+        public void SetProof(byte[] proof)
+        {
+            Proof = new ClientProofAttribute(proof);
+        }
     }
 }
