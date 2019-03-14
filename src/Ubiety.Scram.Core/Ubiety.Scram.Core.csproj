@@ -3,11 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>1.1.0</Version>
-    <Authors>coder2000</Authors>
+    <Authors>Dieter Lunn</Authors>
     <PackageDescription>Implementation of SCRAM for .NET Standard 2.0</PackageDescription>
-    <PackageLicense>https://github.com/ubiety/Ubiety.Scram.Core/blob/master/LICENSE</PackageLicense>
-    <PackageProjectUrl>https://github.com/ubiety/Ubiety.Scram.Core</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/ubiety/Ubiety.Scram.Core/raw/develop/images/encryption64.png</PackageIconUrl>
+    <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
+    <PackageProjectUrl>https://scram.ubiety.ca</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ubiety/Ubiety.Scram.Core</RepositoryUrl>
+    <PackageTags>ubiety;scram;challenge-response;authentication;dotnet</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
