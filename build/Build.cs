@@ -122,6 +122,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             DotNetPack(s => s
+                .EnableNoBuild()
                 .SetOutputDirectory(ArtifactsDirectory)
                 .SetVersion(GitVersion.NuGetVersionV2));
         });
