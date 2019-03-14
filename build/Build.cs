@@ -148,5 +148,5 @@ class Build : NukeBuild
         });
 
     Target Appveyor => _ => _
-        .DependsOn(Coverage, SonarEnd, Publish);
+        .DependsOn(Test, SonarEnd, Publish);
 }
