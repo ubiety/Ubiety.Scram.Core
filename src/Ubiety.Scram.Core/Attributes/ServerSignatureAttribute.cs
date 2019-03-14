@@ -15,7 +15,7 @@
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
 // IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 // OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
@@ -28,26 +28,51 @@ using System.Linq;
 
 namespace Ubiety.Scram.Core.Attributes
 {
-    internal class ServerSignatureAttribute : ScramAttribute<byte[]>, IEquatable<ServerSignatureAttribute>
+    /// <summary>
+    ///     Server signature part of SCRAM message.
+    /// </summary>
+    internal sealed class ServerSignatureAttribute : ScramAttribute<byte[]>, IEquatable<ServerSignatureAttribute>
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ServerSignatureAttribute"/> class.
+        /// </summary>
+        /// <param name="value">Byte array of the server signature.</param>
         public ServerSignatureAttribute(byte[] value)
             : base(ServerSignatureName, value)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ServerSignatureAttribute"/> class.
+        /// </summary>
+        /// <param name="value">String value of the server signature.</param>
         public ServerSignatureAttribute(string value)
             : base(ServerSignatureName, Convert.FromBase64String(value))
         {
         }
 
-        public bool Equals(byte[] other)
+        /// <inheritdoc />
+        public override bool Equals(object obj)
         {
-            return Value.SequenceEqual(other);
+            return Equals(obj as ServerSignatureAttribute);
         }
 
+        /// <inheritdoc cref="ScramAttribute"/>
+        public bool Equals(byte[] other)
+        {
+            return Equals(new ServerSignatureAttribute(other));
+        }
+
+        /// <inheritdoc cref="ScramAttribute"/>
         public bool Equals(ServerSignatureAttribute other)
         {
-            return false;
+            return Value.SequenceEqual(other?.Value ?? throw new InvalidOperationException());
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
         }
     }
 }
