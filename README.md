@@ -5,7 +5,7 @@
 | Branch  | Quality                                                                                                                                                                                                      | Travis CI | Appveyor | Coverage                                                                                                                                                                    |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | -------- | --------
 | Master  | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/badge?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core)                          |           |          |         
-| Develop | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/badge/develop?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/overview/develop) |           |          |         
+| Develop | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/badge/develop?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/overview/develop) | [![Travis (.org) branch](https://img.shields.io/travis/ubiety/Ubiety.Scram.Core/develop.svg?style=flat-square)](https://travis-ci.org/ubiety/Ubiety.Scram.Core)          |          |         
 
 ## Installing / Getting started
 
