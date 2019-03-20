@@ -1,10 +1,13 @@
-
-# Created by https://www.gitignore.io/api/git,cake,wyam,rider,sonarqube,dotsettings,visualstudio,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=git,cake,wyam,rider,sonarqube,dotsettings,visualstudio,visualstudiocode
+# Created by https://www.gitignore.io/api/git,cake,wyam,rider,docfx,sonarqube,dotsettings,visualstudio,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=git,cake,wyam,rider,docfx,sonarqube,dotsettings,visualstudio,visualstudiocode
 
 ### Cake ###
 tools/*
 !tools/packages.config
+
+### DocFx ###
+.cache
+/**/_site/
 
 ### DotSettings ###
 *.DotSettings
@@ -467,4 +470,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-# End of https://www.gitignore.io/api/git,cake,wyam,rider,sonarqube,dotsettings,visualstudio,visualstudiocode
+# End of https://www.gitignore.io/api/git,cake,wyam,rider,docfx,sonarqube,dotsettings,visualstudio,visualstudiocode

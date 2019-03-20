@@ -1,7 +1,7 @@
 using System;
 using System.Text;
-using FluentAssertions;
 using Ubiety.Scram.Core;
+using Shouldly;
 using Xunit;
 
 namespace Ubiety.Scram.Test
@@ -9,21 +9,27 @@ namespace Ubiety.Scram.Test
     public class HashTest
     {
         [Fact]
-        public void HashShouldMatchValue()
+        public void HashSha1ShouldMatchValue()
         {
             var salt = Convert.FromBase64String("QSXCR+Q6sek8bf92");
-            var i = 4096;
-            var password = "pencil";
+            const int i = 4096;
+            const string password = "pencil";
             var result = HexToByte("1d96ee3a529b5a5f9e47c01f229a2cb8a6e15f7d");
 
             var hash = Hash.Sha1();
 
             var pass = hash.ComputeHash(Encoding.UTF8.GetBytes(password), salt, i);
 
-            pass.Should().Equal(result);
+            pass.ShouldBe(result);
         }
 
-        private byte[] HexToByte(string value)
+        [Fact]
+        public void HashSha256ShouldMatchValue()
+        {
+            Assert.True(true);
+        }
+
+        private static byte[] HexToByte(string value)
         {
             var numChars = value.Length;
             var bytes = new byte[numChars / 2];

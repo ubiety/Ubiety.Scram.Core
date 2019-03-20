@@ -52,9 +52,9 @@ namespace Ubiety.Scram.Core.Attributes
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object other)
         {
-            return Equals(obj as ServerSignatureAttribute);
+            return Equals(other as ServerSignatureAttribute);
         }
 
         /// <inheritdoc cref="ScramAttribute"/>

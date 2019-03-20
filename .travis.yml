@@ -13,8 +13,7 @@ branches:
     - develop
 
 env:
-  global:
-    DOTNET_CLI_TELEMETRY_OPTOUT=1
+  global: DOTNET_CLI_TELEMETRY_OPTOUT=1
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
 
 mono: latest
@@ -22,3 +21,6 @@ dotnet: 2.2.104
 
 script:
   - ./build.sh
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
