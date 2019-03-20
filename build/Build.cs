@@ -132,6 +132,7 @@ class Build : NukeBuild
         .DependsOn(Pack)
         .Requires(() => NuGetKey)
         .Requires(() => Configuration.Equals(Configuration.Release))
+        .OnlyWhenStatic(() => GitRepository.IsOnMasterBranch())
         .Executes(() =>
         {
             DotNetNuGetPush(s => s
