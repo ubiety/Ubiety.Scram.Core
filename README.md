@@ -1,11 +1,11 @@
-# ![Logo](https://github.com/ubiety/Ubiety.Scram.Core/raw/develop/images/encryption64.png) Ubiety.Scram.Core ![Nuget](https://img.shields.io/nuget/v/Ubiety.Scram.Core.svg?style=flat-square)
+# ![Logo](https://github.com/ubiety/Ubiety.Scram.Core/raw/develop/docs/Ubiety.Scram.Docs/images/encryption64.png) Ubiety.Scram.Core ![Nuget](https://img.shields.io/nuget/v/Ubiety.Scram.Core.svg?style=flat-square)
 
 > Ubiety SCRAM is an easy implementation of the Salted Challenge and Response Authentication Mechanism for .NET Core
 
-| Branch  | Quality                                                                                                                                                                                                      | Travis CI                                                                                                                                                       | Appveyor                                                                                                                                                                                       | Coverage |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------  | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------
-| Master  | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/badge?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core)                          | [![Travis (.org) branch](https://img.shields.io/travis/ubiety/Ubiety.Scram.Core/master.svg?style=flat-square)](https://travis-ci.org/ubiety/Ubiety.Scram.Core)  | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-scram-core/master.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-scram-core/branch/master)   |         
-| Develop | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/badge/develop?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/overview/develop) | [![Travis (.org) branch](https://img.shields.io/travis/ubiety/Ubiety.Scram.Core/develop.svg?style=flat-square)](https://travis-ci.org/ubiety/Ubiety.Scram.Core) | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-scram-core/develop.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-scram-core/branch/develop) |         
+| Branch  | Quality                                                                                                                                                                                                      | Travis CI                                                                                                                                                       | Appveyor                                                                                                                                                                                       | Coverage                                                                                                                                                            |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Master  | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/badge?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core)                          | [![Travis (.org) branch](https://img.shields.io/travis/ubiety/Ubiety.Scram.Core/master.svg?style=flat-square)](https://travis-ci.org/ubiety/Ubiety.Scram.Core)  | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-scram-core/master.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-scram-core/branch/master)   | [![Codecov branch](https://img.shields.io/codecov/c/github/ubiety/Ubiety.Scram.Core/master.svg?style=flat-square)](https://codecov.io/gh/ubiety/Ubiety.Scram.Core)  |
+| Develop | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/badge/develop?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/overview/develop) | [![Travis (.org) branch](https://img.shields.io/travis/ubiety/Ubiety.Scram.Core/develop.svg?style=flat-square)](https://travis-ci.org/ubiety/Ubiety.Scram.Core) | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-scram-core/develop.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-scram-core/branch/develop) | [![Codecov branch](https://img.shields.io/codecov/c/github/ubiety/Ubiety.Scram.Core/develop.svg?style=flat-square)](https://codecov.io/gh/ubiety/Ubiety.Scram.Core) |
 
 ## Installing / Getting started
 
@@ -71,8 +71,8 @@ consideration, it is common to separate this section to its own file called
 - Project homepage: <https://scram.ubiety.ca>
 - Repository: <https://github.com/ubiety/Ubiety.Scram.Core/>
 - Issue tracker: <https://github.com/ubiety/Ubiety.Scram.Core/issues>
-  - In case of sensitive bugs like security vulnerabilities, please use the 
-    [Tidelift security contact](https://tidelift.com/security) instead of using issue tracker. 
+  - In case of sensitive bugs like security vulnerabilities, please use the
+    [Tidelift security contact](https://tidelift.com/security) instead of using issue tracker.
     We value your effort to improve the security and privacy of this project! Tidelift will coordinate the fix and disclosure.
 - Related projects:
   - Ubiety VersionIt: <https://github.com/ubiety/Ubiety.VersionIt/>
@@ -80,6 +80,7 @@ consideration, it is common to separate this section to its own file called
   - Ubiety Xmpp: <https://github.com/ubiety/Ubiety.Xmpp.Core/>
   - Ubiety Dns: <https://github.com/ubiety/Ubiety.Dns.Core/>
   - Ubiety Stringprep: <https://github.com/ubiety/Ubiety.Stringprep.Core/>
+  - Ubiety StyleCop: <https://github.com/ubiety/Ubiety.StyleCop/>
 
 ## Sponsors
 
