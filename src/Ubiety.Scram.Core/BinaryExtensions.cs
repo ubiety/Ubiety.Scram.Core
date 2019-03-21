@@ -30,7 +30,7 @@ namespace Ubiety.Scram.Core
     /// <summary>
     ///     Extension methods for byte arrays.
     /// </summary>
-    internal static class BinaryExtensions
+    public static class BinaryExtensions
     {
         /// <summary>
         ///     Calculate the exclusive or result of two byte arrays.
