@@ -30,7 +30,7 @@ namespace Ubiety.Scram.Core
     /// <summary>
     ///     SASL string preparation.
     /// </summary>
-    internal static class SaslPrep
+    public static class SaslPrep
     {
         /// <summary>
         ///     Runs the preparation.

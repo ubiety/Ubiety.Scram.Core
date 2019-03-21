@@ -31,10 +31,18 @@ namespace Ubiety.Scram.Test
             return bytes;
         }
 
-        [Fact]
-        public void HashSha256ShouldMatchValue()
+        [Theory]
+        [InlineData("pencil", "A97517AE572F9DAC71586D340DD460562A11DA09D4A6E5F9AFEDC4675ADD8556")]
+        public void When_HashIsSha256_ExpectResultToEqualExpectedValue(string password, string expectedValue)
         {
-            Assert.True(true);
+            var salt = Convert.FromBase64String("QSXCR+Q6sek8bf92");
+            const int i = 4096;
+
+            var hash = Hash.Sha256();
+
+            var pass = hash.ComputeHash(Encoding.UTF8.GetBytes(password), salt, i);
+
+            pass.ShouldBe(HexToByte(expectedValue));
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Ubiety.Scram.Core.Attributes
     /// <summary>
     ///     Unknown attribute.
     /// </summary>
-    internal class UnknownAttribute : ScramAttribute<string>
+    public class UnknownAttribute : ScramAttribute<string>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UnknownAttribute"/> class.

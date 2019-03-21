@@ -82,7 +82,7 @@ namespace Ubiety.Scram.Core.Attributes
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return Value.GetHashCode();
+            return Name.GetHashCode();
         }
     }
 }
