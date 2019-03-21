@@ -31,7 +31,7 @@ namespace Ubiety.Scram.Core.Attributes
     /// <summary>
     ///     Server signature part of SCRAM message.
     /// </summary>
-    internal sealed class ServerSignatureAttribute : ScramAttribute<byte[]>, IEquatable<ServerSignatureAttribute>
+    public sealed class ServerSignatureAttribute : ScramAttribute<byte[]>, IEquatable<ServerSignatureAttribute>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ServerSignatureAttribute"/> class.

@@ -76,5 +76,14 @@ namespace Ubiety.Scram.Core.Messages
         {
             Proof = new ClientProofAttribute(proof);
         }
+
+        /// <summary>
+        ///     Sets the client proof from a byte array.
+        /// </summary>
+        /// <param name="proof">String value of the proof.</param>
+        public void SetProof(string proof)
+        {
+            Proof = new ClientProofAttribute(proof);
+        }
     }
 }

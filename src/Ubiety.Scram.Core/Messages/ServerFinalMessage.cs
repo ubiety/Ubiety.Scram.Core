@@ -32,7 +32,7 @@ namespace Ubiety.Scram.Core.Messages
     /// <summary>
     ///     Final server message.
     /// </summary>
-    internal class ServerFinalMessage
+    public class ServerFinalMessage
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ServerFinalMessage"/> class.
