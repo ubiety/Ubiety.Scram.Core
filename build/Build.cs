@@ -3,14 +3,12 @@ using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
-using Nuke.Common.Tools.CoverallsNet;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.DotNetSonarScanner;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
-using static Nuke.Common.Tools.CoverallsNet.CoverallsNetTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.DotNetSonarScanner.DotNetSonarScannerTasks;
 
@@ -105,15 +103,6 @@ class Build : NukeBuild
                     .Add("/p:CoverletOutput={0}", ArtifactsDirectory / "coverage")
                     .Add("/p:CoverletOutputFormat={0}", "opencover")
                     .Add("/p:Exclude={0}", "[xunit.*]*")));
-        });
-
-    Target Coverage => _ => _
-        .DependsOn(Test)
-        .Executes(() =>
-        {
-            CoverallsNet(s => s
-                .SetOpenCover(true)
-                .SetInput(ArtifactsDirectory / "coverage.opencover.xml"));
         });
 
     Target Pack => _ => _
