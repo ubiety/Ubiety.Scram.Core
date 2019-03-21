@@ -17,9 +17,9 @@ namespace Ubiety.Scram.Test.Messages
         [Fact]
         public void When_NonceIsSet_ExpectNoncePropertyToMatch()
         {
-            var message = new ClientFirstMessage("", "Nonce");
+            var message = new ClientFirstMessage("", "fyko+d2lbbFgONRv9qkxdawL");
 
-            message.Nonce.ToString().ShouldBe("r=Nonce");
+            message.Nonce.ToString().ShouldBe("r=fyko+d2lbbFgONRv9qkxdawL");
         }
 
         [Fact]
