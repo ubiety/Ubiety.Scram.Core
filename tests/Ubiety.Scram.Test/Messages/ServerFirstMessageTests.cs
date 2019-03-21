@@ -63,6 +63,5 @@ namespace Ubiety.Scram.Test.Messages
             message.Nonce.Value.ShouldBe("nonce");
             message.Salt.ToString().ShouldBe("s = salt");
         }
-
     }
 }
