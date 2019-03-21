@@ -6,21 +6,20 @@ using Xunit;
 
 namespace Ubiety.Scram.Test
 {
-    public class HashTest
+    public class HashTests
     {
-        [Fact]
-        public void HashSha1ShouldMatchValue()
+        [Theory]
+        [InlineData("pencil", "1d96ee3a529b5a5f9e47c01f229a2cb8a6e15f7d")]
+        public void When_HashIsSha1_ExpectResultToEqualExpectedValue(string password, string expectedValue)
         {
             var salt = Convert.FromBase64String("QSXCR+Q6sek8bf92");
             const int i = 4096;
-            const string password = "pencil";
-            var result = HexToByte("1d96ee3a529b5a5f9e47c01f229a2cb8a6e15f7d");
 
             var hash = Hash.Sha1();
 
             var pass = hash.ComputeHash(Encoding.UTF8.GetBytes(password), salt, i);
 
-            pass.ShouldBe(result);
+            pass.ShouldBe(HexToByte(expectedValue));
         }
 
         [Fact]
