@@ -84,6 +84,7 @@ class Build : NukeBuild
         .After(Test)
         .DependsOn(SonarBegin)
         .Requires(() => SonarKey)
+        .AssuredAfterFailure()
         .Unlisted()
         .Executes(() =>
         {
