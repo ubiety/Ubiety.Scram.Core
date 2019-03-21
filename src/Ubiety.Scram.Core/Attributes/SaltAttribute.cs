@@ -15,7 +15,7 @@
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
 // IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 // OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
@@ -27,18 +27,30 @@ using System;
 
 namespace Ubiety.Scram.Core.Attributes
 {
+    /// <summary>
+    ///     Salt attribute.
+    /// </summary>
     internal class SaltAttribute : ScramAttribute<byte[]>
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SaltAttribute"/> class.
+        /// </summary>
+        /// <param name="value">Byte array value of the salt.</param>
         public SaltAttribute(byte[] value)
             : base(SaltName, value)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SaltAttribute"/> class.
+        /// </summary>
+        /// <param name="value">String value of the salt.</param>
         public SaltAttribute(string value)
             : base(SaltName, Convert.FromBase64String(value))
         {
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return $"{Name} = {Convert.ToBase64String(Value)}";

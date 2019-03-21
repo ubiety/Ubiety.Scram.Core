@@ -15,7 +15,7 @@
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
 // IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 // OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
@@ -27,8 +27,16 @@ using Ubiety.Stringprep.Core;
 
 namespace Ubiety.Scram.Core
 {
-    internal static class SaslPrep
+    /// <summary>
+    ///     SASL string preparation.
+    /// </summary>
+    public static class SaslPrep
     {
+        /// <summary>
+        ///     Runs the preparation.
+        /// </summary>
+        /// <param name="input">String to prepare.</param>
+        /// <returns>string version of the prepared text.</returns>
         public static string Run(string input)
         {
             return Create().Run(input);

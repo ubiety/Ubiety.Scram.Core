@@ -15,7 +15,7 @@
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
 // IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 // OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
@@ -24,11 +24,15 @@
 // For more information, please refer to <http://unlicense.org/>
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 
 namespace Ubiety.Scram.Core
 {
+    /// <summary>
+    ///     Hashing methods.
+    /// </summary>
     public class Hash
     {
         private readonly HashAlgorithm _hashAlgorithm;
@@ -40,28 +44,54 @@ namespace Ubiety.Scram.Core
             _hmacFactory = hmacFactory;
         }
 
+        /// <summary>
+        ///     Gets a new SHA1 based hash.
+        /// </summary>
+        /// <returns><see cref="Hash"/> set to use SHA1.</returns>
         public static Hash Sha1()
         {
             return new Hash(new SHA1Managed(), GetHmacSha1);
         }
 
+        /// <summary>
+        ///     Gets a new SHA256 hash.
+        /// </summary>
+        /// <returns><see cref="Hash"/> set to use SHA256.</returns>
         public static Hash Sha256()
         {
             return new Hash(new SHA256Managed(), GetHmacSha256);
         }
 
+        /// <summary>
+        ///     Compute a hash.
+        /// </summary>
+        /// <param name="value">bytes to hash.</param>
+        /// <returns>byte array of the hash output.</returns>
         public byte[] ComputeHash(byte[] value)
         {
             return _hashAlgorithm.ComputeHash(value);
         }
 
+        /// <summary>
+        ///     Compute a hash.
+        /// </summary>
+        /// <param name="value">bytes to hash.</param>
+        /// <param name="key">Hash key.</param>
+        /// <returns>byte array of the hash output.</returns>
         public byte[] ComputeHash(byte[] value, byte[] key)
         {
             var hmacAlgorithm = _hmacFactory(key);
             return hmacAlgorithm.ComputeHash(value);
         }
 
-        public byte[] ComputeHash(byte[] password, byte[] salt, int iterations)
+        /// <summary>
+        ///     Compute a hash.
+        /// </summary>
+        /// <param name="password">byte array of a password.</param>
+        /// <param name="salt">byte array of the hash salt.</param>
+        /// <param name="iterations">number of times to iterate the hash.</param>
+        /// <returns>byte array of the hash output.</returns>
+        public byte[] ComputeHash(byte[] password, IEnumerable<byte> salt, int iterations)
         {
             var one = BitConverter.GetBytes(1);
             if (BitConverter.IsLittleEndian)

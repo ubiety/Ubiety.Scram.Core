@@ -15,7 +15,7 @@
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
 // IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 // OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
@@ -27,8 +27,17 @@ using System;
 
 namespace Ubiety.Scram.Core
 {
-    internal static class BinaryExtensions
+    /// <summary>
+    ///     Extension methods for byte arrays.
+    /// </summary>
+    public static class BinaryExtensions
     {
+        /// <summary>
+        ///     Calculate the exclusive or result of two byte arrays.
+        /// </summary>
+        /// <param name="originalBytes">Original byte array.</param>
+        /// <param name="compareBytes">Comparison byte array.</param>
+        /// <returns>Byte array of the result.</returns>
         public static byte[] ExclusiveOr(this byte[] originalBytes, byte[] compareBytes)
         {
             if (originalBytes.Length != compareBytes.Length)

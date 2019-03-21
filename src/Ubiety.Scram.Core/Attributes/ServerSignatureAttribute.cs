@@ -31,7 +31,7 @@ namespace Ubiety.Scram.Core.Attributes
     /// <summary>
     ///     Server signature part of SCRAM message.
     /// </summary>
-    internal sealed class ServerSignatureAttribute : ScramAttribute<byte[]>, IEquatable<ServerSignatureAttribute>
+    public sealed class ServerSignatureAttribute : ScramAttribute<byte[]>, IEquatable<ServerSignatureAttribute>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ServerSignatureAttribute"/> class.
@@ -52,9 +52,19 @@ namespace Ubiety.Scram.Core.Attributes
         }
 
         /// <inheritdoc />
-        public override bool Equals(object other)
+        public override bool Equals(object obj)
         {
-            return Equals(other as ServerSignatureAttribute);
+            if (obj is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            return obj.GetType() == GetType() && Equals(obj as ServerSignatureAttribute);
         }
 
         /// <inheritdoc cref="ScramAttribute"/>
@@ -72,7 +82,7 @@ namespace Ubiety.Scram.Core.Attributes
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return Value.GetHashCode();
+            return Name.GetHashCode();
         }
     }
 }

@@ -15,7 +15,7 @@
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
 // IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 // OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
@@ -29,9 +29,31 @@ using Ubiety.Scram.Core.Attributes;
 
 namespace Ubiety.Scram.Core.Messages
 {
+    /// <summary>
+    ///     Gets the first server message.
+    /// </summary>
     public class ServerFirstMessage
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ServerFirstMessage"/> class.
+        /// </summary>
+        /// <param name="iterations">Iterations to use when hashing the password.</param>
+        /// <param name="nonce">String value of the server nonce.</param>
+        /// <param name="salt">Byte array of the password salt.</param>
         public ServerFirstMessage(int iterations, string nonce, byte[] salt)
+        {
+            Iterations = new IterationsAttribute(iterations);
+            Nonce = new NonceAttribute(nonce);
+            Salt = new SaltAttribute(salt);
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ServerFirstMessage"/> class.
+        /// </summary>
+        /// <param name="iterations">Iterations to use when hashing the password.</param>
+        /// <param name="nonce">String value of the server nonce.</param>
+        /// <param name="salt">String value of the password salt.</param>
+        public ServerFirstMessage(int iterations, string nonce, string salt)
         {
             Iterations = new IterationsAttribute(iterations);
             Nonce = new NonceAttribute(nonce);
@@ -45,12 +67,26 @@ namespace Ubiety.Scram.Core.Messages
             Salt = salt;
         }
 
+        /// <summary>
+        ///     Gets the iterations for password hashing.
+        /// </summary>
         public ScramAttribute<int> Iterations { get; }
 
+        /// <summary>
+        ///     Gets the server nonce.
+        /// </summary>
         public ScramAttribute<string> Nonce { get; }
 
+        /// <summary>
+        ///     Gets the password salt.
+        /// </summary>
         public ScramAttribute<byte[]> Salt { get; }
 
+        /// <summary>
+        ///     Parse the server response.
+        /// </summary>
+        /// <param name="response">String version of the server response.</param>
+        /// <returns>A new instance of the <see cref="ServerFirstMessage"/> class.</returns>
         public static ServerFirstMessage ParseResponse(string response)
         {
             var parts = ScramAttribute.ParseAll(response.Split(','));

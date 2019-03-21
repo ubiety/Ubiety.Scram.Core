@@ -5,7 +5,7 @@
     <Version>1.1.0</Version>
     <Authors>Dieter Lunn</Authors>
     <PackageDescription>Implementation of SCRAM for .NET Standard 2.0</PackageDescription>
-    <PackageIconUrl>https://github.com/ubiety/Ubiety.Scram.Core/raw/develop/images/encryption64.png</PackageIconUrl>
+    <PackageIconUrl>https://github.com/ubiety/Ubiety.Scram.Core/raw/develop/docs/Ubiety.Scram.Docs/images/encryption64.png</PackageIconUrl>
     <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
     <PackageProjectUrl>https://scram.ubiety.ca</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ubiety/Ubiety.Scram.Core</RepositoryUrl>

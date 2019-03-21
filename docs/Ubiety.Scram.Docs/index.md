@@ -3,6 +3,7 @@ title: Ubiety SCRAM
 documentType: index
 ---
 
+<!-- markdownlint-disable MD033 -->
 <header class="header text-center">
   <div class="container">
     <div class="branding">
@@ -44,6 +45,23 @@ documentType: index
           <a class="link" href="api/index.md"><span></span></a>
         </div>
       </div>
+      <div class="item item-blue item-2 col-lg-4 col-6">
+        <div class="item-inner">
+          <div class="icon-holder">
+            <span aria-hidden="true" class="icon fa fa-graduation-cap"></span>
+          </div>
+          <h3 class="title">Tutorials</h3>
+          <p class="intro">Learn about the library</p>
+          <a class="link" href="api/index.md"><span></span></a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<footer class="footer text-center">
+  <div class="container">
+    <small class="copyright">Copyright 2019 Dieter Lunn</small>
+    <small class="copyright">Designed with <i class="fas fa-heart"></i> by <a href="https://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a> for developers</small>
+  </div>
+</footer>
