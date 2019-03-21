@@ -7,6 +7,8 @@
 | Master  | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/badge?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core)                          | [![Travis (.org) branch](https://img.shields.io/travis/ubiety/Ubiety.Scram.Core/master.svg?style=flat-square)](https://travis-ci.org/ubiety/Ubiety.Scram.Core)  | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-scram-core/master.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-scram-core/branch/master)   | [![Codecov branch](https://img.shields.io/codecov/c/github/ubiety/Ubiety.Scram.Core/master.svg?style=flat-square)](https://codecov.io/gh/ubiety/Ubiety.Scram.Core)  |
 | Develop | [![CodeFactor](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/badge/develop?style=flat-square)](https://www.codefactor.io/repository/github/ubiety/ubiety.scram.core/overview/develop) | [![Travis (.org) branch](https://img.shields.io/travis/ubiety/Ubiety.Scram.Core/develop.svg?style=flat-square)](https://travis-ci.org/ubiety/Ubiety.Scram.Core) | [![AppVeyor branch](https://img.shields.io/appveyor/ci/coder2000/ubiety-scram-core/develop.svg?style=flat-square)](https://ci.appveyor.com/project/coder2000/ubiety-scram-core/branch/develop) | [![Codecov branch](https://img.shields.io/codecov/c/github/ubiety/Ubiety.Scram.Core/develop.svg?style=flat-square)](https://codecov.io/gh/ubiety/Ubiety.Scram.Core) |
 
+[Professionally supported Ubiety.Scram.Core is coming soon](https://tidelift.com/subscription/pkg/nuget-ubiety-scram-core?utm_source=nuget-ubiety-scram-core&utm_medium=referral&utm_campaign=readme)
+
 ## Installing / Getting started
 
 Ubiety Scram Core is available from NuGet
