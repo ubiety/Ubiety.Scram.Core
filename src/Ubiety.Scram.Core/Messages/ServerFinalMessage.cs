@@ -15,7 +15,7 @@
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
 // IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 // OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
@@ -29,15 +29,30 @@ using Ubiety.Scram.Core.Attributes;
 
 namespace Ubiety.Scram.Core.Messages
 {
+    /// <summary>
+    ///     Final server message.
+    /// </summary>
     internal class ServerFinalMessage
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ServerFinalMessage"/> class.
+        /// </summary>
+        /// <param name="serverSignature">Server signature.</param>
         public ServerFinalMessage(ServerSignatureAttribute serverSignature)
         {
             ServerSignature = serverSignature;
         }
 
+        /// <summary>
+        ///     Gets the server signature.
+        /// </summary>
         public ServerSignatureAttribute ServerSignature { get; }
 
+        /// <summary>
+        ///     Parse the response from the server.
+        /// </summary>
+        /// <param name="response">String version of the response.</param>
+        /// <returns>A new instance of the <see cref="ServerFinalMessage"/> class.</returns>
         public static ServerFinalMessage ParseResponse(string response)
         {
             var parts = ScramAttribute.ParseAll(response.Split(','));

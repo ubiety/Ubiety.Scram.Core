@@ -15,7 +15,7 @@
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
 // IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 // OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
@@ -29,31 +29,90 @@ using System.Linq;
 
 namespace Ubiety.Scram.Core.Attributes
 {
+    /// <summary>
+    ///     Base scram attribute.
+    /// </summary>
     public class ScramAttribute
     {
+        /// <summary>
+        ///     Authorization identity attribute name.
+        /// </summary>
         protected const char AuthorizationIdentityName = 'a';
+
+        /// <summary>
+        ///     User attribute name.
+        /// </summary>
         protected const char UserName = 'n';
+
+        /// <summary>
+        ///     Message attribute name.
+        /// </summary>
         protected const char MessageName = 'm';
+
+        /// <summary>
+        ///     Nonce attribute name.
+        /// </summary>
         protected const char NonceName = 'r';
+
+        /// <summary>
+        ///     Channel attribute name.
+        /// </summary>
         protected const char ChannelName = 'c';
+
+        /// <summary>
+        ///     Salt attribute name.
+        /// </summary>
         protected const char SaltName = 's';
+
+        /// <summary>
+        ///     Iterations attribute name.
+        /// </summary>
         protected const char IterationsName = 'i';
+
+        /// <summary>
+        ///     Client proof attribute name.
+        /// </summary>
         protected const char ClientProofName = 'p';
+
+        /// <summary>
+        ///     Server signature attribute name.
+        /// </summary>
         protected const char ServerSignatureName = 'v';
+
+        /// <summary>
+        ///     Error attribute name.
+        /// </summary>
         protected const char ErrorName = 'e';
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ScramAttribute"/> class.
+        /// </summary>
+        /// <param name="name">Attribute name.</param>
         public ScramAttribute(char name)
         {
             Name = name;
         }
 
+        /// <summary>
+        ///     Gets the attribute name.
+        /// </summary>
         public char Name { get; }
 
+        /// <summary>
+        ///     Parse all the attributes.
+        /// </summary>
+        /// <param name="attributes">List of attribute strings to parse.</param>
+        /// <returns>List of attribute classes.</returns>
         public static ICollection<ScramAttribute> ParseAll(IEnumerable<string> attributes)
         {
             return attributes.Select(Parse).ToList();
         }
 
+        /// <summary>
+        ///     Parse an attribute.
+        /// </summary>
+        /// <param name="attribute">String value of the attribute.</param>
+        /// <returns>Attribute class.</returns>
         public static ScramAttribute Parse(string attribute)
         {
             var parts = attribute.Split(new[] { '=' }, 2);

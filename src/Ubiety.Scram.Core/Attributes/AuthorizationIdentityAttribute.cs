@@ -25,8 +25,15 @@
 
 namespace Ubiety.Scram.Core.Attributes
 {
+    /// <summary>
+    ///     Authorization identity attribute.
+    /// </summary>
     internal class AuthorizationIdentityAttribute : ScramAttribute<string>
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="AuthorizationIdentityAttribute"/> class.
+        /// </summary>
+        /// <param name="value">String version of the attribute value.</param>
         public AuthorizationIdentityAttribute(string value)
             : base(AuthorizationIdentityName, value)
         {
