@@ -14,6 +14,7 @@ environment:
 
 init:
   - ps: dotnet tool install --global dotnet-sonarscanner
+  - ps: choco install docfx -y
 
 build_script:
   - ps: .\build.ps1 appveyor
