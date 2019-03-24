@@ -4,12 +4,252 @@
   "xrefmap": "xrefmap.yml",
   "files": [
     {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Attributes.AuthorizationIdentityAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Attributes.AuthorizationIdentityAttribute.html",
+          "hash": "y+aArf5n7isipgvUVGIMmA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Attributes.ChannelAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Attributes.ChannelAttribute.html",
+          "hash": "Qu+fooGeER9SabZfB76YmA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Attributes.ClientProofAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Attributes.ClientProofAttribute.html",
+          "hash": "M5n014VgAcOjqAkFkpkfEw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Attributes.NonceAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Attributes.NonceAttribute.html",
+          "hash": "RkaECaYpCsjneKuMyKCp9A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Attributes.ScramAttribute-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Attributes.ScramAttribute-1.html",
+          "hash": "EwEcOnym8Zh3bmKNGfINBQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Attributes.ScramAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Attributes.ScramAttribute.html",
+          "hash": "Ur7ydH4WNZRT+mKmtBkiqA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Attributes.ServerSignatureAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Attributes.ServerSignatureAttribute.html",
+          "hash": "J1APlJwZhVav1YoBoDVKnA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Attributes.UnknownAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Attributes.UnknownAttribute.html",
+          "hash": "knJ82c99Cydx19iNyA/uQg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Attributes.UserAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Attributes.UserAttribute.html",
+          "hash": "CWKQDVZ0cdhQhjMf9HANug=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Attributes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Attributes.html",
+          "hash": "Dri8jkCFXpoVDoA29wgZEw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.BinaryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.BinaryExtensions.html",
+          "hash": "7WXzpx2vNLWuPZTOzON1bw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Hash.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Hash.html",
+          "hash": "nsUO+JU3CiGP9GBUwmbFmQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Messages.ClientFinalMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Messages.ClientFinalMessage.html",
+          "hash": "boW/GgPDSZh1ZcVW+Tx4jw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Messages.ClientFirstMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Messages.ClientFirstMessage.html",
+          "hash": "zdZPb0mOwPe8ixnSVUlu1A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Messages.ServerFinalMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Messages.ServerFinalMessage.html",
+          "hash": "20/mGEcdr007OF1v9zLNsw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Messages.ServerFirstMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Messages.ServerFirstMessage.html",
+          "hash": "NeN77SO9j2UxjWmg4VXbJQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.Messages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.Messages.html",
+          "hash": "lnm4JJL1qDQKY52cj1QN3Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.SaslPrep.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.SaslPrep.html",
+          "hash": "awE0ReaxKnWJfT/Z9vPCgw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Ubiety.Scram.Core.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Ubiety.Scram.Core.html",
+          "hash": "C8wUZfgnCD6vPkiPqR5cJQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "api/index.md",
       "output": {
         ".html": {
           "relative_path": "api/index.html",
-          "hash": "U//jIgn80YIKqjaQpsABqw=="
+          "hash": "0w1f0p94lxRitICGt9xMbA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "ZMoJwgST+RLyxxe7VDijfA=="
         }
       },
       "is_incremental": false,
@@ -21,10 +261,10 @@
       "output": {
         ".html": {
           "relative_path": "articles/intro.html",
-          "hash": "JdPbuwhHq8O2Bod5p4EZJA=="
+          "hash": "Lcxml8noswszN3vlgRn/wA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -56,10 +296,10 @@
       "output": {
         ".html": {
           "relative_path": "get-started.html",
-          "hash": "VIWi4jWrusQtCEEizIEm/Q=="
+          "hash": "jUV+cdXiAHTtp0j9NN+5Dg=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -90,10 +330,10 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "EBUzmmPI/jmXKULoEbo35g=="
+          "hash": "74kNHWJ2rA8bmAPFQSEdeA=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -102,7 +342,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "CUTOx8QttGk6rbh0Ys93HQ=="
+          "hash": "/OCvFsznO04eYHocat571w=="
         }
       },
       "is_incremental": false,
@@ -112,21 +352,12 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot build incrementally because last build info is missing.",
+        "can_incremental": true,
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0,
-        "full_build_reason_code": "NoAvailableBuildCache"
+        "skipped_file_count": 0
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -134,18 +365,32 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor ManagedReferenceDocumentProcessor disable incremental build because last build doesn't contain version .",
+          "incrementalPhase": "build",
+          "total_file_count": 19,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 4,
+          "skipped_file_count": 4
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
     },
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
         "incrementalPhase": "postProcessing",
         "total_file_count": 0,
         "skipped_file_count": 0
