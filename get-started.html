@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Getting Started | Ubiety SCRAM </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Getting Started | Ubiety SCRAM ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="images/encryption.svg" alt="Ubiety SCRAM">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="getting-started">Getting Started</h1>
+
+<p>The best way to install Ubiety SCRAM is to use your favorite NuGet package manager.</p>
+<div class="tabGroup" id="tabgroup_CeZOj-G++Q">
+<ul role="tablist">
+<li role="presentation">
+<a href="#tabpanel_CeZOj-G++Q_pm" role="tab" aria-controls="tabpanel_CeZOj-G++Q_pm" data-tab="pm" tabindex="0" aria-selected="true">Package Manager</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_CeZOj-G++Q_cli" role="tab" aria-controls="tabpanel_CeZOj-G++Q_cli" data-tab="cli" tabindex="-1">.NET CLI</a>
+</li>
+</ul>
+<section id="tabpanel_CeZOj-G++Q_pm" role="tabpanel" data-tab="pm">
+
+<pre><code class="lang-ps">Install-Package Ubiety.Scram.Core
+</code></pre>
+</section>
+<section id="tabpanel_CeZOj-G++Q_cli" role="tabpanel" data-tab="cli" aria-hidden="true" hidden="hidden">
+
+<pre><code class="lang-bash">dotnet add package Ubiety.Scram.Core
+</code></pre>
+</section>
+</div>
+
+<p>Once it is added to your project you can start the authentication process by creating a new <code>ClientFirstMessage</code>.
+Ubiety SCRAM is platform agnostic so you can use any transportation mechanism you wish to complete the process.</p>
+<pre><code class="lang-cs">var firstMessage = new ClientFirstMessage(&quot;username&quot;, &quot;random-nonce&quot;);
+</code></pre>
+<p>The nonce should be something unique to the client and the current authentication session. Once you have the new message
+object you can send it.</p>
+<pre><code class="lang-cs">var client = new TcpClient();
+
+client.Send(firstMessage.Message);
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/ubiety/Ubiety.Scram.Core/blob/develop/docs/Ubiety.Scram.Docs/get-started.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            &copy; 2019 Dieter Lunn
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
