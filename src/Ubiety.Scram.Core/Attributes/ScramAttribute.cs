@@ -25,7 +25,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Ubiety.Scram.Core.Attributes
 {
@@ -84,11 +84,14 @@ namespace Ubiety.Scram.Core.Attributes
         /// </summary>
         protected const char ErrorName = 'e';
 
+        // language=regex
+        private const string ScramRegex = @"(?:(?<gs2>^[ny]?(?:p=.+?)?),)?(?:,?(?<attr>.=[a-zA-Z0-9\+\=]+?),?)+$";
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="ScramAttribute"/> class.
         /// </summary>
         /// <param name="name">Attribute name.</param>
-        public ScramAttribute(char name)
+        protected ScramAttribute(char name)
         {
             Name = name;
         }
@@ -96,16 +99,32 @@ namespace Ubiety.Scram.Core.Attributes
         /// <summary>
         ///     Gets the attribute name.
         /// </summary>
-        public char Name { get; }
+        protected char Name { get; }
 
         /// <summary>
         ///     Parse all the attributes.
         /// </summary>
         /// <param name="attributes">List of attribute strings to parse.</param>
         /// <returns>List of attribute classes.</returns>
-        public static ICollection<ScramAttribute> ParseAll(IEnumerable<string> attributes)
+        public static ICollection<ScramAttribute> ParseAll(string attributes)
         {
-            return attributes.Select(Parse).ToList();
+            var regex = new Regex(ScramRegex, RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+            var match = regex.Match(attributes);
+
+            if (!match.Success)
+            {
+                throw new FormatException();
+            }
+
+            var attrs = new List<ScramAttribute>();
+
+            foreach (Capture attribute in match.Groups["attr"].Captures)
+            {
+                attrs.Add(Parse(attribute.Value));
+            }
+
+            return attrs;
         }
 
         /// <summary>

@@ -89,7 +89,7 @@ namespace Ubiety.Scram.Core.Messages
         /// <returns>A new instance of the <see cref="ServerFirstMessage"/> class.</returns>
         public static ServerFirstMessage ParseResponse(string response)
         {
-            var parts = ScramAttribute.ParseAll(response.Split(','));
+            var parts = ScramAttribute.ParseAll(response);
 
             var errors = parts.OfType<ErrorAttribute>();
             if (errors.Any())

@@ -55,7 +55,7 @@ namespace Ubiety.Scram.Core.Messages
         /// <returns>A new instance of the <see cref="ServerFinalMessage"/> class.</returns>
         public static ServerFinalMessage ParseResponse(string response)
         {
-            var parts = ScramAttribute.ParseAll(response.Split(','));
+            var parts = ScramAttribute.ParseAll(response);
 
             var error = parts.OfType<ErrorAttribute>().ToList();
             if (error.Any())

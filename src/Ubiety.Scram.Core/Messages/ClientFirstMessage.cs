@@ -23,14 +23,16 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
+using System.Linq;
 using Ubiety.Scram.Core.Attributes;
+using Ubiety.Scram.Core.Exceptions;
 
 namespace Ubiety.Scram.Core.Messages
 {
     /// <summary>
     ///     First client message.
     /// </summary>
-    public class ClientFirstMessage
+    public class ClientFirstMessage : IMessage
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ClientFirstMessage"/> class.
@@ -66,6 +68,36 @@ namespace Ubiety.Scram.Core.Messages
         /// <summary>
         ///     Gets the client message with the GS2 header.
         /// </summary>
+        /// <inheritdoc />
         public string Message => $"{Gs2Header}{BareMessage}";
+
+        /// <summary>
+        ///     Parse the first client message.
+        /// </summary>
+        /// <param name="message">Message to parse.</param>
+        /// <returns><see cref="ClientFirstMessage"/> instance of the message.</returns>
+        public static ClientFirstMessage Parse(string message)
+        {
+            if (!TryParse(message, out var result))
+            {
+                throw new MessageParseException();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Try to parse the first client message.
+        /// </summary>
+        /// <param name="message">Message to parse.</param>
+        /// <param name="result"><see cref="ClientFirstMessage"/> instance of the message.</param>
+        /// <returns>true if the parsing succeeds; otherwise false.</returns>
+        public static bool TryParse(string message, out ClientFirstMessage result)
+        {
+            var attributes = ScramAttribute.ParseAll(message);
+
+            result = default;
+            return true;
+        }
     }
 }
