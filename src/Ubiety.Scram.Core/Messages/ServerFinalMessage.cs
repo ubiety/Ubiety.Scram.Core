@@ -82,7 +82,7 @@ namespace Ubiety.Scram.Core.Messages
             {
                 var attributes = ScramAttribute.ParseAll(message);
 
-                if (attributes.OfType<ServerSignatureAttribute>().Any())
+                if (!attributes.OfType<ServerSignatureAttribute>().Any())
                 {
                     return false;
                 }

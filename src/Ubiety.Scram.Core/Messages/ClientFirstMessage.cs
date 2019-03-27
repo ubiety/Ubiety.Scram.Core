@@ -24,6 +24,7 @@
 // For more information, please refer to <http://unlicense.org/>
 
 using System;
+using System.Linq;
 using Ubiety.Scram.Core.Attributes;
 using Ubiety.Scram.Core.Exceptions;
 
@@ -32,7 +33,7 @@ namespace Ubiety.Scram.Core.Messages
     /// <summary>
     ///     First client message.
     /// </summary>
-    public class ClientFirstMessage : IMessage
+    public class ClientFirstMessage
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ClientFirstMessage"/> class.
@@ -72,7 +73,6 @@ namespace Ubiety.Scram.Core.Messages
         /// <summary>
         ///     Gets the client message with the GS2 header.
         /// </summary>
-        /// <inheritdoc />
         public string Message => $"{Gs2Header}{BareMessage}";
 
         /// <summary>
@@ -103,6 +103,13 @@ namespace Ubiety.Scram.Core.Messages
             try
             {
                 var attributes = ScramAttribute.ParseAll(message);
+
+                if (!attributes.OfType<Gs2Attribute>().Any()
+                    || !attributes.OfType<UserAttribute>().Any()
+                    || !attributes.OfType<NonceAttribute>().Any())
+                {
+                    return false;
+                }
 
                 foreach (var attribute in attributes)
                 {
