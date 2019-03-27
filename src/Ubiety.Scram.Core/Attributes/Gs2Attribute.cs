@@ -33,10 +33,73 @@ namespace Ubiety.Scram.Core.Attributes
         /// <summary>
         ///     Initializes a new instance of the <see cref="Gs2Attribute"/> class.
         /// </summary>
-        /// <param name="name">Character header name.</param>
-        protected Gs2Attribute(char name)
-            : base(name)
+        /// <param name="bindingStatus">Channel binding status.</param>
+        public Gs2Attribute(ChannelBindingStatus bindingStatus)
+            : base('p')
         {
+            ChannelBindingStatus = bindingStatus;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Gs2Attribute"/> class.
+        /// </summary>
+        /// <param name="header">String version of the header.</param>
+        public Gs2Attribute(string header)
+            : base('p')
+        {
+            switch (header[0])
+            {
+                case 'n':
+                    ChannelBindingStatus = ChannelBindingStatus.NotSupported;
+                    break;
+                case 'y':
+                    ChannelBindingStatus = ChannelBindingStatus.ClientSupport;
+                    break;
+                case 'p':
+                    ChannelBindingStatus = ChannelBindingStatus.Required;
+                    break;
+                default:
+                    ChannelBindingStatus = ChannelBindingStatus.NotSupported;
+                    break;
+            }
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Gs2Attribute"/> class.
+        /// </summary>
+        public Gs2Attribute()
+            : base('p')
+        {
+        }
+
+        /// <summary>
+        ///     Gets the current channel binding status.
+        /// </summary>
+        public ChannelBindingStatus ChannelBindingStatus { get; }
+
+        /// <summary>
+        ///     Convert attribute to a string.
+        /// </summary>
+        /// <param name="attribute">Attribute to convert.</param>
+        public static implicit operator string(Gs2Attribute attribute)
+        {
+            return attribute.ToString();
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            switch (ChannelBindingStatus)
+            {
+                case ChannelBindingStatus.ClientSupport:
+                    return "y,,";
+                case ChannelBindingStatus.NotSupported:
+                    return "n,,";
+                case ChannelBindingStatus.Required:
+                    return "p=tls-unique,,";
+            }
+
+            return "n,,";
         }
     }
 }

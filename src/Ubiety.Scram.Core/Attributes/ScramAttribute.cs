@@ -119,6 +119,12 @@ namespace Ubiety.Scram.Core.Attributes
 
             var attrs = new List<ScramAttribute>();
 
+            if (match.Groups["gs2"].Success)
+            {
+                var gs2 = new Gs2Attribute(match.Groups["gs2"].Value);
+                attrs.Add(gs2);
+            }
+
             foreach (Capture attribute in match.Groups["attr"].Captures)
             {
                 attrs.Add(Parse(attribute.Value));

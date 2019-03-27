@@ -23,7 +23,7 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
-using System.Linq;
+using System;
 using Ubiety.Scram.Core.Attributes;
 using Ubiety.Scram.Core.Exceptions;
 
@@ -45,20 +45,24 @@ namespace Ubiety.Scram.Core.Messages
             Nonce = new NonceAttribute(nonce);
         }
 
+        private ClientFirstMessage()
+        {
+        }
+
         /// <summary>
         ///     Gets the GS2 header for the message.
         /// </summary>
-        public string Gs2Header { get; } = "n,,";
+        public Gs2Attribute Gs2Header { get; private set; } = new Gs2Attribute(ChannelBindingStatus.NotSupported);
 
         /// <summary>
         ///     Gets the username of the message.
         /// </summary>
-        public UserAttribute Username { get; }
+        public UserAttribute Username { get; private set; }
 
         /// <summary>
         ///     Gets the nonce of the message.
         /// </summary>
-        public NonceAttribute Nonce { get; }
+        public NonceAttribute Nonce { get; private set; }
 
         /// <summary>
         ///     Gets the bare client message.
@@ -94,9 +98,33 @@ namespace Ubiety.Scram.Core.Messages
         /// <returns>true if the parsing succeeds; otherwise false.</returns>
         public static bool TryParse(string message, out ClientFirstMessage result)
         {
-            var attributes = ScramAttribute.ParseAll(message);
+            result = new ClientFirstMessage();
 
-            result = default;
+            try
+            {
+                var attributes = ScramAttribute.ParseAll(message);
+
+                foreach (var attribute in attributes)
+                {
+                    switch (attribute)
+                    {
+                        case Gs2Attribute a:
+                            result.Gs2Header = a;
+                            break;
+                        case UserAttribute a:
+                            result.Username = a;
+                            break;
+                        case NonceAttribute a:
+                            result.Nonce = a;
+                            break;
+                    }
+                }
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+
             return true;
         }
     }
