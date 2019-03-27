@@ -24,6 +24,7 @@
 // For more information, please refer to <http://unlicense.org/>
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Ubiety.Scram.Core.Exceptions
 {
@@ -34,5 +35,40 @@ namespace Ubiety.Scram.Core.Exceptions
     [Serializable]
     public class MessageParseException : Exception
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MessageParseException"/> class.
+        /// </summary>
+        public MessageParseException()
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MessageParseException"/> class.
+        /// </summary>
+        /// <param name="message">Exception message.</param>
+        public MessageParseException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MessageParseException"/> class.
+        /// </summary>
+        /// <param name="message">Exception message.</param>
+        /// <param name="innerException">Inner exception.</param>
+        public MessageParseException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MessageParseException"/> class.
+        /// </summary>
+        /// <param name="info">Serialization info.</param>
+        /// <param name="context">Streaming context.</param>
+        public MessageParseException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }
