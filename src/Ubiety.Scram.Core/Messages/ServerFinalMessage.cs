@@ -26,6 +26,7 @@
 using System;
 using System.Linq;
 using Ubiety.Scram.Core.Attributes;
+using Ubiety.Scram.Core.Exceptions;
 
 namespace Ubiety.Scram.Core.Messages
 {
@@ -43,33 +44,67 @@ namespace Ubiety.Scram.Core.Messages
             ServerSignature = serverSignature;
         }
 
+        private ServerFinalMessage()
+        {
+        }
+
         /// <summary>
         ///     Gets the server signature.
         /// </summary>
-        public ServerSignatureAttribute ServerSignature { get; }
+        public ServerSignatureAttribute ServerSignature { get; private set; }
 
         /// <summary>
-        ///     Parse the response from the server.
+        ///     Parse the final server message.
         /// </summary>
-        /// <param name="response">String version of the response.</param>
-        /// <returns>A new instance of the <see cref="ServerFinalMessage"/> class.</returns>
-        public static ServerFinalMessage ParseResponse(string response)
+        /// <param name="message">Message to parse.</param>
+        /// <returns><see cref="ServerFinalMessage"/> instance of the message.</returns>
+        public static ServerFinalMessage Parse(string message)
         {
-            var parts = ScramAttribute.ParseAll(response);
-
-            var error = parts.OfType<ErrorAttribute>().ToList();
-            if (error.Any())
+            if (!TryParse(message, out var finalMessage))
             {
-                throw new InvalidOperationException();
+                throw new MessageParseException();
             }
 
-            var signature = parts.OfType<ServerSignatureAttribute>().ToList();
-            if (!signature.Any())
+            return finalMessage;
+        }
+
+        /// <summary>
+        ///     Try and parse the final server message.
+        /// </summary>
+        /// <param name="message">Message to parse.</param>
+        /// <param name="finalMessage"><see cref="ServerFinalMessage"/> instance of the message.</param>
+        /// <returns>true if the parsing succeeded; otherwise false.</returns>
+        public static bool TryParse(string message, out ServerFinalMessage finalMessage)
+        {
+            finalMessage = new ServerFinalMessage();
+
+            try
             {
-                throw new InvalidOperationException();
+                var attributes = ScramAttribute.ParseAll(message);
+
+                if (attributes.OfType<ServerSignatureAttribute>().Any())
+                {
+                    return false;
+                }
+
+                foreach (var attribute in attributes)
+                {
+                    switch (attribute)
+                    {
+                        case ServerSignatureAttribute a:
+                            finalMessage.ServerSignature = a;
+                            break;
+                        case ErrorAttribute a:
+                            return false;
+                    }
+                }
+            }
+            catch (FormatException)
+            {
+                return false;
             }
 
-            return new ServerFinalMessage(signature.First());
+            return true;
         }
     }
 }

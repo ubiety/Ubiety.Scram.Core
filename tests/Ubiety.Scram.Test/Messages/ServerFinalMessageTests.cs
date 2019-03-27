@@ -21,7 +21,7 @@ namespace Ubiety.Scram.Test.Messages
         {
             Should.Throw<InvalidOperationException>(() =>
             {
-                var _ = ServerFinalMessage.ParseResponse("e=error");
+                var _ = ServerFinalMessage.Parse("e=error");
             });
         }
 
@@ -30,14 +30,14 @@ namespace Ubiety.Scram.Test.Messages
         {
             Should.Throw<InvalidOperationException>(() =>
             {
-                var _ = ServerFinalMessage.ParseResponse("r=invalid");
+                var _ = ServerFinalMessage.Parse("r=invalid");
             });
         }
 
         [Fact]
         public void When_ParsingAMessage_PropertiesShouldBeValid()
         {
-            var message = ServerFinalMessage.ParseResponse("v=rmF9pqV8S7suAoZWja4dJRkFsKQ=");
+            var message = ServerFinalMessage.Parse("v=rmF9pqV8S7suAoZWja4dJRkFsKQ=");
 
             message.ServerSignature.Value.ShouldBe(HexToByte("ae617da6a57c4bbb2e0286568dae1d251905b0a4"));
         }
