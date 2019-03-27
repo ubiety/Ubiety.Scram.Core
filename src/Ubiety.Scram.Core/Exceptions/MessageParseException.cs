@@ -66,7 +66,7 @@ namespace Ubiety.Scram.Core.Exceptions
         /// </summary>
         /// <param name="info">Serialization info.</param>
         /// <param name="context">Streaming context.</param>
-        public MessageParseException(SerializationInfo info, StreamingContext context)
+        protected MessageParseException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
