@@ -1,5 +1,6 @@
 ﻿using System;
 using Shouldly;
+using Ubiety.Scram.Core.Exceptions;
 using Ubiety.Scram.Core.Messages;
 using Xunit;
 
@@ -19,7 +20,7 @@ namespace Ubiety.Scram.Test.Messages
         [Fact]
         public void When_MessageAnError_ParseShouldThrowAnException()
         {
-            Should.Throw<InvalidOperationException>(() =>
+            Should.Throw<MessageParseException>(() =>
             {
                 var _ = ServerFinalMessage.Parse("e=error");
             });
@@ -28,7 +29,7 @@ namespace Ubiety.Scram.Test.Messages
         [Fact]
         public void When_MessageDoesNotContainASignature_ParseShouldThrowAnException()
         {
-            Should.Throw<InvalidOperationException>(() =>
+            Should.Throw<MessageParseException>(() =>
             {
                 var _ = ServerFinalMessage.Parse("r=invalid");
             });
