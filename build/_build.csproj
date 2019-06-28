@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nuke.Common" Version="0.19.2" />
-    <PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.0-beta2-97">
+    <PackageReference Include="Nuke.Common" Version="0.20.1" />
+    <PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.0-PullRequest1659-79">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
