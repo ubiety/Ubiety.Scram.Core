@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Nuke.Common" Version="0.20.1" />
-    <PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.0-PullRequest1659-79">
+    <PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.0-beta4-9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
