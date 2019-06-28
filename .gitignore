@@ -122,6 +122,7 @@ fabric.properties
 ### Wyam ###
 # Wyam Ignore - Based on https://wyam.io/docs/advanced/what_to_exclude_from_source_control
 docs/output/*
+docs/log.txt
 config.wyam.dll
 config.wyam.hash
 *packages.xml

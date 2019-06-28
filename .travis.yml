@@ -17,7 +17,7 @@ env:
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
 
 mono: latest
-dotnet: 2.2.104
+dotnet: 2.2.204
 
 script:
   - ./build.sh
