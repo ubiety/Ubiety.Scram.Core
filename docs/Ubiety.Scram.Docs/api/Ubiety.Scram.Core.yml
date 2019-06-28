@@ -1,0 +1,40 @@
+### YamlMime:ManagedReference
+items:
+- uid: Ubiety.Scram.Core
+  commentId: N:Ubiety.Scram.Core
+  id: Ubiety.Scram.Core
+  children:
+  - Ubiety.Scram.Core.BinaryExtensions
+  - Ubiety.Scram.Core.Hash
+  - Ubiety.Scram.Core.SaslPrep
+  langs:
+  - csharp
+  - vb
+  name: Ubiety.Scram.Core
+  nameWithType: Ubiety.Scram.Core
+  fullName: Ubiety.Scram.Core
+  type: Namespace
+  assemblies:
+  - Ubiety.Scram.Core
+references:
+- uid: Ubiety.Scram.Core.BinaryExtensions
+  commentId: T:Ubiety.Scram.Core.BinaryExtensions
+  name: BinaryExtensions
+  nameWithType: BinaryExtensions
+  fullName: Ubiety.Scram.Core.BinaryExtensions
+- uid: Ubiety.Scram.Core.Hash
+  commentId: T:Ubiety.Scram.Core.Hash
+  parent: Ubiety.Scram.Core
+  name: Hash
+  nameWithType: Hash
+  fullName: Ubiety.Scram.Core.Hash
+- uid: Ubiety.Scram.Core.SaslPrep
+  commentId: T:Ubiety.Scram.Core.SaslPrep
+  name: SaslPrep
+  nameWithType: SaslPrep
+  fullName: Ubiety.Scram.Core.SaslPrep
+- uid: Ubiety.Scram.Core
+  commentId: N:Ubiety.Scram.Core
+  name: Ubiety.Scram.Core
+  nameWithType: Ubiety.Scram.Core
+  fullName: Ubiety.Scram.Core
