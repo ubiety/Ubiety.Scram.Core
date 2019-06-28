@@ -26,6 +26,12 @@ namespace Ubiety.Scram.Test.Attributes
         }
 
         [Fact]
+        public void When_ChannelIsNotSupported_ShouldBeValid()
+        {
+            var _ = ScramAttribute.ParseAll("n,,n=name");
+        }
+
+        [Fact]
         public void When_ParsingAnAuthorizationAttribute_ShouldBeValid()
         {
             var attribute = ScramAttribute.Parse("a=name");

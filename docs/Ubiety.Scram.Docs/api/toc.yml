@@ -1,0 +1,43 @@
+### YamlMime:TableOfContent
+- uid: Ubiety.Scram.Core
+  name: Ubiety.Scram.Core
+  items:
+  - uid: Ubiety.Scram.Core.BinaryExtensions
+    name: BinaryExtensions
+  - uid: Ubiety.Scram.Core.Hash
+    name: Hash
+  - uid: Ubiety.Scram.Core.SaslPrep
+    name: SaslPrep
+- uid: Ubiety.Scram.Core.Attributes
+  name: Ubiety.Scram.Core.Attributes
+  items:
+  - uid: Ubiety.Scram.Core.Attributes.AuthorizationIdentityAttribute
+    name: AuthorizationIdentityAttribute
+  - uid: Ubiety.Scram.Core.Attributes.ChannelAttribute
+    name: ChannelAttribute
+  - uid: Ubiety.Scram.Core.Attributes.ClientProofAttribute
+    name: ClientProofAttribute
+  - uid: Ubiety.Scram.Core.Attributes.NonceAttribute
+    name: NonceAttribute
+  - uid: Ubiety.Scram.Core.Attributes.ScramAttribute
+    name: ScramAttribute
+  - uid: Ubiety.Scram.Core.Attributes.ScramAttribute`1
+    name: ScramAttribute<TValue>
+    name.vb: ScramAttribute(Of TValue)
+  - uid: Ubiety.Scram.Core.Attributes.ServerSignatureAttribute
+    name: ServerSignatureAttribute
+  - uid: Ubiety.Scram.Core.Attributes.UnknownAttribute
+    name: UnknownAttribute
+  - uid: Ubiety.Scram.Core.Attributes.UserAttribute
+    name: UserAttribute
+- uid: Ubiety.Scram.Core.Messages
+  name: Ubiety.Scram.Core.Messages
+  items:
+  - uid: Ubiety.Scram.Core.Messages.ClientFinalMessage
+    name: ClientFinalMessage
+  - uid: Ubiety.Scram.Core.Messages.ClientFirstMessage
+    name: ClientFirstMessage
+  - uid: Ubiety.Scram.Core.Messages.ServerFinalMessage
+    name: ServerFinalMessage
+  - uid: Ubiety.Scram.Core.Messages.ServerFirstMessage
+    name: ServerFirstMessage

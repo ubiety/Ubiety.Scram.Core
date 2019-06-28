@@ -23,37 +23,26 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
-using System;
-
-namespace Ubiety.Scram.Core.Attributes
+namespace Ubiety.Scram.Core
 {
     /// <summary>
-    ///     Salt attribute.
+    ///     Channel binding status.
     /// </summary>
-    public class SaltAttribute : ScramAttribute<byte[]>
+    public enum ChannelBindingStatus
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SaltAttribute"/> class.
+        ///     Channel binding is required.
         /// </summary>
-        /// <param name="value">Byte array value of the salt.</param>
-        public SaltAttribute(byte[] value)
-            : base(SaltName, value)
-        {
-        }
+        Required,
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SaltAttribute"/> class.
+        ///     Channel binding is not supported.
         /// </summary>
-        /// <param name="value">String value of the salt.</param>
-        public SaltAttribute(string value)
-            : base(SaltName, Convert.FromBase64String(value))
-        {
-        }
+        NotSupported,
 
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            return $"{Name} = {Convert.ToBase64String(Value)}";
-        }
+        /// <summary>
+        ///     Channel binding is supported by the client but server is unknown.
+        /// </summary>
+        ClientSupport,
     }
 }

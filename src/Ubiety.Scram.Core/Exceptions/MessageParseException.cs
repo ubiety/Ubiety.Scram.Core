@@ -24,36 +24,51 @@
 // For more information, please refer to <http://unlicense.org/>
 
 using System;
+using System.Runtime.Serialization;
 
-namespace Ubiety.Scram.Core.Attributes
+namespace Ubiety.Scram.Core.Exceptions
 {
     /// <summary>
-    ///     Salt attribute.
+    ///     Message parse exception.
     /// </summary>
-    public class SaltAttribute : ScramAttribute<byte[]>
+    /// <inheritdoc />
+    [Serializable]
+    public class MessageParseException : Exception
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SaltAttribute"/> class.
+        ///     Initializes a new instance of the <see cref="MessageParseException"/> class.
         /// </summary>
-        /// <param name="value">Byte array value of the salt.</param>
-        public SaltAttribute(byte[] value)
-            : base(SaltName, value)
+        public MessageParseException()
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SaltAttribute"/> class.
+        ///     Initializes a new instance of the <see cref="MessageParseException"/> class.
         /// </summary>
-        /// <param name="value">String value of the salt.</param>
-        public SaltAttribute(string value)
-            : base(SaltName, Convert.FromBase64String(value))
+        /// <param name="message">Exception message.</param>
+        public MessageParseException(string message)
+            : base(message)
         {
         }
 
-        /// <inheritdoc />
-        public override string ToString()
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MessageParseException"/> class.
+        /// </summary>
+        /// <param name="message">Exception message.</param>
+        /// <param name="innerException">Inner exception.</param>
+        public MessageParseException(string message, Exception innerException)
+            : base(message, innerException)
         {
-            return $"{Name} = {Convert.ToBase64String(Value)}";
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MessageParseException"/> class.
+        /// </summary>
+        /// <param name="info">Serialization info.</param>
+        /// <param name="context">Streaming context.</param>
+        protected MessageParseException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
         }
     }
 }
