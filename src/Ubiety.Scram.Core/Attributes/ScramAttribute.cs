@@ -151,19 +151,19 @@ namespace Ubiety.Scram.Core.Attributes
                 throw new FormatException();
             }
 
-            switch (parts[0][0])
+            return parts[0][0] switch
             {
-                case AuthorizationIdentityName: return new AuthorizationIdentityAttribute(parts[1]);
-                case UserName: return new UserAttribute(parts[1], true);
-                case NonceName: return new NonceAttribute(parts[1]);
-                case ChannelName: return new ChannelAttribute(parts[1]);
-                case SaltName: return new SaltAttribute(parts[1]);
-                case IterationsName: return new IterationsAttribute(parts[1]);
-                case ClientProofName: return new ClientProofAttribute(parts[1]);
-                case ServerSignatureName: return new ServerSignatureAttribute(parts[1]);
-                case ErrorName: return new ErrorAttribute(parts[1]);
-                default: return new UnknownAttribute(parts[0][0], parts[1]);
-            }
+                AuthorizationIdentityName => new AuthorizationIdentityAttribute(parts[1]),
+                UserName => new UserAttribute(parts[1], true),
+                NonceName => new NonceAttribute(parts[1]),
+                ChannelName => new ChannelAttribute(parts[1]),
+                SaltName => new SaltAttribute(parts[1]),
+                IterationsName => new IterationsAttribute(parts[1]),
+                ClientProofName => new ClientProofAttribute(parts[1]),
+                ServerSignatureName => new ServerSignatureAttribute(parts[1]),
+                ErrorName => new ErrorAttribute(parts[1]),
+                _ => new UnknownAttribute(parts[0][0], parts[1])
+            };
         }
     }
 }
