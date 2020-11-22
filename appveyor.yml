@@ -12,9 +12,6 @@ environment:
   COVERALLS_REPO_TOKEN:
     secure: W8cqcSrGWp4Uym/aNC6JTVnfuoBQ266qXhkYcAJdc0J5+jbs+trIH5LWvniArf5/
 
-init:
-  - ps: dotnet tool install --global dotnet-sonarscanner
-
 build_script:
   - ps: .\build.ps1 appveyor
 
