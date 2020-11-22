@@ -1,6 +1,7 @@
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
@@ -8,7 +9,6 @@ using Nuke.Common.Tools.DotNetSonarScanner;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.DotNetSonarScanner.DotNetSonarScannerTasks;
 
@@ -24,13 +24,12 @@ class Build : NukeBuild
     [GitVersion] readonly GitVersion GitVersion;
     [Parameter] readonly string NuGetKey;
 
-    readonly string NuGetSource = "https://api.nuget.org/v3/index.json";
+    const string NuGetSource = "https://api.nuget.org/v3/index.json";
 
     [Solution] readonly Solution Solution;
 
     [Parameter] readonly string SonarKey;
-    readonly string SonarProjectKey = "ubiety_Ubiety.Scram.Core";
-    [Unlisted] [ProjectFrom(nameof(Solution))] readonly Project UbietyScramTestProject;
+    const string SonarProjectKey = "ubiety_Ubiety.Scram.Core";
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath TestsDirectory => RootDirectory / "tests";
@@ -59,8 +58,8 @@ class Build : NukeBuild
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
-                .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
-                .SetFileVersion(GitVersion.GetNormalizedFileVersion())
+                .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                .SetFileVersion(GitVersion.AssemblySemFileVer)
                 .SetInformationalVersion(GitVersion.InformationalVersion)
                 .EnableNoRestore());
         });
@@ -97,10 +96,10 @@ class Build : NukeBuild
         .Executes(() =>
         {
             DotNetTest(s => s
-                .SetProjectFile(UbietyScramTestProject)
+                .SetProjectFile(Solution.GetProject("Ubiety.Scram.Test"))
                 .EnableNoBuild()
                 .SetConfiguration(Configuration)
-                .SetArgumentConfigurator(args => args.Add("/p:CollectCoverage={0}", Cover)
+                .SetProcessArgumentConfigurator(args => args.Add("/p:CollectCoverage={0}", Cover)
                     .Add("/p:CoverletOutput={0}", ArtifactsDirectory / "coverage")
                     .Add("/p:CoverletOutputFormat={0}", "opencover")
                     .Add("/p:Exclude={0}", "[xunit.*]*")));
