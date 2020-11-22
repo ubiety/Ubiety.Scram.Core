@@ -5,12 +5,12 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.DotNetSonarScanner;
+using Nuke.Common.Tools.SonarScanner;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using static Nuke.Common.Tools.DotNetSonarScanner.DotNetSonarScannerTasks;
+using static Nuke.Common.Tools.SonarScanner.SonarScannerTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
@@ -70,10 +70,9 @@ class Build : NukeBuild
         .Unlisted()
         .Executes(() =>
         {
-            DotNetSonarScannerBegin(s => s
+            SonarScannerBegin(s => s
                 .SetLogin(SonarKey)
                 .SetProjectKey(SonarProjectKey)
-                .SetOrganization("ubiety")
                 .SetServer("https://sonarcloud.io")
                 .SetVersion(GitVersion.NuGetVersionV2)
                 .SetOpenCoverPaths(ArtifactsDirectory / "coverage.opencover.xml"));
@@ -87,7 +86,7 @@ class Build : NukeBuild
         .Unlisted()
         .Executes(() =>
         {
-            DotNetSonarScannerEnd(s => s
+            SonarScannerEnd(s => s
                 .SetLogin(SonarKey));
         });
 
