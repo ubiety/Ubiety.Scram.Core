@@ -109,7 +109,7 @@ class Build : NukeBuild
 
     Target Pack => _ => _
         .After(Test)
-        .OnlyWhenStatic(() => GitRepository.IsOnMasterBranch())
+        .OnlyWhenStatic(() => GitRepository.Branch == "main")
         .Executes(() =>
         {
             DotNetPack(s => s
@@ -123,7 +123,7 @@ class Build : NukeBuild
         .DependsOn(Pack)
         .Requires(() => NuGetKey)
         .Requires(() => Configuration.Equals(Configuration.Release))
-        .OnlyWhenStatic(() => GitRepository.IsOnMasterBranch())
+        .OnlyWhenStatic(() => GitRepository.Branch == "main")
         .Executes(() =>
         {
             DotNetNuGetPush(s => s
