@@ -21,7 +21,7 @@ class Build : NukeBuild
 
     [Parameter] readonly bool? Cover = true;
     [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion] readonly GitVersion GitVersion;
+    [GitVersion(Framework = "netcoreapp3.1")] readonly GitVersion GitVersion;
     [Parameter] readonly string NuGetKey;
 
     const string NuGetSource = "https://api.nuget.org/v3/index.json";
@@ -75,7 +75,8 @@ class Build : NukeBuild
                 .SetProjectKey(SonarProjectKey)
                 .SetServer("https://sonarcloud.io")
                 .SetVersion(GitVersion.NuGetVersionV2)
-                .SetOpenCoverPaths(ArtifactsDirectory / "coverage.opencover.xml"));
+                .SetOpenCoverPaths(ArtifactsDirectory / "coverage.opencover.xml")
+                .SetFramework("net5.0"));
         });
 
     Target SonarEnd => _ => _
@@ -87,7 +88,8 @@ class Build : NukeBuild
         .Executes(() =>
         {
             SonarScannerEnd(s => s
-                .SetLogin(SonarKey));
+                .SetLogin(SonarKey)
+                .SetFramework("net5.0"));
         });
 
     Target Test => _ => _
