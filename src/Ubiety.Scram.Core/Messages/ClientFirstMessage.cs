@@ -53,17 +53,17 @@ namespace Ubiety.Scram.Core.Messages
         /// <summary>
         ///     Gets the GS2 header for the message.
         /// </summary>
-        public Gs2Attribute Gs2Header { get; private set; } = new Gs2Attribute(ChannelBindingStatus.NotSupported);
+        public Gs2Attribute Gs2Header { get; private set; } = new (ChannelBindingStatus.NotSupported);
 
         /// <summary>
         ///     Gets the username of the message.
         /// </summary>
-        public UserAttribute Username { get; private set; }
+        public UserAttribute? Username { get; private set; }
 
         /// <summary>
         ///     Gets the nonce of the message.
         /// </summary>
-        public NonceAttribute Nonce { get; private set; }
+        public NonceAttribute? Nonce { get; private set; }
 
         /// <summary>
         ///     Gets the bare client message.

@@ -51,7 +51,7 @@ namespace Ubiety.Scram.Core.Messages
         /// <summary>
         ///     Gets the server signature.
         /// </summary>
-        public ServerSignatureAttribute ServerSignature { get; private set; }
+        public ServerSignatureAttribute? ServerSignature { get; private set; }
 
         /// <summary>
         ///     Parse the final server message.

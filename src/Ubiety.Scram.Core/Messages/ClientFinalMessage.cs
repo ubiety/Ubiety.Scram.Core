@@ -56,7 +56,7 @@ namespace Ubiety.Scram.Core.Messages
         /// <summary>
         ///     Gets the client proof.
         /// </summary>
-        public ClientProofAttribute Proof { get; private set; }
+        public ClientProofAttribute? Proof { get; private set; }
 
         /// <summary>
         ///     Gets the final message without the proof.
