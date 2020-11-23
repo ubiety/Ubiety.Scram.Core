@@ -1,7 +1,7 @@
 mode: ContinuousDelivery
-branches: {
-  regex: (^master$|^origin\/master$|^main$|^origin\/main$)
-  mode: ContinuousDeployment
-}
+branches:
+  master:
+    regex: (^master$|^origin\/master$|^main$|^origin\/main$)
+    mode: ContinuousDeployment
 ignore:
   sha: []
