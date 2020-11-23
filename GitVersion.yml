@@ -1,4 +1,7 @@
 mode: ContinuousDelivery
-branches: {}
+branches: {
+  regex: ^main
+  mode: ContinuousDeployment
+}
 ignore:
   sha: []
