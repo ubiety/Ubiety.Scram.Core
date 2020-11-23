@@ -2,7 +2,7 @@ language: csharp
 matrix:
   include:
     - os: linux
-      dist: xenial
+      dist: focal
       sudo: required
     - os: osx
       osx_image: xcode9.4
