@@ -11,7 +11,7 @@ namespace Ubiety.Scram.Test.Messages
         {
             var message = new ClientFirstMessage("", "fyko+d2lbbFgONRv9qkxdawL");
 
-            message.Nonce.ToString().ShouldBe("r=fyko+d2lbbFgONRv9qkxdawL");
+            message.Nonce?.ToString().ShouldBe("r=fyko+d2lbbFgONRv9qkxdawL");
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace Ubiety.Scram.Test.Messages
         {
             var message = new ClientFirstMessage("user", "");
 
-            message.Username.ToString().ShouldBe("n=user");
+            message.Username?.ToString().ShouldBe("n=user");
         }
     }
 }

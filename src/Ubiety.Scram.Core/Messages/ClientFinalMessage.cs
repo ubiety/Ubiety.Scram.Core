@@ -40,7 +40,7 @@ namespace Ubiety.Scram.Core.Messages
         public ClientFinalMessage(ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage)
         {
             Channel = new ChannelAttribute(clientFirstMessage.Gs2Header);
-            Nonce = new NonceAttribute(serverFirstMessage.Nonce.Value);
+            Nonce = new NonceAttribute(serverFirstMessage.Nonce?.Value);
         }
 
         /// <summary>
