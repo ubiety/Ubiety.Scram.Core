@@ -1,6 +1,6 @@
 mode: ContinuousDelivery
 branches: {
-  regex: ^main
+  regex: (^master$|^origin\/master$|^main$|^origin\/main$)
   mode: ContinuousDeployment
 }
 ignore:
