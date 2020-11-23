@@ -2,7 +2,7 @@ language: csharp
 matrix:
   include:
     - os: linux
-      dist: xenial
+      dist: focal
       sudo: required
     - os: osx
       osx_image: xcode9.4
@@ -16,8 +16,8 @@ env:
   global: DOTNET_CLI_TELEMETRY_OPTOUT=1
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
 
-mono: latest
-dotnet: 2.2.204
+mono: none
+dotnet: 5.0.0
 
 script:
   - ./build.sh

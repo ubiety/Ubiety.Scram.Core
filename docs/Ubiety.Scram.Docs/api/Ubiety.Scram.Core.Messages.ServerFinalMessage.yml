@@ -1,0 +1,500 @@
+### YamlMime:ManagedReference
+items:
+- uid: Ubiety.Scram.Core.Messages.ServerFinalMessage
+  commentId: T:Ubiety.Scram.Core.Messages.ServerFinalMessage
+  id: ServerFinalMessage
+  parent: Ubiety.Scram.Core.Messages
+  children:
+  - Ubiety.Scram.Core.Messages.ServerFinalMessage.#ctor(Ubiety.Scram.Core.Attributes.ServerSignatureAttribute)
+  - Ubiety.Scram.Core.Messages.ServerFinalMessage.ParseResponse(System.String)
+  - Ubiety.Scram.Core.Messages.ServerFinalMessage.ServerSignature
+  langs:
+  - csharp
+  - vb
+  name: ServerFinalMessage
+  nameWithType: ServerFinalMessage
+  fullName: Ubiety.Scram.Core.Messages.ServerFinalMessage
+  type: Class
+  source:
+    remote:
+      path: src/Ubiety.Scram.Core/Messages/ServerFinalMessage.cs
+      branch: master
+      repo: git@github.com:ubiety/Ubiety.Scram.Core
+    id: ServerFinalMessage
+    path: ../../src/Ubiety.Scram.Core/Messages/ServerFinalMessage.cs
+    startLine: 34
+  assemblies:
+  - Ubiety.Scram.Core
+  namespace: Ubiety.Scram.Core.Messages
+  summary: "\nFinal server message.\n"
+  example: []
+  syntax:
+    content: public class ServerFinalMessage
+    content.vb: Public Class ServerFinalMessage
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: Ubiety.Scram.Core.Messages.ServerFinalMessage.#ctor(Ubiety.Scram.Core.Attributes.ServerSignatureAttribute)
+  commentId: M:Ubiety.Scram.Core.Messages.ServerFinalMessage.#ctor(Ubiety.Scram.Core.Attributes.ServerSignatureAttribute)
+  id: '#ctor(Ubiety.Scram.Core.Attributes.ServerSignatureAttribute)'
+  parent: Ubiety.Scram.Core.Messages.ServerFinalMessage
+  langs:
+  - csharp
+  - vb
+  name: ServerFinalMessage(ServerSignatureAttribute)
+  nameWithType: ServerFinalMessage.ServerFinalMessage(ServerSignatureAttribute)
+  fullName: Ubiety.Scram.Core.Messages.ServerFinalMessage.ServerFinalMessage(Ubiety.Scram.Core.Attributes.ServerSignatureAttribute)
+  type: Constructor
+  source:
+    remote:
+      path: src/Ubiety.Scram.Core/Messages/ServerFinalMessage.cs
+      branch: master
+      repo: git@github.com:ubiety/Ubiety.Scram.Core
+    id: .ctor
+    path: ../../src/Ubiety.Scram.Core/Messages/ServerFinalMessage.cs
+    startLine: 40
+  assemblies:
+  - Ubiety.Scram.Core
+  namespace: Ubiety.Scram.Core.Messages
+  summary: "\nInitializes a new instance of the <xref href=\"Ubiety.Scram.Core.Messages.ServerFinalMessage\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public ServerFinalMessage(ServerSignatureAttribute serverSignature)
+    parameters:
+    - id: serverSignature
+      type: Ubiety.Scram.Core.Attributes.ServerSignatureAttribute
+      description: Server signature.
+    content.vb: Public Sub New(serverSignature As ServerSignatureAttribute)
+  overload: Ubiety.Scram.Core.Messages.ServerFinalMessage.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Ubiety.Scram.Core.Messages.ServerFinalMessage.ServerSignature
+  commentId: P:Ubiety.Scram.Core.Messages.ServerFinalMessage.ServerSignature
+  id: ServerSignature
+  parent: Ubiety.Scram.Core.Messages.ServerFinalMessage
+  langs:
+  - csharp
+  - vb
+  name: ServerSignature
+  nameWithType: ServerFinalMessage.ServerSignature
+  fullName: Ubiety.Scram.Core.Messages.ServerFinalMessage.ServerSignature
+  type: Property
+  source:
+    remote:
+      path: src/Ubiety.Scram.Core/Messages/ServerFinalMessage.cs
+      branch: master
+      repo: git@github.com:ubiety/Ubiety.Scram.Core
+    id: ServerSignature
+    path: ../../src/Ubiety.Scram.Core/Messages/ServerFinalMessage.cs
+    startLine: 48
+  assemblies:
+  - Ubiety.Scram.Core
+  namespace: Ubiety.Scram.Core.Messages
+  summary: "\nGets the server signature.\n"
+  example: []
+  syntax:
+    content: public ServerSignatureAttribute ServerSignature { get; }
+    parameters: []
+    return:
+      type: Ubiety.Scram.Core.Attributes.ServerSignatureAttribute
+    content.vb: Public ReadOnly Property ServerSignature As ServerSignatureAttribute
+  overload: Ubiety.Scram.Core.Messages.ServerFinalMessage.ServerSignature*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: Ubiety.Scram.Core.Messages.ServerFinalMessage.ParseResponse(System.String)
+  commentId: M:Ubiety.Scram.Core.Messages.ServerFinalMessage.ParseResponse(System.String)
+  id: ParseResponse(System.String)
+  parent: Ubiety.Scram.Core.Messages.ServerFinalMessage
+  langs:
+  - csharp
+  - vb
+  name: ParseResponse(String)
+  nameWithType: ServerFinalMessage.ParseResponse(String)
+  fullName: Ubiety.Scram.Core.Messages.ServerFinalMessage.ParseResponse(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/Ubiety.Scram.Core/Messages/ServerFinalMessage.cs
+      branch: master
+      repo: git@github.com:ubiety/Ubiety.Scram.Core
+    id: ParseResponse
+    path: ../../src/Ubiety.Scram.Core/Messages/ServerFinalMessage.cs
+    startLine: 55
+  assemblies:
+  - Ubiety.Scram.Core
+  namespace: Ubiety.Scram.Core.Messages
+  summary: "\nParse the response from the server.\n"
+  example: []
+  syntax:
+    content: public static ServerFinalMessage ParseResponse(string response)
+    parameters:
+    - id: response
+      type: System.String
+      description: String version of the response.
+    return:
+      type: Ubiety.Scram.Core.Messages.ServerFinalMessage
+      description: A new instance of the <xref href="Ubiety.Scram.Core.Messages.ServerFinalMessage" data-throw-if-not-resolved="false"></xref> class.
+    content.vb: Public Shared Function ParseResponse(response As String) As ServerFinalMessage
+  overload: Ubiety.Scram.Core.Messages.ServerFinalMessage.ParseResponse*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: Ubiety.Scram.Core.Messages
+  commentId: N:Ubiety.Scram.Core.Messages
+  name: Ubiety.Scram.Core.Messages
+  nameWithType: Ubiety.Scram.Core.Messages
+  fullName: Ubiety.Scram.Core.Messages
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Ubiety.Scram.Core.Messages.ServerFinalMessage
+  commentId: T:Ubiety.Scram.Core.Messages.ServerFinalMessage
+  parent: Ubiety.Scram.Core.Messages
+  name: ServerFinalMessage
+  nameWithType: ServerFinalMessage
+  fullName: Ubiety.Scram.Core.Messages.ServerFinalMessage
+- uid: Ubiety.Scram.Core.Messages.ServerFinalMessage.#ctor*
+  commentId: Overload:Ubiety.Scram.Core.Messages.ServerFinalMessage.#ctor
+  name: ServerFinalMessage
+  nameWithType: ServerFinalMessage.ServerFinalMessage
+  fullName: Ubiety.Scram.Core.Messages.ServerFinalMessage.ServerFinalMessage
+- uid: Ubiety.Scram.Core.Attributes.ServerSignatureAttribute
+  commentId: T:Ubiety.Scram.Core.Attributes.ServerSignatureAttribute
+  parent: Ubiety.Scram.Core.Attributes
+  name: ServerSignatureAttribute
+  nameWithType: ServerSignatureAttribute
+  fullName: Ubiety.Scram.Core.Attributes.ServerSignatureAttribute
+- uid: Ubiety.Scram.Core.Attributes
+  commentId: N:Ubiety.Scram.Core.Attributes
+  name: Ubiety.Scram.Core.Attributes
+  nameWithType: Ubiety.Scram.Core.Attributes
+  fullName: Ubiety.Scram.Core.Attributes
+- uid: Ubiety.Scram.Core.Messages.ServerFinalMessage.ServerSignature*
+  commentId: Overload:Ubiety.Scram.Core.Messages.ServerFinalMessage.ServerSignature
+  name: ServerSignature
+  nameWithType: ServerFinalMessage.ServerSignature
+  fullName: Ubiety.Scram.Core.Messages.ServerFinalMessage.ServerSignature
+- uid: Ubiety.Scram.Core.Messages.ServerFinalMessage.ParseResponse*
+  commentId: Overload:Ubiety.Scram.Core.Messages.ServerFinalMessage.ParseResponse
+  name: ParseResponse
+  nameWithType: ServerFinalMessage.ParseResponse
+  fullName: Ubiety.Scram.Core.Messages.ServerFinalMessage.ParseResponse
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String

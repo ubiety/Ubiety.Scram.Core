@@ -23,7 +23,10 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
+using System;
+using System.Linq;
 using Ubiety.Scram.Core.Attributes;
+using Ubiety.Scram.Core.Exceptions;
 
 namespace Ubiety.Scram.Core.Messages
 {
@@ -43,20 +46,24 @@ namespace Ubiety.Scram.Core.Messages
             Nonce = new NonceAttribute(nonce);
         }
 
+        private ClientFirstMessage()
+        {
+        }
+
         /// <summary>
         ///     Gets the GS2 header for the message.
         /// </summary>
-        public string Gs2Header { get; } = "n,,";
+        public Gs2Attribute Gs2Header { get; private set; } = new (ChannelBindingStatus.NotSupported);
 
         /// <summary>
         ///     Gets the username of the message.
         /// </summary>
-        public UserAttribute Username { get; }
+        public UserAttribute? Username { get; private set; }
 
         /// <summary>
         ///     Gets the nonce of the message.
         /// </summary>
-        public NonceAttribute Nonce { get; }
+        public NonceAttribute? Nonce { get; private set; }
 
         /// <summary>
         ///     Gets the bare client message.
@@ -67,5 +74,65 @@ namespace Ubiety.Scram.Core.Messages
         ///     Gets the client message with the GS2 header.
         /// </summary>
         public string Message => $"{Gs2Header}{BareMessage}";
+
+        /// <summary>
+        ///     Parse the first client message.
+        /// </summary>
+        /// <param name="message">Message to parse.</param>
+        /// <returns><see cref="ClientFirstMessage"/> instance of the message.</returns>
+        public static ClientFirstMessage Parse(string message)
+        {
+            if (!TryParse(message, out var result))
+            {
+                throw new MessageParseException();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Try to parse the first client message.
+        /// </summary>
+        /// <param name="message">Message to parse.</param>
+        /// <param name="result"><see cref="ClientFirstMessage"/> instance of the message.</param>
+        /// <returns>true if the parsing succeeds; otherwise false.</returns>
+        public static bool TryParse(string message, out ClientFirstMessage result)
+        {
+            result = new ClientFirstMessage();
+
+            try
+            {
+                var attributes = ScramAttribute.ParseAll(message);
+
+                if (!attributes.OfType<Gs2Attribute>().Any()
+                    || !attributes.OfType<UserAttribute>().Any()
+                    || !attributes.OfType<NonceAttribute>().Any())
+                {
+                    return false;
+                }
+
+                foreach (var attribute in attributes)
+                {
+                    switch (attribute)
+                    {
+                        case Gs2Attribute a:
+                            result.Gs2Header = a;
+                            break;
+                        case UserAttribute a:
+                            result.Username = a;
+                            break;
+                        case NonceAttribute a:
+                            result.Nonce = a;
+                            break;
+                    }
+                }
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

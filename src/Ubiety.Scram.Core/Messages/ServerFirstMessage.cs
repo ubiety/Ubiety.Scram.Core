@@ -26,6 +26,7 @@
 using System;
 using System.Linq;
 using Ubiety.Scram.Core.Attributes;
+using Ubiety.Scram.Core.Exceptions;
 
 namespace Ubiety.Scram.Core.Messages
 {
@@ -60,53 +61,85 @@ namespace Ubiety.Scram.Core.Messages
             Salt = new SaltAttribute(salt);
         }
 
-        private ServerFirstMessage(IterationsAttribute iterations, NonceAttribute nonce, SaltAttribute salt)
+        private ServerFirstMessage()
         {
-            Iterations = iterations;
-            Nonce = nonce;
-            Salt = salt;
         }
 
         /// <summary>
         ///     Gets the iterations for password hashing.
         /// </summary>
-        public ScramAttribute<int> Iterations { get; }
+        public IterationsAttribute? Iterations { get; private set; }
 
         /// <summary>
         ///     Gets the server nonce.
         /// </summary>
-        public ScramAttribute<string> Nonce { get; }
+        public NonceAttribute? Nonce { get; private set; }
 
         /// <summary>
         ///     Gets the password salt.
         /// </summary>
-        public ScramAttribute<byte[]> Salt { get; }
+        public SaltAttribute? Salt { get; private set; }
 
         /// <summary>
-        ///     Parse the server response.
+        ///     Parse the first server message.
         /// </summary>
-        /// <param name="response">String version of the server response.</param>
-        /// <returns>A new instance of the <see cref="ServerFirstMessage"/> class.</returns>
-        public static ServerFirstMessage ParseResponse(string response)
+        /// <param name="message">Message to parse.</param>
+        /// <returns><see cref="ServerFirstMessage"/> instance of the message.</returns>
+        public static ServerFirstMessage Parse(string message)
         {
-            var parts = ScramAttribute.ParseAll(response.Split(','));
-
-            var errors = parts.OfType<ErrorAttribute>();
-            if (errors.Any())
+            if (!TryParse(message, out var firstMessage))
             {
-                throw new InvalidOperationException();
+                throw new MessageParseException();
             }
 
-            var iterations = parts.OfType<IterationsAttribute>().ToList();
-            var nonces = parts.OfType<NonceAttribute>().ToList();
-            var salts = parts.OfType<SaltAttribute>().ToList();
+            return firstMessage;
+        }
 
-            if (!iterations.Any() || !nonces.Any() || !salts.Any())
+        /// <summary>
+        ///     Parse the first server message.
+        /// </summary>
+        /// <param name="message">Message to parse.</param>
+        /// <param name="firstMessage"><see cref="ServerFirstMessage"/> instance of the message.</param>
+        /// <returns>true if parsing was successful; otherwise false.</returns>
+        public static bool TryParse(string message, out ServerFirstMessage firstMessage)
+        {
+            firstMessage = new ServerFirstMessage();
+
+            try
             {
-                throw new InvalidOperationException();
+                var attributes = ScramAttribute.ParseAll(message);
+
+                if (!attributes.OfType<IterationsAttribute>().Any()
+                    || !attributes.OfType<NonceAttribute>().Any()
+                    || !attributes.OfType<SaltAttribute>().Any())
+                {
+                    return false;
+                }
+
+                foreach (var attribute in attributes)
+                {
+                    switch (attribute)
+                    {
+                        case IterationsAttribute a:
+                            firstMessage.Iterations = a;
+                            break;
+                        case NonceAttribute a:
+                            firstMessage.Nonce = a;
+                            break;
+                        case SaltAttribute a:
+                            firstMessage.Salt = a;
+                            break;
+                        case ErrorAttribute a:
+                            return false;
+                    }
+                }
+            }
+            catch (FormatException)
+            {
+                return false;
             }
 
-            return new ServerFirstMessage(iterations.First(), nonces.First(), salts.First());
+            return true;
         }
     }
 }

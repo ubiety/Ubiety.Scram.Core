@@ -63,6 +63,15 @@ namespace Ubiety.Scram.Core
         }
 
         /// <summary>
+        ///     Gets a new SHA512 hash.
+        /// </summary>
+        /// <returns><see cref="Hash"/> set to use SHA512.</returns>
+        public static Hash Sha512()
+        {
+            return new Hash(new SHA512Managed(), GetHmacSha512);
+        }
+
+        /// <summary>
         ///     Compute a hash.
         /// </summary>
         /// <param name="value">bytes to hash.</param>
@@ -121,6 +130,11 @@ namespace Ubiety.Scram.Core
         private static HMAC GetHmacSha256(byte[] key)
         {
             return new HMACSHA256(key);
+        }
+
+        private static HMAC GetHmacSha512(byte[] key)
+        {
+            return new HMACSHA512(key);
         }
     }
 }

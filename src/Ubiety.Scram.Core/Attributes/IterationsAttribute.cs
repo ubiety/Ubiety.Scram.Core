@@ -28,7 +28,7 @@ namespace Ubiety.Scram.Core.Attributes
     /// <summary>
     ///     Iterations attribute.
     /// </summary>
-    internal class IterationsAttribute : ScramAttribute<int>
+    public class IterationsAttribute : ScramAttribute<int>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="IterationsAttribute"/> class.

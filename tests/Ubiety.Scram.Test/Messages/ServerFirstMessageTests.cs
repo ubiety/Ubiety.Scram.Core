@@ -1,5 +1,6 @@
 ﻿using System;
 using Shouldly;
+using Ubiety.Scram.Core.Exceptions;
 using Ubiety.Scram.Core.Messages;
 using Xunit;
 
@@ -11,11 +12,11 @@ namespace Ubiety.Scram.Test.Messages
         [InlineData("r=fyko+d2lbbFgONRv9qkxdawL3rfcNHYJY1ZVvWVs7j,s=QSXCR+Q6sek8bf92,i=4096")]
         public void When_ProvidedWithAMessage_ParseShouldSetTheProperties(string message)
         {
-            var response = ServerFirstMessage.ParseResponse(message);
+            var response = ServerFirstMessage.Parse(message);
 
-            response.Iterations.Value.ShouldBe(4096);
-            response.Nonce.Value.ShouldBe("fyko+d2lbbFgONRv9qkxdawL3rfcNHYJY1ZVvWVs7j");
-            response.Salt.ToString().ShouldBe("s = QSXCR+Q6sek8bf92");
+            response.Iterations?.Value.ShouldBe(4096);
+            response.Nonce?.Value.ShouldBe("fyko+d2lbbFgONRv9qkxdawL3rfcNHYJY1ZVvWVs7j");
+            response.Salt?.ToString().ShouldBe("s = QSXCR+Q6sek8bf92");
         }
 
         [Theory]
@@ -27,9 +28,9 @@ namespace Ubiety.Scram.Test.Messages
         [InlineData("r=fyko+d2lbbFgONRv9qkxdawL3rfcNHYJY1ZVvWVs7j,i=4096")]
         public void When_ProvidedWithInvalidData_ParseShouldThrowAnException(string response)
         {
-            Should.Throw<InvalidOperationException>(() =>
+            Should.Throw<MessageParseException>(() =>
             {
-                var _ = ServerFirstMessage.ParseResponse(response);
+                var _ = ServerFirstMessage.Parse(response);
             });
         }
 
@@ -38,9 +39,9 @@ namespace Ubiety.Scram.Test.Messages
         [InlineData("r=data,e=message")]
         public void When_ProvidedWithAnError_ParseShouldThrowAnException(string response)
         {
-            Should.Throw<InvalidOperationException>(() =>
+            Should.Throw<MessageParseException>(() =>
             {
-                var _ = ServerFirstMessage.ParseResponse(response);
+                var _ = ServerFirstMessage.Parse(response);
             });
         }
 
@@ -49,9 +50,9 @@ namespace Ubiety.Scram.Test.Messages
         {
             var message = new ServerFirstMessage(4096, "nonce", Convert.FromBase64String("salt"));
 
-            message.Iterations.Value.ShouldBe(4096);
-            message.Nonce.Value.ShouldBe("nonce");
-            message.Salt.ToString().ShouldBe("s = salt");
+            message.Iterations?.Value.ShouldBe(4096);
+            message.Nonce?.Value.ShouldBe("nonce");
+            message.Salt?.ToString().ShouldBe("s = salt");
         }
 
         [Fact]
@@ -59,9 +60,9 @@ namespace Ubiety.Scram.Test.Messages
         {
             var message = new ServerFirstMessage(4096, "nonce", "salt");
 
-            message.Iterations.Value.ShouldBe(4096);
-            message.Nonce.Value.ShouldBe("nonce");
-            message.Salt.ToString().ShouldBe("s = salt");
+            message.Iterations?.Value.ShouldBe(4096);
+            message.Nonce?.Value.ShouldBe("nonce");
+            message.Salt?.ToString().ShouldBe("s = salt");
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Ubiety.Scram.Core.Attributes
     /// <summary>
     ///     Salt attribute.
     /// </summary>
-    internal class SaltAttribute : ScramAttribute<byte[]>
+    public class SaltAttribute : ScramAttribute<byte[]>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="SaltAttribute"/> class.

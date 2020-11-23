@@ -25,7 +25,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Ubiety.Scram.Core.Attributes
 {
@@ -84,11 +84,14 @@ namespace Ubiety.Scram.Core.Attributes
         /// </summary>
         protected const char ErrorName = 'e';
 
+        // language=regex
+        private const string ScramRegex = @"(?:(?<gs2>^[ny]?(?:p=.+?)?),)?(?:,?(?<attr>.=[a-zA-Z0-9\+\=]+?),?)+$";
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="ScramAttribute"/> class.
         /// </summary>
         /// <param name="name">Attribute name.</param>
-        public ScramAttribute(char name)
+        protected ScramAttribute(char name)
         {
             Name = name;
         }
@@ -96,16 +99,38 @@ namespace Ubiety.Scram.Core.Attributes
         /// <summary>
         ///     Gets the attribute name.
         /// </summary>
-        public char Name { get; }
+        protected char Name { get; }
 
         /// <summary>
         ///     Parse all the attributes.
         /// </summary>
         /// <param name="attributes">List of attribute strings to parse.</param>
         /// <returns>List of attribute classes.</returns>
-        public static ICollection<ScramAttribute> ParseAll(IEnumerable<string> attributes)
+        public static ICollection<ScramAttribute> ParseAll(string attributes)
         {
-            return attributes.Select(Parse).ToList();
+            var regex = new Regex(ScramRegex, RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+            var match = regex.Match(attributes);
+
+            if (!match.Success)
+            {
+                throw new FormatException();
+            }
+
+            var attrs = new List<ScramAttribute>();
+
+            if (match.Groups["gs2"].Success)
+            {
+                var gs2 = new Gs2Attribute(match.Groups["gs2"].Value);
+                attrs.Add(gs2);
+            }
+
+            foreach (Capture attribute in match.Groups["attr"].Captures)
+            {
+                attrs.Add(Parse(attribute.Value));
+            }
+
+            return attrs;
         }
 
         /// <summary>
@@ -126,19 +151,19 @@ namespace Ubiety.Scram.Core.Attributes
                 throw new FormatException();
             }
 
-            switch (parts[0][0])
+            return parts[0][0] switch
             {
-                case AuthorizationIdentityName: return new AuthorizationIdentityAttribute(parts[1]);
-                case UserName: return new UserAttribute(parts[1], true);
-                case NonceName: return new NonceAttribute(parts[1]);
-                case ChannelName: return new ChannelAttribute(parts[1]);
-                case SaltName: return new SaltAttribute(parts[1]);
-                case IterationsName: return new IterationsAttribute(parts[1]);
-                case ClientProofName: return new ClientProofAttribute(parts[1]);
-                case ServerSignatureName: return new ServerSignatureAttribute(parts[1]);
-                case ErrorName: return new ErrorAttribute(parts[1]);
-                default: return new UnknownAttribute(parts[0][0], parts[1]);
-            }
+                AuthorizationIdentityName => new AuthorizationIdentityAttribute(parts[1]),
+                UserName => new UserAttribute(parts[1], true),
+                NonceName => new NonceAttribute(parts[1]),
+                ChannelName => new ChannelAttribute(parts[1]),
+                SaltName => new SaltAttribute(parts[1]),
+                IterationsName => new IterationsAttribute(parts[1]),
+                ClientProofName => new ClientProofAttribute(parts[1]),
+                ServerSignatureName => new ServerSignatureAttribute(parts[1]),
+                ErrorName => new ErrorAttribute(parts[1]),
+                _ => new UnknownAttribute(parts[0][0], parts[1])
+            };
         }
     }
 }

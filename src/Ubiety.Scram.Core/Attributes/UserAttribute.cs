@@ -28,7 +28,7 @@ using System;
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     User attribute
+    ///     User attribute.
     /// </summary>
     public class UserAttribute : ScramAttribute<string>
     {
@@ -63,19 +63,12 @@ namespace Ubiety.Scram.Core.Attributes
             while ((lastIndex = value.IndexOf('=', lastIndex + 1)) > -1)
             {
                 var escapeCheck = value.Substring(lastIndex, 3);
-                switch (escapeCheck)
+                value = escapeCheck switch
                 {
-                    case EqualReplacement:
-                        value = Replace(value, lastIndex, '=', EqualReplacement.Length);
-                        break;
-
-                    case CommaReplacement:
-                        value = Replace(value, lastIndex, ',', CommaReplacement.Length);
-                        break;
-
-                    default:
-                        throw new FormatException();
-                }
+                    EqualReplacement => Replace(value, lastIndex, '=', EqualReplacement.Length),
+                    CommaReplacement => Replace(value, lastIndex, ',', CommaReplacement.Length),
+                    _ => throw new FormatException()
+                };
             }
 
             return value;
