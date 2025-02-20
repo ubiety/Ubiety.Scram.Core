@@ -23,6 +23,8 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
+using System;
+
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
@@ -34,8 +36,8 @@ namespace Ubiety.Scram.Core.Attributes
         ///     Initializes a new instance of the <see cref="NonceAttribute"/> class.
         /// </summary>
         /// <param name="value">String value of the nonce.</param>
-        public NonceAttribute(string value)
-            : base(NonceName, value)
+        public NonceAttribute(string? value)
+            : base(NonceName, value ?? throw new ArgumentNullException(nameof(value)))
         {
         }
 

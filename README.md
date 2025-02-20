@@ -1,4 +1,4 @@
-# ![Logo](https://github.com/ubiety/Ubiety.Scram.Core/raw/develop/docs/Ubiety.Scram.Docs/images/encryption64.png) Ubiety.Scram.Core ![Nuget](https://img.shields.io/nuget/v/Ubiety.Scram.Core.svg?style=flat-square)
+# ![Logo](https://github.com/ubiety/Ubiety.Scram.Core/raw/develop/icon128.png) Ubiety.Scram.Core ![Nuget](https://img.shields.io/nuget/v/Ubiety.Scram.Core.svg?style=flat-square)
 
 > Ubiety SCRAM is an easy implementation of the Salted Challenge and Response Authentication Mechanism for .NET Core
 

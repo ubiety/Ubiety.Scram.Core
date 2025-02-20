@@ -40,7 +40,7 @@ namespace Ubiety.Scram.Core.Messages
         public ClientFinalMessage(ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage)
         {
             Channel = new ChannelAttribute(clientFirstMessage.Gs2Header);
-            Nonce = new NonceAttribute(serverFirstMessage.Nonce.Value);
+            Nonce = new NonceAttribute(serverFirstMessage.Nonce?.Value);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Ubiety.Scram.Core.Messages
         /// <summary>
         ///     Gets the client proof.
         /// </summary>
-        public ClientProofAttribute Proof { get; private set; }
+        public ClientProofAttribute? Proof { get; private set; }
 
         /// <summary>
         ///     Gets the final message without the proof.

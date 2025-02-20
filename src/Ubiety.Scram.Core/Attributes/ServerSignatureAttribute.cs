@@ -52,7 +52,7 @@ namespace Ubiety.Scram.Core.Attributes
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(obj as ServerSignatureAttribute);
         }
@@ -64,19 +64,9 @@ namespace Ubiety.Scram.Core.Attributes
         }
 
         /// <inheritdoc cref="ScramAttribute"/>
-        public bool Equals(ServerSignatureAttribute other)
+        public bool Equals(ServerSignatureAttribute? other)
         {
-            if (other is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            return Value.SequenceEqual(other?.Value ?? throw new InvalidOperationException());
+            return other != null && (ReferenceEquals(this, other) || Value.SequenceEqual(other.Value));
         }
 
         /// <inheritdoc />

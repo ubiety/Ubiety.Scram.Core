@@ -14,9 +14,9 @@ namespace Ubiety.Scram.Test.Messages
         {
             var response = ServerFirstMessage.Parse(message);
 
-            response.Iterations.Value.ShouldBe(4096);
-            response.Nonce.Value.ShouldBe("fyko+d2lbbFgONRv9qkxdawL3rfcNHYJY1ZVvWVs7j");
-            response.Salt.ToString().ShouldBe("s = QSXCR+Q6sek8bf92");
+            response.Iterations?.Value.ShouldBe(4096);
+            response.Nonce?.Value.ShouldBe("fyko+d2lbbFgONRv9qkxdawL3rfcNHYJY1ZVvWVs7j");
+            response.Salt?.ToString().ShouldBe("s = QSXCR+Q6sek8bf92");
         }
 
         [Theory]
@@ -50,9 +50,9 @@ namespace Ubiety.Scram.Test.Messages
         {
             var message = new ServerFirstMessage(4096, "nonce", Convert.FromBase64String("salt"));
 
-            message.Iterations.Value.ShouldBe(4096);
-            message.Nonce.Value.ShouldBe("nonce");
-            message.Salt.ToString().ShouldBe("s = salt");
+            message.Iterations?.Value.ShouldBe(4096);
+            message.Nonce?.Value.ShouldBe("nonce");
+            message.Salt?.ToString().ShouldBe("s = salt");
         }
 
         [Fact]
@@ -60,9 +60,9 @@ namespace Ubiety.Scram.Test.Messages
         {
             var message = new ServerFirstMessage(4096, "nonce", "salt");
 
-            message.Iterations.Value.ShouldBe(4096);
-            message.Nonce.Value.ShouldBe("nonce");
-            message.Salt.ToString().ShouldBe("s = salt");
+            message.Iterations?.Value.ShouldBe(4096);
+            message.Nonce?.Value.ShouldBe("nonce");
+            message.Salt?.ToString().ShouldBe("s = salt");
         }
     }
 }

@@ -1,4 +1,4 @@
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 branches:
   except:
@@ -8,12 +8,10 @@ environment:
   SonarKey:
     secure: kexx96aV1FXqk1Xzbi8RrOQpFI037s1Himw4Y0z/LQONHuY6jpei1bYgZvZeI39I
   NuGetKey:
-    secure: RcovDx+t7sxpT0DFBRNrYJ5Habd0vLWK5b3YE/oud4KwzREZxgyTYOvoHZR1sm2T
+    secure: DFdCrADS5ML1LcyCRHvU/NfSsNW3P/LgddLJEAmVEJIy08PjPViA7I5iipA5yMMg
   COVERALLS_REPO_TOKEN:
     secure: W8cqcSrGWp4Uym/aNC6JTVnfuoBQ266qXhkYcAJdc0J5+jbs+trIH5LWvniArf5/
-
-init:
-  - ps: dotnet tool install --global dotnet-sonarscanner
+  JAVA_HOME: C:\Program Files\Java\jdk15
 
 build_script:
   - ps: .\build.ps1 appveyor

@@ -33,7 +33,7 @@ namespace Ubiety.Scram.Test.Messages
 
             message.Channel.Value.ShouldBe("biws");
             message.Nonce.Value.ShouldBe("nonce");
-            message.Proof.ToString().ShouldBe("p=bf45fcbf7073d93d022466c94321745fe1c8e13b");
+            message.Proof?.ToString().ShouldBe("p=bf45fcbf7073d93d022466c94321745fe1c8e13b");
             message.Message.ShouldBe("c=biws,r=nonce,p=bf45fcbf7073d93d022466c94321745fe1c8e13b");
             message.MessageWithoutProof.ShouldBe("c=biws,r=nonce");
         }
@@ -49,7 +49,7 @@ namespace Ubiety.Scram.Test.Messages
 
             message.Channel.Value.ShouldBe("biws");
             message.Nonce.Value.ShouldBe("nonce");
-            message.Proof.ToString().ShouldBe("p=bf45fcbf7073d93d022466c94321745fe1c8e13b");
+            message.Proof?.ToString().ShouldBe("p=bf45fcbf7073d93d022466c94321745fe1c8e13b");
             message.Message.ShouldBe("c=biws,r=nonce,p=bf45fcbf7073d93d022466c94321745fe1c8e13b");
             message.MessageWithoutProof.ShouldBe("c=biws,r=nonce");
         }

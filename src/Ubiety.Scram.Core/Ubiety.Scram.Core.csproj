@@ -1,21 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <LangVersion>latest</LangVersion>
+    <TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
 
   <PropertyGroup>
     <Version>1.1.0</Version>
     <Authors>Dieter Lunn</Authors>
     <PackageDescription>Implementation of SCRAM for .NET Standard 2.0</PackageDescription>
-    <PackageIconUrl>https://github.com/ubiety/Ubiety.Scram.Core/raw/develop/docs/Ubiety.Scram.Docs/images/encryption64.png</PackageIconUrl>
+    <PackageIcon>icon128.png</PackageIcon>
     <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
     <PackageProjectUrl>https://scram.ubiety.ca</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ubiety/Ubiety.Scram.Core</RepositoryUrl>
     <PackageTags>ubiety;scram;challenge-response;authentication;dotnet</PackageTags>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="..\..\icon128.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">

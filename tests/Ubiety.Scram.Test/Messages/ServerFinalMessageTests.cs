@@ -40,7 +40,7 @@ namespace Ubiety.Scram.Test.Messages
         {
             var message = ServerFinalMessage.Parse("v=rmF9pqV8S7suAoZWja4dJRkFsKQ=");
 
-            message.ServerSignature.Value.ShouldBe(HexToByte("ae617da6a57c4bbb2e0286568dae1d251905b0a4"));
+            message.ServerSignature?.Value.ShouldBe(HexToByte("ae617da6a57c4bbb2e0286568dae1d251905b0a4"));
         }
     }
 }

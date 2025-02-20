@@ -47,21 +47,13 @@ namespace Ubiety.Scram.Core.Attributes
         public Gs2Attribute(string header)
             : base('p')
         {
-            switch (header[0])
+            ChannelBindingStatus = header[0] switch
             {
-                case 'n':
-                    ChannelBindingStatus = ChannelBindingStatus.NotSupported;
-                    break;
-                case 'y':
-                    ChannelBindingStatus = ChannelBindingStatus.ClientSupport;
-                    break;
-                case 'p':
-                    ChannelBindingStatus = ChannelBindingStatus.Required;
-                    break;
-                default:
-                    ChannelBindingStatus = ChannelBindingStatus.NotSupported;
-                    break;
-            }
+                'n' => ChannelBindingStatus.NotSupported,
+                'y' => ChannelBindingStatus.ClientSupport,
+                'p' => ChannelBindingStatus.Required,
+                _ => ChannelBindingStatus.NotSupported
+            };
         }
 
         /// <summary>
@@ -89,17 +81,13 @@ namespace Ubiety.Scram.Core.Attributes
         /// <inheritdoc />
         public override string ToString()
         {
-            switch (ChannelBindingStatus)
+            return ChannelBindingStatus switch
             {
-                case ChannelBindingStatus.ClientSupport:
-                    return "y,,";
-                case ChannelBindingStatus.NotSupported:
-                    return "n,,";
-                case ChannelBindingStatus.Required:
-                    return "p=tls-unique,,";
-            }
-
-            return "n,,";
+                ChannelBindingStatus.ClientSupport => "y,,",
+                ChannelBindingStatus.NotSupported => "n,,",
+                ChannelBindingStatus.Required => "p=tls-unique,,",
+                _ => "n,,"
+            };
         }
     }
 }

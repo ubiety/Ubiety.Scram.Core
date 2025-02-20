@@ -68,17 +68,17 @@ namespace Ubiety.Scram.Core.Messages
         /// <summary>
         ///     Gets the iterations for password hashing.
         /// </summary>
-        public IterationsAttribute Iterations { get; private set; }
+        public IterationsAttribute? Iterations { get; private set; }
 
         /// <summary>
         ///     Gets the server nonce.
         /// </summary>
-        public NonceAttribute Nonce { get; private set; }
+        public NonceAttribute? Nonce { get; private set; }
 
         /// <summary>
         ///     Gets the password salt.
         /// </summary>
-        public SaltAttribute Salt { get; private set; }
+        public SaltAttribute? Salt { get; private set; }
 
         /// <summary>
         ///     Parse the first server message.
