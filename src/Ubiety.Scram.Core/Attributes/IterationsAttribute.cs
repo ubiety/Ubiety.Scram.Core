@@ -26,7 +26,7 @@
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     Iterations attribute.
+    /// Represents the SCRAM attribute for iteration counts used in SCRAM-based authentication.
     /// </summary>
     public class IterationsAttribute : ScramAttribute<int>
     {

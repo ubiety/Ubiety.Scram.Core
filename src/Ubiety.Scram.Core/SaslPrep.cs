@@ -28,15 +28,15 @@ using Ubiety.Stringprep.Core;
 namespace Ubiety.Scram.Core
 {
     /// <summary>
-    ///     SASL string preparation.
+    /// Provides methods for preparing strings according to the SASLPrep algorithm as defined in RFC 4013.
     /// </summary>
     public static class SaslPrep
     {
         /// <summary>
-        ///     Runs the preparation.
+        /// Prepares the input string using the SASLPrep algorithm as defined in RFC 4013.
         /// </summary>
-        /// <param name="input">String to prepare.</param>
-        /// <returns>string version of the prepared text.</returns>
+        /// <param name="input">The string to be prepared.</param>
+        /// <returns>The string prepared according to the SASLPrep algorithm.</returns>
         public static string Run(string input)
         {
             return Create().Run(input);

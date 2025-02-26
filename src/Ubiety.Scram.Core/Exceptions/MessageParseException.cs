@@ -24,14 +24,12 @@
 // For more information, please refer to <http://unlicense.org/>
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Ubiety.Scram.Core.Exceptions
 {
     /// <summary>
-    ///     Message parse exception.
+    /// Represents an exception that is thrown when a message cannot be parsed successfully.
     /// </summary>
-    /// <inheritdoc />
     [Serializable]
     public class MessageParseException : Exception
     {
@@ -58,16 +56,6 @@ namespace Ubiety.Scram.Core.Exceptions
         /// <param name="innerException">Inner exception.</param>
         public MessageParseException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="MessageParseException"/> class.
-        /// </summary>
-        /// <param name="info">Serialization info.</param>
-        /// <param name="context">Streaming context.</param>
-        protected MessageParseException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

@@ -28,7 +28,7 @@ using System;
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     Nonce attribute.
+    /// Represents the SCRAM nonce attribute used for authentication.
     /// </summary>
     public class NonceAttribute : ScramAttribute<string>
     {

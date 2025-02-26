@@ -26,7 +26,9 @@
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     Unknown attribute.
+    /// Represents an unknown SCRAM attribute. This class is used for attributes that
+    /// are not recognized or predefined in the SCRAM protocol. Inherits from
+    /// <see cref="ScramAttribute{TValue}"/> with a value of type string.
     /// </summary>
     public class UnknownAttribute : ScramAttribute<string>
     {

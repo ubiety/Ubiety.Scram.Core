@@ -30,57 +30,57 @@ using System.Text.RegularExpressions;
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     Base scram attribute.
+    /// Represents a SCRAM attribute used in the SCRAM authentication mechanism.
     /// </summary>
     public class ScramAttribute
     {
         /// <summary>
-        ///     Authorization identity attribute name.
+        /// Represents the attribute name for the authorization identity in the SCRAM authentication mechanism.
         /// </summary>
         protected const char AuthorizationIdentityName = 'a';
 
         /// <summary>
-        ///     User attribute name.
+        /// Represents the attribute name for the username in the SCRAM authentication mechanism.
         /// </summary>
         protected const char UserName = 'n';
 
         /// <summary>
-        ///     Message attribute name.
+        /// Represents the attribute name for the message in the SCRAM authentication mechanism.
         /// </summary>
         protected const char MessageName = 'm';
 
         /// <summary>
-        ///     Nonce attribute name.
+        /// Represents the attribute name for the nonce used in the SCRAM authentication mechanism.
         /// </summary>
         protected const char NonceName = 'r';
 
         /// <summary>
-        ///     Channel attribute name.
+        /// Represents the attribute name for the channel binding in the SCRAM authentication mechanism.
         /// </summary>
         protected const char ChannelName = 'c';
 
         /// <summary>
-        ///     Salt attribute name.
+        /// Represents the attribute name for the salt value used in the SCRAM authentication mechanism.
         /// </summary>
         protected const char SaltName = 's';
 
         /// <summary>
-        ///     Iterations attribute name.
+        /// Represents the attribute name for the iteration count in the SCRAM authentication mechanism.
         /// </summary>
         protected const char IterationsName = 'i';
 
         /// <summary>
-        ///     Client proof attribute name.
+        /// Represents the attribute name for the client proof in the SCRAM authentication mechanism.
         /// </summary>
         protected const char ClientProofName = 'p';
 
         /// <summary>
-        ///     Server signature attribute name.
+        /// Represents the attribute name for the server's signature in the SCRAM authentication mechanism.
         /// </summary>
         protected const char ServerSignatureName = 'v';
 
         /// <summary>
-        ///     Error attribute name.
+        /// Represents the attribute name used to indicate errors within the SCRAM authentication mechanism.
         /// </summary>
         protected const char ErrorName = 'e';
 
@@ -97,15 +97,15 @@ namespace Ubiety.Scram.Core.Attributes
         }
 
         /// <summary>
-        ///     Gets the attribute name.
+        /// Gets the name of the SCRAM attribute.
         /// </summary>
         protected char Name { get; }
 
         /// <summary>
-        ///     Parse all the attributes.
+        /// Parses a string of concatenated attributes and returns a collection of parsed attribute instances.
         /// </summary>
-        /// <param name="attributes">List of attribute strings to parse.</param>
-        /// <returns>List of attribute classes.</returns>
+        /// <param name="attributes">The string containing concatenated attribute values to parse.</param>
+        /// <returns>A collection of <see cref="ScramAttribute"/> objects representing the parsed attributes.</returns>
         public static ICollection<ScramAttribute> ParseAll(string attributes)
         {
             var regex = new Regex(ScramRegex, RegexOptions.Compiled | RegexOptions.CultureInvariant);
@@ -134,13 +134,17 @@ namespace Ubiety.Scram.Core.Attributes
         }
 
         /// <summary>
-        ///     Parse an attribute.
+        /// Parses the provided attribute string into a specific type of <see cref="ScramAttribute"/>.
         /// </summary>
-        /// <param name="attribute">String value of the attribute.</param>
-        /// <returns>Attribute class.</returns>
+        /// <param name="attribute">A string representation of the attribute in the format "key=value".</param>
+        /// <returns>An instance of the appropriate <see cref="ScramAttribute"/> type based on the key.</returns>
+        /// <exception cref="FormatException">
+        /// Thrown if the attribute string does not contain exactly one '=' or if the key portion of the string
+        /// is not a single character.
+        /// </exception>
         public static ScramAttribute Parse(string attribute)
         {
-            var parts = attribute.Split(new[] { '=' }, 2);
+            var parts = attribute.Split(['='], 2);
             if (parts.Length != 2)
             {
                 throw new FormatException();

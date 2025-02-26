@@ -31,7 +31,7 @@ using Ubiety.Scram.Core.Exceptions;
 namespace Ubiety.Scram.Core.Messages
 {
     /// <summary>
-    ///     First client message.
+    /// Represents the first message sent by the client in the SCRAM authentication process.
     /// </summary>
     public class ClientFirstMessage
     {
@@ -51,35 +51,41 @@ namespace Ubiety.Scram.Core.Messages
         }
 
         /// <summary>
-        ///     Gets the GS2 header for the message.
+        /// Gets the GS2 header attribute of the message, which represents the channel binding status
+        /// as part of the SCRAM (Salted Challenge Response Authentication Mechanism) protocol.
         /// </summary>
         public Gs2Attribute Gs2Header { get; private set; } = new (ChannelBindingStatus.NotSupported);
 
         /// <summary>
-        ///     Gets the username of the message.
+        /// Gets the username attribute of the client, used in the SCRAM authentication process.
+        /// This property represents the user's identifier with specific formatting and escaping rules.
         /// </summary>
         public UserAttribute? Username { get; private set; }
 
         /// <summary>
-        ///     Gets the nonce of the message.
+        /// Gets the nonce attribute used in the client's first message during the SCRAM authentication process.
+        /// The nonce is a unique, randomly generated value used to ensure the integrity and security of the authentication exchange.
         /// </summary>
         public NonceAttribute? Nonce { get; private set; }
 
         /// <summary>
-        ///     Gets the bare client message.
+        /// Gets the bare version of the client message, concatenating the username and nonce attributes
+        /// as formatted strings for use in the SCRAM authentication process.
         /// </summary>
         public string BareMessage => $"{Username},{Nonce}";
 
         /// <summary>
-        ///     Gets the client message with the GS2 header.
+        /// Gets the complete SCRAM client-first-message string.
+        /// This property combines various SCRAM attributes, including GS2 header,
+        /// username, and nonce, to form the full authentication message.
         /// </summary>
         public string Message => $"{Gs2Header}{BareMessage}";
 
         /// <summary>
-        ///     Parse the first client message.
+        /// Parses the provided message into an instance of <see cref="ClientFirstMessage"/>.
         /// </summary>
         /// <param name="message">Message to parse.</param>
-        /// <returns><see cref="ClientFirstMessage"/> instance of the message.</returns>
+        /// <returns>An instance of <see cref="ClientFirstMessage"/> created from the provided message.</returns>
         public static ClientFirstMessage Parse(string message)
         {
             if (!TryParse(message, out var result))
@@ -91,11 +97,11 @@ namespace Ubiety.Scram.Core.Messages
         }
 
         /// <summary>
-        ///     Try to parse the first client message.
+        /// Attempts to parse the provided message into an instance of <see cref="ClientFirstMessage"/>.
         /// </summary>
-        /// <param name="message">Message to parse.</param>
-        /// <param name="result"><see cref="ClientFirstMessage"/> instance of the message.</param>
-        /// <returns>true if the parsing succeeds; otherwise false.</returns>
+        /// <param name="message">The SCRAM message to be parsed.</param>
+        /// <param name="result">The resulting <see cref="ClientFirstMessage"/> if parsing succeeds; otherwise null.</param>
+        /// <returns>true if the message is successfully parsed; otherwise false.</returns>
         public static bool TryParse(string message, out ClientFirstMessage result)
         {
             result = new ClientFirstMessage();

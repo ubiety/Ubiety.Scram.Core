@@ -31,7 +31,7 @@ using Ubiety.Scram.Core.Exceptions;
 namespace Ubiety.Scram.Core.Messages
 {
     /// <summary>
-    ///     Final server message.
+    /// Represents the final message sent by the server in the SCRAM authentication process.
     /// </summary>
     public class ServerFinalMessage
     {
@@ -49,15 +49,20 @@ namespace Ubiety.Scram.Core.Messages
         }
 
         /// <summary>
-        ///     Gets the server signature.
+        /// Gets the server's computed signature during the SCRAM authentication process.
         /// </summary>
+        /// <remarks>
+        /// The <c>ServerSignature</c> ensures the integrity of the authentication handshake
+        /// by verifying that the server knows the user's credentials without explicitly exposing them.
+        /// </remarks>
         public ServerSignatureAttribute? ServerSignature { get; private set; }
 
         /// <summary>
-        ///     Parse the final server message.
+        /// Parses a server final message string into a <see cref="ServerFinalMessage"/> object.
         /// </summary>
-        /// <param name="message">Message to parse.</param>
-        /// <returns><see cref="ServerFinalMessage"/> instance of the message.</returns>
+        /// <param name="message">The server final message string to parse.</param>
+        /// <returns>An instance of <see cref="ServerFinalMessage"/> parsed from the provided message.</returns>
+        /// <exception cref="MessageParseException">Thrown when the message cannot be parsed.</exception>
         public static ServerFinalMessage Parse(string message)
         {
             if (!TryParse(message, out var finalMessage))
@@ -69,11 +74,11 @@ namespace Ubiety.Scram.Core.Messages
         }
 
         /// <summary>
-        ///     Try and parse the final server message.
+        /// Tries to parse a server final message from the given string.
         /// </summary>
-        /// <param name="message">Message to parse.</param>
-        /// <param name="finalMessage"><see cref="ServerFinalMessage"/> instance of the message.</param>
-        /// <returns>true if the parsing succeeded; otherwise false.</returns>
+        /// <param name="message">The message string to parse.</param>
+        /// <param name="finalMessage">The resulting <see cref="ServerFinalMessage"/> instance if parsing is successful.</param>
+        /// <returns>true if the parsing is successful; otherwise, false.</returns>
         public static bool TryParse(string message, out ServerFinalMessage finalMessage)
         {
             finalMessage = new ServerFinalMessage();

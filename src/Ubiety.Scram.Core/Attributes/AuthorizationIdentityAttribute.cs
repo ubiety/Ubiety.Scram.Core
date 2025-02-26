@@ -26,8 +26,15 @@
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     Authorization identity attribute.
+    /// Represents an SCRAM (Salted Challenge Response Authentication Mechanism) attribute
+    /// for the authorization identity in a communication protocol.
     /// </summary>
+    /// <remarks>
+    /// This attribute is identified by the character name 'a' and is used to
+    /// handle the authorization identity value as part of the authentication process.
+    /// It extends the base functionality of the generic <see cref="ScramAttribute{TValue}"/> class
+    /// with a specific implementation for handling string values for the authorization identity.
+    /// </remarks>
     public class AuthorizationIdentityAttribute : ScramAttribute<string>
     {
         /// <summary>

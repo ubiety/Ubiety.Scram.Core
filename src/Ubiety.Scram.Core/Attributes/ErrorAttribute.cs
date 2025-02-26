@@ -26,8 +26,12 @@
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     Error attribute.
+    /// Represents an SCRAM error attribute indicating a failure during the authentication exchange.
     /// </summary>
+    /// <remarks>
+    /// The <see cref="ErrorAttribute"/> class encapsulates the error message string carried within an SCRAM message.
+    /// It is identified by the attribute name 'e' and is used to signal errors during SCRAM interactions.
+    /// </remarks>
     internal class ErrorAttribute : ScramAttribute<string>
     {
         /// <summary>

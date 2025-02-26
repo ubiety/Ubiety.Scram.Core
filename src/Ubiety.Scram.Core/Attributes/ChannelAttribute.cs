@@ -29,8 +29,11 @@ using System.Text;
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     Channel binding attribute.
+    /// Represents a SCRAM 'Channel' attribute, used to specify a channel binding type during SCRAM authentication.
     /// </summary>
+    /// <remarks>
+    /// The channel binding information is encoded as a base64 string when creating the attribute.
+    /// </remarks>
     public class ChannelAttribute : ScramAttribute<string>
     {
         /// <summary>

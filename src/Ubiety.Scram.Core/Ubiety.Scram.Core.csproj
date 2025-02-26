@@ -28,7 +28,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Ubiety.Stringprep.Core" Version="0.3.2" />
+    <PackageReference Include="Ubiety.Stringprep.Core" Version="0.4.2" />
     <PackageReference Include="Ubiety.StyleCop" Version="0.0.5" PrivateAssets="all" />
   </ItemGroup>
 

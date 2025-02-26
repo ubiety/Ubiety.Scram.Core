@@ -26,9 +26,9 @@
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     Base scram attribute.
+    /// Represents a generic SCRAM (Salted Challenge Response Authentication Mechanism) attribute with a name and value.
     /// </summary>
-    /// <typeparam name="TValue">Attribute type.</typeparam>
+    /// <typeparam name="TValue">Type of the attribute value.</typeparam>
     public class ScramAttribute<TValue> : ScramAttribute
     {
         /// <summary>
@@ -43,11 +43,17 @@ namespace Ubiety.Scram.Core.Attributes
         }
 
         /// <summary>
-        ///     Gets the attribute value.
+        /// Gets the value associated with the SCRAM attribute.
         /// </summary>
+        /// <remarks>
+        /// The value represents the specific data associated with the attribute and is of a generic type, allowing support for various types of values.
+        /// </remarks>
         public TValue Value { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Converts the attribute to its string representation.
+        /// </summary>
+        /// <returns>The string representation of the attribute, including its name and value.</returns>
         public override string ToString()
         {
             return $"{Name}={Value}";

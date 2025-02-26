@@ -26,22 +26,22 @@
 namespace Ubiety.Scram.Core
 {
     /// <summary>
-    ///     Channel binding status.
+    /// Represents the status of channel binding used in SCRAM authentication.
     /// </summary>
     public enum ChannelBindingStatus
     {
         /// <summary>
-        ///     Channel binding is required.
+        /// Channel binding is required for the authentication process.
         /// </summary>
         Required,
 
         /// <summary>
-        ///     Channel binding is not supported.
+        /// Indicates that channel binding is not supported for the authentication process.
         /// </summary>
         NotSupported,
 
         /// <summary>
-        ///     Channel binding is supported by the client but server is unknown.
+        /// Indicates that the client supports channel binding for the authentication process.
         /// </summary>
         ClientSupport,
     }

@@ -31,7 +31,8 @@ using System.Security.Cryptography;
 namespace Ubiety.Scram.Core
 {
     /// <summary>
-    ///     Hashing methods.
+    /// Represents a utility class for cryptographic hashing operations using SHA-1, SHA-256, or SHA-512.
+    /// Provides methods to compute hashes for byte arrays with optional key-based hashing or iterative hashing for password-based systems.
     /// </summary>
     public class Hash
     {
@@ -45,48 +46,48 @@ namespace Ubiety.Scram.Core
         }
 
         /// <summary>
-        ///     Gets a new SHA1 based hash.
+        /// Gets a new SHA1 hash.
         /// </summary>
         /// <returns><see cref="Hash"/> set to use SHA1.</returns>
         public static Hash Sha1()
         {
-            return new Hash(new SHA1Managed(), GetHmacSha1);
+            return new Hash(SHA1.Create(), GetHmacSha1);
         }
 
         /// <summary>
-        ///     Gets a new SHA256 hash.
+        /// Gets a new SHA256 hash.
         /// </summary>
         /// <returns><see cref="Hash"/> set to use SHA256.</returns>
         public static Hash Sha256()
         {
-            return new Hash(new SHA256Managed(), GetHmacSha256);
+            return new Hash(SHA256.Create(), GetHmacSha256);
         }
 
         /// <summary>
-        ///     Gets a new SHA512 hash.
+        /// Gets a new SHA512 hash.
         /// </summary>
         /// <returns><see cref="Hash"/> set to use SHA512.</returns>
         public static Hash Sha512()
         {
-            return new Hash(new SHA512Managed(), GetHmacSha512);
+            return new Hash(SHA512.Create(), GetHmacSha512);
         }
 
         /// <summary>
-        ///     Compute a hash.
+        /// Computes the hash of the provided byte array using the configured hash algorithm.
         /// </summary>
-        /// <param name="value">bytes to hash.</param>
-        /// <returns>byte array of the hash output.</returns>
+        /// <param name="value">The byte array to compute the hash for.</param>
+        /// <returns>A byte array representing the computed hash.</returns>
         public byte[] ComputeHash(byte[] value)
         {
             return _hashAlgorithm.ComputeHash(value);
         }
 
         /// <summary>
-        ///     Compute a hash.
+        /// Computes the hash of the specified data using the given key.
         /// </summary>
-        /// <param name="value">bytes to hash.</param>
-        /// <param name="key">Hash key.</param>
-        /// <returns>byte array of the hash output.</returns>
+        /// <param name="value">The data to be hashed.</param>
+        /// <param name="key">The key used for hashing.</param>
+        /// <returns>A byte array containing the computed hash.</returns>
         public byte[] ComputeHash(byte[] value, byte[] key)
         {
             var hmacAlgorithm = _hmacFactory(key);
@@ -94,12 +95,12 @@ namespace Ubiety.Scram.Core
         }
 
         /// <summary>
-        ///     Compute a hash.
+        /// Computes a cryptographic hash using the provided password, salt, and iterations.
         /// </summary>
-        /// <param name="password">byte array of a password.</param>
-        /// <param name="salt">byte array of the hash salt.</param>
-        /// <param name="iterations">number of times to iterate the hash.</param>
-        /// <returns>byte array of the hash output.</returns>
+        /// <param name="password">The byte array representing the password to hash.</param>
+        /// <param name="salt">The byte array used as the salt for the hash.</param>
+        /// <param name="iterations">The number of iterations to perform on the hash.</param>
+        /// <returns>A byte array containing the computed hash value.</returns>
         public byte[] ComputeHash(byte[] password, IEnumerable<byte> salt, int iterations)
         {
             var one = BitConverter.GetBytes(1);
@@ -122,17 +123,17 @@ namespace Ubiety.Scram.Core
             return final;
         }
 
-        private static HMAC GetHmacSha1(byte[] key)
+        private static HMACSHA1 GetHmacSha1(byte[] key)
         {
             return new HMACSHA1(key);
         }
 
-        private static HMAC GetHmacSha256(byte[] key)
+        private static HMACSHA256 GetHmacSha256(byte[] key)
         {
             return new HMACSHA256(key);
         }
 
-        private static HMAC GetHmacSha512(byte[] key)
+        private static HMACSHA512 GetHmacSha512(byte[] key)
         {
             return new HMACSHA512(key);
         }
