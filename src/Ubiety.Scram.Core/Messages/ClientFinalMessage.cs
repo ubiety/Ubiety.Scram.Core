@@ -37,9 +37,10 @@ namespace Ubiety.Scram.Core.Messages
         /// </summary>
         /// <param name="clientFirstMessage">First client message.</param>
         /// <param name="serverFirstMessage">First server message.</param>
-        public ClientFinalMessage(ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage)
+        /// <param name="token">Token to use for channel binding.</param>
+        public ClientFinalMessage(ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage, byte[]? token = null)
         {
-            Channel = new ChannelAttribute(clientFirstMessage.Gs2Header);
+            Channel = new ChannelAttribute(clientFirstMessage.Gs2Header, token);
             Nonce = new NonceAttribute(serverFirstMessage.Nonce?.Value);
         }
 

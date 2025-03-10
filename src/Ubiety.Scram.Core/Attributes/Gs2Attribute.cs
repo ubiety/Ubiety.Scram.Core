@@ -68,7 +68,7 @@ namespace Ubiety.Scram.Core.Attributes
         /// <summary>
         /// Gets the channel binding status in the SCRAM (Salted Challenge Response Authentication Mechanism) protocol.
         /// </summary>
-        public ChannelBindingStatus ChannelBindingStatus { get; }
+        public ChannelBindingStatus ChannelBindingStatus { get; internal set; }
 
         /// <summary>
         /// Converts the specified <see cref="Gs2Attribute"/> instance to its string representation.

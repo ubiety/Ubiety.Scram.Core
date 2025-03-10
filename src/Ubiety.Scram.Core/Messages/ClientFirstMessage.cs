@@ -25,6 +25,7 @@
 
 using System;
 using System.Linq;
+using JetBrains.Annotations;
 using Ubiety.Scram.Core.Attributes;
 using Ubiety.Scram.Core.Exceptions;
 
@@ -40,21 +41,24 @@ namespace Ubiety.Scram.Core.Messages
         /// </summary>
         /// <param name="username">Username of the user to authenticate.</param>
         /// <param name="nonce">String value of the client nonce.</param>
-        public ClientFirstMessage(string username, string nonce)
+        /// <param name="bindingStatus">Binding status of the message.</param>
+        public ClientFirstMessage(string username, string nonce, ChannelBindingStatus bindingStatus = ChannelBindingStatus.NotSupported)
         {
             Username = new UserAttribute(username);
             Nonce = new NonceAttribute(nonce);
+            Gs2Header = new Gs2Attribute { ChannelBindingStatus = bindingStatus };
         }
 
         private ClientFirstMessage()
         {
+            Gs2Header = new Gs2Attribute { ChannelBindingStatus = ChannelBindingStatus.NotSupported };
         }
 
         /// <summary>
         /// Gets the GS2 header attribute of the message, which represents the channel binding status
         /// as part of the SCRAM (Salted Challenge Response Authentication Mechanism) protocol.
         /// </summary>
-        public Gs2Attribute Gs2Header { get; private set; } = new (ChannelBindingStatus.NotSupported);
+        public Gs2Attribute Gs2Header { get; private set; }
 
         /// <summary>
         /// Gets the username attribute of the client, used in the SCRAM authentication process.
@@ -86,6 +90,7 @@ namespace Ubiety.Scram.Core.Messages
         /// </summary>
         /// <param name="message">Message to parse.</param>
         /// <returns>An instance of <see cref="ClientFirstMessage"/> created from the provided message.</returns>
+        [UsedImplicitly]
         public static ClientFirstMessage Parse(string message)
         {
             if (!TryParse(message, out var result))
@@ -102,6 +107,7 @@ namespace Ubiety.Scram.Core.Messages
         /// <param name="message">The SCRAM message to be parsed.</param>
         /// <param name="result">The resulting <see cref="ClientFirstMessage"/> if parsing succeeds; otherwise null.</param>
         /// <returns>true if the message is successfully parsed; otherwise false.</returns>
+        [UsedImplicitly]
         public static bool TryParse(string message, out ClientFirstMessage result)
         {
             result = new ClientFirstMessage();

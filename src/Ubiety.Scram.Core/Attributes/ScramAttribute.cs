@@ -32,7 +32,7 @@ namespace Ubiety.Scram.Core.Attributes
     /// <summary>
     /// Represents a SCRAM attribute used in the SCRAM authentication mechanism.
     /// </summary>
-    public class ScramAttribute
+    public partial class ScramAttribute
     {
         /// <summary>
         /// Represents the attribute name for the authorization identity in the SCRAM authentication mechanism.
@@ -84,9 +84,6 @@ namespace Ubiety.Scram.Core.Attributes
         /// </summary>
         protected const char ErrorName = 'e';
 
-        // language=regex
-        private const string ScramRegex = @"(?:(?<gs2>^[ny]?(?:p=.+?)?),)?(?:,?(?<attr>.=[a-zA-Z0-9\+\=]+?),?)+$";
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="ScramAttribute"/> class.
         /// </summary>
@@ -108,9 +105,7 @@ namespace Ubiety.Scram.Core.Attributes
         /// <returns>A collection of <see cref="ScramAttribute"/> objects representing the parsed attributes.</returns>
         public static ICollection<ScramAttribute> ParseAll(string attributes)
         {
-            var regex = new Regex(ScramRegex, RegexOptions.Compiled | RegexOptions.CultureInvariant);
-
-            var match = regex.Match(attributes);
+            var match = ScramRegex().Match(attributes);
 
             if (!match.Success)
             {
@@ -169,5 +164,9 @@ namespace Ubiety.Scram.Core.Attributes
                 _ => new UnknownAttribute(parts[0][0], parts[1])
             };
         }
+
+        // language=regex
+        [GeneratedRegex(@"(?:(?<gs2>^[ny]?(?:p=.+?)?),)?(?:,?(?<attr>.=[a-zA-Z0-9\+\=]+?),?)+$", RegexOptions.CultureInvariant)]
+        private static partial Regex ScramRegex();
     }
 }
