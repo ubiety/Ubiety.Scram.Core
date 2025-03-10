@@ -86,7 +86,7 @@ namespace Ubiety.Scram.Core.Attributes
                 ? Encoding.UTF8.GetBytes(Header)
                 : (byte[])Encoding.UTF8.GetBytes($"{Header},,").Concat(Token);
 
-            return Convert.ToBase64String(attribute);
+            return $"c={Convert.ToBase64String(attribute)}";
         }
     }
 }
