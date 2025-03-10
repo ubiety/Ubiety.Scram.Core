@@ -17,10 +17,12 @@
     <PackageProjectUrl>https://scram.ubiety.ca</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ubiety/Ubiety.Scram.Core</RepositoryUrl>
     <PackageTags>ubiety;scram;challenge-response;authentication;dotnet</PackageTags>
+      <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   
   <ItemGroup>
     <None Include="..\..\icon128.png" Pack="true" PackagePath="\" />
+      <None Inlclude="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
