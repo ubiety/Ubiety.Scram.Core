@@ -26,7 +26,8 @@
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     GS2 Header attribute.
+    /// Represents the GS2 attribute used in the SCRAM (Salted Challenge Response
+    /// Authentication Mechanism) protocol to indicate the channel binding status.
     /// </summary>
     public class Gs2Attribute : ScramAttribute
     {
@@ -65,20 +66,27 @@ namespace Ubiety.Scram.Core.Attributes
         }
 
         /// <summary>
-        ///     Gets the current channel binding status.
+        /// Gets the channel binding status in the SCRAM (Salted Challenge Response Authentication Mechanism) protocol.
         /// </summary>
-        public ChannelBindingStatus ChannelBindingStatus { get; }
+        public ChannelBindingStatus ChannelBindingStatus { get; internal set; }
 
         /// <summary>
-        ///     Convert attribute to a string.
+        /// Converts the specified <see cref="Gs2Attribute"/> instance to its string representation.
         /// </summary>
-        /// <param name="attribute">Attribute to convert.</param>
+        /// <param name="attribute">The GS2 attribute to be converted into a string.</param>
+        /// <returns>A string representation of the GS2 attribute.</returns>
         public static implicit operator string(Gs2Attribute attribute)
         {
             return attribute.ToString();
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns the string representation of the <see cref="Gs2Attribute"/> object
+        /// based on its current channel binding status.
+        /// </summary>
+        /// <returns>
+        /// A string that corresponds to the <see cref="ChannelBindingStatus"/> value of the object.
+        /// </returns>
         public override string ToString()
         {
             return ChannelBindingStatus switch

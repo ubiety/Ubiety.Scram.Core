@@ -28,8 +28,11 @@ using System;
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     Client proof attribute.
+    /// Represents the SCRAM (Salted Challenge Response Authentication Mechanism) client proof attribute.
     /// </summary>
+    /// <remarks>
+    /// The client proof attribute is used to verify the client's identity in the SCRAM authentication process.
+    /// </remarks>
     public class ClientProofAttribute : ScramAttribute<byte[]>
     {
         /// <summary>

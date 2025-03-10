@@ -28,7 +28,7 @@ using Ubiety.Scram.Core.Attributes;
 namespace Ubiety.Scram.Core.Messages
 {
     /// <summary>
-    ///     Final client message.
+    /// Represents the final message sent from the client during the SCRAM (Salted Challenge Response Authentication Mechanism) authentication process.
     /// </summary>
     public class ClientFinalMessage
     {
@@ -37,39 +37,42 @@ namespace Ubiety.Scram.Core.Messages
         /// </summary>
         /// <param name="clientFirstMessage">First client message.</param>
         /// <param name="serverFirstMessage">First server message.</param>
-        public ClientFinalMessage(ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage)
+        /// <param name="token">Token to use for channel binding.</param>
+        public ClientFinalMessage(ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage, byte[]? token = null)
         {
-            Channel = new ChannelAttribute(clientFirstMessage.Gs2Header);
+            Channel = new ChannelAttribute(clientFirstMessage.Gs2Header, token);
             Nonce = new NonceAttribute(serverFirstMessage.Nonce?.Value);
         }
 
         /// <summary>
-        ///     Gets the channel.
+        /// Gets the channel attribute used for encoding the GS2 (Generic Security Service) header in the SCRAM authentication process.
         /// </summary>
         public ChannelAttribute Channel { get; }
 
         /// <summary>
-        ///     Gets the nonce.
+        /// Gets the nonce attribute used during the SCRAM (Salted Challenge Response Authentication Mechanism) process to ensure message uniqueness and mitigate replay attacks.
         /// </summary>
         public NonceAttribute Nonce { get; }
 
         /// <summary>
-        ///     Gets the client proof.
+        /// Gets the proof attribute, which represents the computed client proof used in the SCRAM authentication process.
         /// </summary>
         public ClientProofAttribute? Proof { get; private set; }
 
         /// <summary>
-        ///     Gets the final message without the proof.
+        /// Gets the constructed client final message content excluding the proof value,
+        /// which includes the channel binding information and the nonce.
         /// </summary>
         public string MessageWithoutProof => $"{Channel},{Nonce}";
 
         /// <summary>
-        ///     Gets the final message with the proof.
+        /// Gets the complete message for the client in the final stage of SCRAM authentication,
+        /// including the channel binding, nonce, and optionally the client proof, formatted as a single string.
         /// </summary>
         public string Message => $"{MessageWithoutProof},{Proof}";
 
         /// <summary>
-        ///     Sets the client proof from a byte array.
+        /// Sets the client proof attribute with the provided byte array.
         /// </summary>
         /// <param name="proof">Byte array of the proof.</param>
         public void SetProof(byte[] proof)
@@ -78,9 +81,9 @@ namespace Ubiety.Scram.Core.Messages
         }
 
         /// <summary>
-        ///     Sets the client proof from a byte array.
+        /// Sets the proof for the client final message.
         /// </summary>
-        /// <param name="proof">String value of the proof.</param>
+        /// <param name="proof">The proof as a string value.</param>
         public void SetProof(string proof)
         {
             Proof = new ClientProofAttribute(proof);

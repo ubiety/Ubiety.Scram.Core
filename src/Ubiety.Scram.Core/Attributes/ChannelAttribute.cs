@@ -24,22 +24,69 @@
 // For more information, please refer to <http://unlicense.org/>
 
 using System;
+using System.Linq;
 using System.Text;
 
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     Channel binding attribute.
+    /// Represents a SCRAM 'Channel' attribute, used to specify a channel binding type during SCRAM authentication.
     /// </summary>
-    public class ChannelAttribute : ScramAttribute<string>
+    /// <remarks>
+    /// The channel binding information is encoded as a base64 string when creating the attribute.
+    /// </remarks>
+    public class ChannelAttribute : ScramAttribute
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChannelAttribute"/> class.
         /// </summary>
-        /// <param name="value">String value of the channel to bind to.</param>
-        public ChannelAttribute(string value)
-            : base(ChannelName, Convert.ToBase64String(Encoding.UTF8.GetBytes(value)))
+        /// <param name="header">String representation of the GS2 header.</param>
+        /// <param name="token">Channel binding token.</param>
+        public ChannelAttribute(string header, byte[]? token = null)
+            : base(ChannelName)
         {
+            Header = header;
+            Token = token;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChannelAttribute"/> class.
+        /// </summary>
+        public ChannelAttribute()
+            : base(ChannelName)
+        {
+            Header = string.Empty;
+            Token = null;
+        }
+
+        /// <summary>
+        /// Gets the string representation of the GS2 header.
+        /// </summary>
+        public string Header { get; }
+
+        /// <summary>
+        /// Gets the token representing the channel for binding.
+        /// </summary>
+        public byte[]? Token { get; }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="ChannelAttribute"/> to a string.
+        /// </summary>
+        /// <param name="attribute">Attribute to convert.</param>
+        /// <returns>String representation of the <see cref="ChannelAttribute"/>.</returns>
+        public static implicit operator string(ChannelAttribute attribute) => attribute.ToString();
+
+        /// <summary>
+        /// Converts instance to a string.
+        /// </summary>
+        /// <returns>String representation of the attribute.</returns>
+        public override string ToString()
+        {
+            var attribute = (Token is null)
+                ? Encoding.UTF8.GetBytes(Header)
+                : (byte[])Encoding.UTF8.GetBytes($"{Header},,").Concat(Token);
+
+            return Convert.ToBase64String(attribute);
         }
     }
 }

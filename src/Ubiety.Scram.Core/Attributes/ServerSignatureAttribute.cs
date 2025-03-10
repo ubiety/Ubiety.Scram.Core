@@ -29,8 +29,12 @@ using System.Linq;
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     Server signature part of SCRAM message.
+    /// Represents a server signature attribute in the SCRAM (Salted Challenge Response Authentication Mechanism) authentication process.
     /// </summary>
+    /// <remarks>
+    /// This attribute is used to store the server's computed signature and ensures the integrity of the SCRAM handshake.
+    /// It is identified by the character 'v' as per the SCRAM specification.
+    /// </remarks>
     public sealed class ServerSignatureAttribute : ScramAttribute<byte[]>, IEquatable<ServerSignatureAttribute>
     {
         /// <summary>
@@ -51,25 +55,47 @@ namespace Ubiety.Scram.Core.Attributes
         {
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Determines whether the specified object is equal to the current <see cref="ServerSignatureAttribute"/> instance.
+        /// </summary>
+        /// <param name="obj">The object to compare with the current instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified object is equal to the current instance; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(object? obj)
         {
             return Equals(obj as ServerSignatureAttribute);
         }
 
-        /// <inheritdoc cref="ScramAttribute"/>
+        /// <summary>
+        /// Determines whether the current instance is equal to the specified byte array.
+        /// </summary>
+        /// <param name="other">A byte array to compare with the current instance.</param>
+        /// <returns>True if the current instance is equal to the provided byte array; otherwise, false.</returns>
         public bool Equals(byte[] other)
         {
             return Equals(new ServerSignatureAttribute(other));
         }
 
-        /// <inheritdoc cref="ScramAttribute"/>
+        /// <summary>
+        /// Determines whether the specified <see cref="ServerSignatureAttribute"/> is equal to the current instance.
+        /// </summary>
+        /// <param name="other">The <see cref="ServerSignatureAttribute"/> to compare with the current instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="ServerSignatureAttribute"/> is equal to the current instance; otherwise, <c>false</c>.
+        /// </returns>
         public bool Equals(ServerSignatureAttribute? other)
         {
             return other != null && (ReferenceEquals(this, other) || Value.SequenceEqual(other.Value));
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Generates the hash code for the current <see cref="ServerSignatureAttribute"/> instance.
+        /// </summary>
+        /// <returns>
+        /// An integer representing the hash code of the <see cref="ServerSignatureAttribute"/> instance,
+        /// which is derived from the attribute name.
+        /// </returns>
         public override int GetHashCode()
         {
             return Name.GetHashCode();

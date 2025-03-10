@@ -31,7 +31,7 @@ using Ubiety.Scram.Core.Exceptions;
 namespace Ubiety.Scram.Core.Messages
 {
     /// <summary>
-    ///     Gets the first server message.
+    /// Represents the first message sent by the server in the SCRAM (Salted Challenge Response Authentication Mechanism) authentication process.
     /// </summary>
     public class ServerFirstMessage
     {
@@ -66,25 +66,26 @@ namespace Ubiety.Scram.Core.Messages
         }
 
         /// <summary>
-        ///     Gets the iterations for password hashing.
+        /// Gets the number of iterations for the SCRAM authentication process.
         /// </summary>
         public IterationsAttribute? Iterations { get; private set; }
 
         /// <summary>
-        ///     Gets the server nonce.
+        /// Gets the nonce used in the SCRAM authentication process.
         /// </summary>
         public NonceAttribute? Nonce { get; private set; }
 
         /// <summary>
-        ///     Gets the password salt.
+        /// Gets the salt value used in the SCRAM authentication process.
         /// </summary>
         public SaltAttribute? Salt { get; private set; }
 
         /// <summary>
-        ///     Parse the first server message.
+        /// Parses the given SCRAM server first message string and returns a <see cref="ServerFirstMessage"/> instance.
         /// </summary>
-        /// <param name="message">Message to parse.</param>
-        /// <returns><see cref="ServerFirstMessage"/> instance of the message.</returns>
+        /// <param name="message">The SCRAM server first message as a string to be parsed.</param>
+        /// <returns>An instance of <see cref="ServerFirstMessage"/> created from the parsed message.</returns>
+        /// <exception cref="MessageParseException">Thrown when the message cannot be parsed.</exception>
         public static ServerFirstMessage Parse(string message)
         {
             if (!TryParse(message, out var firstMessage))
@@ -96,11 +97,11 @@ namespace Ubiety.Scram.Core.Messages
         }
 
         /// <summary>
-        ///     Parse the first server message.
+        /// Attempts to parse the specified message into a <see cref="ServerFirstMessage"/> instance.
         /// </summary>
-        /// <param name="message">Message to parse.</param>
-        /// <param name="firstMessage"><see cref="ServerFirstMessage"/> instance of the message.</param>
-        /// <returns>true if parsing was successful; otherwise false.</returns>
+        /// <param name="message">The message to parse.</param>
+        /// <param name="firstMessage">The resulting <see cref="ServerFirstMessage"/> instance if parsing is successful.</param>
+        /// <returns>true if the message is successfully parsed; otherwise, false.</returns>
         public static bool TryParse(string message, out ServerFirstMessage firstMessage)
         {
             firstMessage = new ServerFirstMessage();

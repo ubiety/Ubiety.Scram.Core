@@ -28,8 +28,12 @@ using System;
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     Salt attribute.
+    /// Represents the SCRAM attribute for the salt used in authentication procedures.
     /// </summary>
+    /// <remarks>
+    /// The <c>SaltAttribute</c> is a specialized SCRAM attribute that holds the salt value,
+    /// which can be provided as either a byte array or a Base64-encoded string.
+    /// </remarks>
     public class SaltAttribute : ScramAttribute<byte[]>
     {
         /// <summary>

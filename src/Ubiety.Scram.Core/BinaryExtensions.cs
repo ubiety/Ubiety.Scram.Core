@@ -28,16 +28,17 @@ using System;
 namespace Ubiety.Scram.Core
 {
     /// <summary>
-    ///     Extension methods for byte arrays.
+    /// Provides extension methods for binary operations.
     /// </summary>
     public static class BinaryExtensions
     {
         /// <summary>
-        ///     Calculate the exclusive or result of two byte arrays.
+        /// Performs a bitwise exclusive OR (XOR) operation on two byte arrays of the same length.
         /// </summary>
-        /// <param name="originalBytes">Original byte array.</param>
-        /// <param name="compareBytes">Comparison byte array.</param>
-        /// <returns>Byte array of the result.</returns>
+        /// <param name="originalBytes">The first byte array to be XORed.</param>
+        /// <param name="compareBytes">The second byte array to be XORed. Must be the same length as the first byte array.</param>
+        /// <returns>A byte array containing the result of the XOR operation.</returns>
+        /// <exception cref="ArgumentException">Thrown when the lengths of the two byte arrays do not match.</exception>
         public static byte[] ExclusiveOr(this byte[] originalBytes, byte[] compareBytes)
         {
             if (originalBytes.Length != compareBytes.Length)

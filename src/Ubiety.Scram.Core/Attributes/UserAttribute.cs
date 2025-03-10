@@ -28,7 +28,7 @@ using System;
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
-    ///     User attribute.
+    /// Represents a SCRAM user attribute with specific formatting and escaping rules.
     /// </summary>
     public class UserAttribute : ScramAttribute<string>
     {
@@ -38,14 +38,20 @@ namespace Ubiety.Scram.Core.Attributes
         /// <summary>
         ///     Initializes a new instance of the <see cref="UserAttribute"/> class.
         /// </summary>
-        /// <param name="value">String value of the user name.</param>
+        /// <param name="value">String value of the username.</param>
         /// <param name="fromWire">Indicates if the value is escaped from the server.</param>
         public UserAttribute(string value, bool fromWire = false)
             : base(UserName, Replace(value, fromWire))
         {
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Converts the current instance of <see cref="UserAttribute"/> to its string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the <see cref="UserAttribute"/>, where the value is encoded by replacing
+        /// specific characters ("=" and ",") with their respective replacements.
+        /// </returns>
         public override string ToString()
         {
             var printableValue = Value.Replace("=", EqualReplacement).Replace(",", CommaReplacement);
@@ -76,8 +82,8 @@ namespace Ubiety.Scram.Core.Attributes
 
         private static string Replace(string value, int index, char replacement, int len)
         {
-            var temp1 = value.Substring(0, index);
-            var temp2 = value.Substring(index + len, value.Length - index - len);
+            var temp1 = value[..index];
+            var temp2 = value[(index + len)..];
             return $"{temp1}{replacement}{temp2}";
         }
     }
