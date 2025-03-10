@@ -17,6 +17,14 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.SonarScanner.SonarScannerTasks;
 
 [GitHubActions(
+    "release",
+    GitHubActionsImage.WindowsLatest,
+    OnPushBranches = [MasterBranch, ReleaseBranchPrefix + "/*"],
+    InvokedTargets = [nameof(Test), nameof(Publish)],
+    ImportSecrets = [nameof(NuGetKey)],
+    EnableGitHubToken = true,
+    FetchDepth = 0)]
+[GitHubActions(
     "continuous",
     GitHubActionsImage.WindowsLatest,
     GitHubActionsImage.UbuntuLatest,
@@ -134,7 +142,6 @@ class Build : NukeBuild
 
     Target Pack => _ => _
         .After(Test)
-        .OnlyWhenStatic(() => GitRepository.Branch == "main")
         .Executes(() =>
         {
             DotNetPack(s => s
@@ -149,7 +156,6 @@ class Build : NukeBuild
         .Consumes(Pack)
         .Requires(() => !NuGetKey.IsNullOrEmpty() || Beta)
         .Requires(() => Configuration.Equals(Configuration.Release))
-        .OnlyWhenStatic(() => GitRepository.Branch == MasterBranch)
         .Executes(() =>
         {
             if (Beta)
