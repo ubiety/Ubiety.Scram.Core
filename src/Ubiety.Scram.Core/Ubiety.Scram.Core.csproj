@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Authors>Dieter Lunn</Authors>
-    <PackageDescription>Implementation of SCRAM for .NET Standard 2.0</PackageDescription>
+    <PackageDescription>Implementation of SCRAM for .NET</PackageDescription>
     <PackageIcon>icon128.png</PackageIcon>
     <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
     <PackageProjectUrl>https://scram.ubiety.ca</PackageProjectUrl>
@@ -24,18 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Ubiety.Stringprep.Core" Version="0.4.2" />
     <PackageReference Include="Ubiety.StyleCop" Version="0.0.5" PrivateAssets="all" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="JetBrains.Annotations">
-      <HintPath>..\..\..\..\..\.nuget\packages\jetbrains.annotations\2024.3.0\lib\netstandard2.0\JetBrains.Annotations.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
