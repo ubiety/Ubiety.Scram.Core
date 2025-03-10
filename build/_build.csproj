@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
     <PackageReference Include="Nuke.Common" Version="9.0.4" />
 	<PackageDownload Include="GitVersion.Tool" Version="[6.1.0]" />
 	<PackageDownload Include="dotnet-sonarscanner" Version="[9.2.0]" />
