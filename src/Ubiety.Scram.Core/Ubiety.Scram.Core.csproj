@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <AnalysisLevel>latest</AnalysisLevel>

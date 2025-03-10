@@ -15,7 +15,7 @@ namespace Ubiety.Scram.Test.Messages
 
             var message = new ClientFinalMessage(clientFirst, serverFirst);
 
-            message.Channel.Header.ShouldBe("biws");
+            message.Channel.ToString().ShouldBe("c=biws");
             message.Nonce.Value.ShouldBe("nonce");
             message.Proof.ShouldBeNull();
             message.Message.ShouldBe("c=biws,r=nonce,");
@@ -31,7 +31,7 @@ namespace Ubiety.Scram.Test.Messages
             var message = new ClientFinalMessage(clientFirst, serverFirst);
             message.SetProof(Convert.FromBase64String("bf45fcbf7073d93d022466c94321745fe1c8e13b"));
 
-            message.Channel.Header.ShouldBe("biws");
+            message.Channel.ToString().ShouldBe("c=biws");
             message.Nonce.Value.ShouldBe("nonce");
             message.Proof?.ToString().ShouldBe("p=bf45fcbf7073d93d022466c94321745fe1c8e13b");
             message.Message.ShouldBe("c=biws,r=nonce,p=bf45fcbf7073d93d022466c94321745fe1c8e13b");
@@ -47,7 +47,7 @@ namespace Ubiety.Scram.Test.Messages
             var message = new ClientFinalMessage(clientFirst, serverFirst);
             message.SetProof("bf45fcbf7073d93d022466c94321745fe1c8e13b");
 
-            message.Channel.Header.ShouldBe("biws");
+            message.Channel.ToString().ShouldBe("c=biws");
             message.Nonce.Value.ShouldBe("nonce");
             message.Proof?.ToString().ShouldBe("p=bf45fcbf7073d93d022466c94321745fe1c8e13b");
             message.Message.ShouldBe("c=biws,r=nonce,p=bf45fcbf7073d93d022466c94321745fe1c8e13b");
