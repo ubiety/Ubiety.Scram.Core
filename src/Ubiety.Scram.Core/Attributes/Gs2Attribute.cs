@@ -35,10 +35,12 @@ namespace Ubiety.Scram.Core.Attributes
         ///     Initializes a new instance of the <see cref="Gs2Attribute"/> class.
         /// </summary>
         /// <param name="bindingStatus">Channel binding status.</param>
-        public Gs2Attribute(ChannelBindingStatus bindingStatus)
+        /// <param name="version">TLS version of the socket.</param>
+        public Gs2Attribute(ChannelBindingStatus bindingStatus, TlsVersion version)
             : base('p')
         {
             ChannelBindingStatus = bindingStatus;
+            Version = version;
         }
 
         /// <summary>
@@ -68,7 +70,12 @@ namespace Ubiety.Scram.Core.Attributes
         /// <summary>
         /// Gets the channel binding status in the SCRAM (Salted Challenge Response Authentication Mechanism) protocol.
         /// </summary>
-        public ChannelBindingStatus ChannelBindingStatus { get; internal set; }
+        public ChannelBindingStatus ChannelBindingStatus { get; internal init; }
+
+        /// <summary>
+        /// Gets the TLS version of the socket.
+        /// </summary>
+        public TlsVersion Version { get; internal init; }
 
         /// <summary>
         /// Converts the specified <see cref="Gs2Attribute"/> instance to its string representation.
@@ -89,11 +96,19 @@ namespace Ubiety.Scram.Core.Attributes
         /// </returns>
         public override string ToString()
         {
+            var tls = Version switch
+            {
+                TlsVersion.TlsExporter => "p=tls-exporter,,",
+                TlsVersion.TlsUnique => "p=tls-unique,,",
+                TlsVersion.TlsServerEndpoint => "p=tls-server-end-point,,",
+                _ => "p=tls-unique,,"
+            };
+
             return ChannelBindingStatus switch
             {
                 ChannelBindingStatus.ClientSupport => "y,,",
                 ChannelBindingStatus.NotSupported => "n,,",
-                ChannelBindingStatus.Required => "p=tls-unique,,",
+                ChannelBindingStatus.Required => tls,
                 _ => "n,,"
             };
         }

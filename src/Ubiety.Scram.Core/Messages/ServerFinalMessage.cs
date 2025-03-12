@@ -25,6 +25,7 @@
 
 using System;
 using System.Linq;
+using System.Text;
 using Ubiety.Scram.Core.Attributes;
 using Ubiety.Scram.Core.Exceptions;
 
@@ -56,6 +57,22 @@ namespace Ubiety.Scram.Core.Messages
         /// by verifying that the server knows the user's credentials without explicitly exposing them.
         /// </remarks>
         public ServerSignatureAttribute? ServerSignature { get; private set; }
+
+        /// <summary>
+        /// Implicitly converts a string to a <see cref="ServerFinalMessage"/> instance.
+        /// </summary>
+        /// <param name="message">The string message to convert.</param>
+        /// <returns>A new <see cref="ServerFinalMessage"/> instance parsed from the string.</returns>
+        /// <exception cref="MessageParseException">Thrown when the message cannot be parsed.</exception>
+        public static implicit operator ServerFinalMessage(string message) => Parse(message);
+
+        /// <summary>
+        /// Implicitly converts a byte array to a <see cref="ServerFinalMessage"/> instance.
+        /// </summary>
+        /// <param name="message">The byte array containing the UTF-8 encoded message to convert.</param>
+        /// <returns>A new <see cref="ServerFinalMessage"/> instance parsed from the byte array.</returns>
+        /// <exception cref="MessageParseException">Thrown when the message cannot be parsed.</exception>
+        public static implicit operator ServerFinalMessage(byte[] message) => Parse(Encoding.UTF8.GetString(message));
 
         /// <summary>
         /// Parses a server final message string into a <see cref="ServerFinalMessage"/> object.

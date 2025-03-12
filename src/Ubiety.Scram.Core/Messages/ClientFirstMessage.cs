@@ -25,6 +25,7 @@
 
 using System;
 using System.Linq;
+using System.Text;
 using JetBrains.Annotations;
 using Ubiety.Scram.Core.Attributes;
 using Ubiety.Scram.Core.Exceptions;
@@ -42,11 +43,12 @@ namespace Ubiety.Scram.Core.Messages
         /// <param name="username">Username of the user to authenticate.</param>
         /// <param name="nonce">String value of the client nonce.</param>
         /// <param name="bindingStatus">Binding status of the message.</param>
-        public ClientFirstMessage(string username, string nonce, ChannelBindingStatus bindingStatus = ChannelBindingStatus.NotSupported)
+        /// <param name="tlsVersion">What version of TLS binding to use.</param>
+        public ClientFirstMessage(string username, string nonce, ChannelBindingStatus bindingStatus = ChannelBindingStatus.NotSupported, TlsVersion tlsVersion = TlsVersion.TlsUnique)
         {
             Username = new UserAttribute(username);
             Nonce = new NonceAttribute(nonce);
-            Gs2Header = new Gs2Attribute { ChannelBindingStatus = bindingStatus };
+            Gs2Header = new Gs2Attribute { ChannelBindingStatus = bindingStatus, Version = tlsVersion };
         }
 
         private ClientFirstMessage()
@@ -84,6 +86,27 @@ namespace Ubiety.Scram.Core.Messages
         /// username, and nonce, to form the full authentication message.
         /// </summary>
         public string Message => $"{Gs2Header}{BareMessage}";
+
+        /// <summary>
+        /// Implicitly converts the <see cref="ClientFirstMessage"/> into a byte array.
+        /// </summary>
+        /// <param name="message">Message to convert to byte array.</param>
+        /// <returns>Byte array of the message.</returns>
+        public static implicit operator byte[](ClientFirstMessage message) => Encoding.UTF8.GetBytes(message.Message);
+
+        /// <summary>
+        /// Implicitly convert a string into a <see cref="ClientFirstMessage"/>.
+        /// </summary>
+        /// <param name="message">String to convert.</param>
+        /// <returns>Parsed instance of <see cref="ClientFirstMessage" />.</returns>
+        public static implicit operator ClientFirstMessage(string message) => Parse(message);
+
+        /// <summary>
+        /// Implicitly convert a byte array into a <see cref="ClientFirstMessage"/>.
+        /// </summary>
+        /// <param name="message">Byte array to convert.</param>
+        /// <returns>Parsed instance of <see cref="ClientFirstMessage" />.</returns>
+        public static implicit operator ClientFirstMessage(byte[] message) => Parse(Encoding.UTF8.GetString(message));
 
         /// <summary>
         /// Parses the provided message into an instance of <see cref="ClientFirstMessage"/>.

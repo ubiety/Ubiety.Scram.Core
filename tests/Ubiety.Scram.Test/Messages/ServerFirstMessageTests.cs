@@ -1,5 +1,6 @@
 ﻿using System;
 using Shouldly;
+using Ubiety.Scram.Core;
 using Ubiety.Scram.Core.Exceptions;
 using Ubiety.Scram.Core.Messages;
 using Xunit;
@@ -48,7 +49,7 @@ namespace Ubiety.Scram.Test.Messages
         [Fact]
         public void When_CreatedWithByteConstructor_ThePropertiesShouldBeValid()
         {
-            var message = new ServerFirstMessage(4096, "nonce", Convert.FromBase64String("salt"));
+            var message = new ServerFirstMessage(4096, "nonce", Convert.FromBase64String("salt"), "");
 
             message.Iterations?.Value.ShouldBe(4096);
             message.Nonce?.Value.ShouldBe("nonce");
@@ -58,7 +59,7 @@ namespace Ubiety.Scram.Test.Messages
         [Fact]
         public void When_CreatedWithStringConstructor_ThePropertiesShouldBeValid()
         {
-            var message = new ServerFirstMessage(4096, "nonce", "salt");
+            var message = new ServerFirstMessage(4096, "nonce", "salt", "");
 
             message.Iterations?.Value.ShouldBe(4096);
             message.Nonce?.Value.ShouldBe("nonce");

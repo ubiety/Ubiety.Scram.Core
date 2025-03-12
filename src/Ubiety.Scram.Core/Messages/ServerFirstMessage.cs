@@ -25,6 +25,8 @@
 
 using System;
 using System.Linq;
+using System.Text;
+using JetBrains.Annotations;
 using Ubiety.Scram.Core.Attributes;
 using Ubiety.Scram.Core.Exceptions;
 
@@ -41,11 +43,13 @@ namespace Ubiety.Scram.Core.Messages
         /// <param name="iterations">Iterations to use when hashing the password.</param>
         /// <param name="nonce">String value of the server nonce.</param>
         /// <param name="salt">Byte array of the password salt.</param>
-        public ServerFirstMessage(int iterations, string nonce, byte[] salt)
+        /// <param name="message">Message received from the server.</param>
+        public ServerFirstMessage(int iterations, string nonce, byte[] salt, string message)
         {
             Iterations = new IterationsAttribute(iterations);
             Nonce = new NonceAttribute(nonce);
             Salt = new SaltAttribute(salt);
+            Message = message;
         }
 
         /// <summary>
@@ -54,15 +58,18 @@ namespace Ubiety.Scram.Core.Messages
         /// <param name="iterations">Iterations to use when hashing the password.</param>
         /// <param name="nonce">String value of the server nonce.</param>
         /// <param name="salt">String value of the password salt.</param>
-        public ServerFirstMessage(int iterations, string nonce, string salt)
+        /// <param name="message">Message received from the server.</param>
+        public ServerFirstMessage(int iterations, string nonce, string salt, string message)
         {
             Iterations = new IterationsAttribute(iterations);
             Nonce = new NonceAttribute(nonce);
             Salt = new SaltAttribute(salt);
+            Message = message;
         }
 
         private ServerFirstMessage()
         {
+            Message = string.Empty;
         }
 
         /// <summary>
@@ -79,6 +86,27 @@ namespace Ubiety.Scram.Core.Messages
         /// Gets the salt value used in the SCRAM authentication process.
         /// </summary>
         public SaltAttribute? Salt { get; private set; }
+
+        /// <summary>
+        /// Gets the server message as received.
+        /// </summary>
+        internal string Message { get; private init; }
+
+        /// <summary>
+        /// Implicitly converts a string to a <see cref="ServerFirstMessage"/> instance by parsing it.
+        /// </summary>
+        /// <param name="message">The SCRAM server first message string to convert.</param>
+        /// <returns>A new <see cref="ServerFirstMessage"/> instance parsed from the message.</returns>
+        /// <exception cref="MessageParseException">Thrown when the message cannot be parsed.</exception>
+        public static implicit operator ServerFirstMessage(string message) => Parse(message);
+
+        /// <summary>
+        /// Implicitly converts a byte array to a <see cref="ServerFirstMessage"/> instance by parsing it.
+        /// </summary>
+        /// <param name="message">The SCRAM server first message as a byte array to convert.</param>
+        /// <returns>A new <see cref="ServerFirstMessage"/> instance parsed from the message.</returns>
+        /// <exception cref="MessageParseException">Thrown when the message cannot be parsed.</exception>
+        public static implicit operator ServerFirstMessage(byte[] message) => Parse(Encoding.UTF8.GetString(message));
 
         /// <summary>
         /// Parses the given SCRAM server first message string and returns a <see cref="ServerFirstMessage"/> instance.
@@ -102,9 +130,10 @@ namespace Ubiety.Scram.Core.Messages
         /// <param name="message">The message to parse.</param>
         /// <param name="firstMessage">The resulting <see cref="ServerFirstMessage"/> instance if parsing is successful.</param>
         /// <returns>true if the message is successfully parsed; otherwise, false.</returns>
+        [UsedImplicitly]
         public static bool TryParse(string message, out ServerFirstMessage firstMessage)
         {
-            firstMessage = new ServerFirstMessage();
+            firstMessage = new ServerFirstMessage { Message = message };
 
             try
             {
@@ -130,7 +159,7 @@ namespace Ubiety.Scram.Core.Messages
                         case SaltAttribute a:
                             firstMessage.Salt = a;
                             break;
-                        case ErrorAttribute a:
+                        case ErrorAttribute:
                             return false;
                     }
                 }

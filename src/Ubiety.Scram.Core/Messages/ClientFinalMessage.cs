@@ -23,6 +23,8 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
+using System;
+using System.Text;
 using Ubiety.Scram.Core.Attributes;
 
 namespace Ubiety.Scram.Core.Messages
@@ -37,11 +39,15 @@ namespace Ubiety.Scram.Core.Messages
         /// </summary>
         /// <param name="clientFirstMessage">First client message.</param>
         /// <param name="serverFirstMessage">First server message.</param>
+        /// <param name="password">User password.</param>
+        /// <param name="hash"><see cref="Hash"/> to use when calculating proof.</param>
         /// <param name="token">Token to use for channel binding.</param>
-        public ClientFinalMessage(ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage, byte[]? token = null)
+        public ClientFinalMessage(ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage, string password, Hash hash, byte[]? token = null)
         {
             Channel = new ChannelAttribute(clientFirstMessage.Gs2Header, token);
             Nonce = new NonceAttribute(serverFirstMessage.Nonce?.Value);
+
+            CalculateProof(password, hash, clientFirstMessage, serverFirstMessage);
         }
 
         /// <summary>
@@ -72,21 +78,33 @@ namespace Ubiety.Scram.Core.Messages
         public string Message => $"{MessageWithoutProof},{Proof}";
 
         /// <summary>
-        /// Sets the client proof attribute with the provided byte array.
+        /// Gets the server signature as calculated with the proof.
         /// </summary>
-        /// <param name="proof">Byte array of the proof.</param>
-        public void SetProof(byte[] proof)
-        {
-            Proof = new ClientProofAttribute(proof);
-        }
+        public string ServerSignature { get; internal set; } = string.Empty;
 
         /// <summary>
-        /// Sets the proof for the client final message.
+        /// Implicitly converts a <see cref="ClientFinalMessage"/> to its byte array representation using UTF-8 encoding.
         /// </summary>
-        /// <param name="proof">The proof as a string value.</param>
-        public void SetProof(string proof)
+        /// <param name="message">The client final message to convert.</param>
+        /// <returns>A byte array containing the UTF-8 encoded message.</returns>
+        public static implicit operator byte[](ClientFinalMessage message) => Encoding.UTF8.GetBytes(message.Message);
+
+        private void CalculateProof(string password, Hash hash, ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage)
         {
-            Proof = new ClientProofAttribute(proof);
+            var preppedPassword = SaslPrep.Run(password);
+            var saltedPassword = hash.ComputeHash(Encoding.UTF8.GetBytes(preppedPassword), serverFirstMessage.Salt?.Value ?? throw new InvalidOperationException(), serverFirstMessage.Iterations?.Value ?? throw new InvalidOperationException());
+
+            var clientKey = hash.ComputeHash("Client Key"u8.ToArray(), saltedPassword);
+            var serverKey = hash.ComputeHash("Server Key"u8.ToArray(), saltedPassword);
+            var storedKey = hash.ComputeHash(clientKey);
+
+            var authMessage = $"{clientFirstMessage.BareMessage},{serverFirstMessage.Message},{MessageWithoutProof}";
+            var auth = Encoding.UTF8.GetBytes(authMessage);
+
+            var signature = hash.ComputeHash(auth, storedKey);
+            ServerSignature = Encoding.UTF8.GetString(hash.ComputeHash(auth, serverKey));
+
+            Proof = new ClientProofAttribute(clientKey.ExclusiveOr(signature));
         }
     }
 }
