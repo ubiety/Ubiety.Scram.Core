@@ -82,6 +82,13 @@ namespace Ubiety.Scram.Core.Messages
         /// </summary>
         public string ServerSignature { get; internal set; } = string.Empty;
 
+        /// <summary>
+        /// Implicitly converts a <see cref="ClientFinalMessage"/> to its byte array representation using UTF-8 encoding.
+        /// </summary>
+        /// <param name="message">The client final message to convert.</param>
+        /// <returns>A byte array containing the UTF-8 encoded message.</returns>
+        public static implicit operator byte[](ClientFinalMessage message) => Encoding.UTF8.GetBytes(message.Message);
+
         private void CalculateProof(string password, Hash hash, ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage)
         {
             var preppedPassword = SaslPrep.Run(password);
