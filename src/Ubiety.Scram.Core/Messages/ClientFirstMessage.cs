@@ -42,11 +42,12 @@ namespace Ubiety.Scram.Core.Messages
         /// <param name="username">Username of the user to authenticate.</param>
         /// <param name="nonce">String value of the client nonce.</param>
         /// <param name="bindingStatus">Binding status of the message.</param>
-        public ClientFirstMessage(string username, string nonce, ChannelBindingStatus bindingStatus = ChannelBindingStatus.NotSupported)
+        /// <param name="tlsVersion">What version of TLS binding to use.</param>
+        public ClientFirstMessage(string username, string nonce, ChannelBindingStatus bindingStatus = ChannelBindingStatus.NotSupported, TlsVersion tlsVersion = TlsVersion.TlsUnique)
         {
             Username = new UserAttribute(username);
             Nonce = new NonceAttribute(nonce);
-            Gs2Header = new Gs2Attribute { ChannelBindingStatus = bindingStatus };
+            Gs2Header = new Gs2Attribute { ChannelBindingStatus = bindingStatus, Version = tlsVersion };
         }
 
         private ClientFirstMessage()
