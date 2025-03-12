@@ -59,7 +59,7 @@ class Build : NukeBuild
     string Source => Beta ? GitHubSource : NuGetSource;
     string ApiKey => Beta ? GitHubToken : NuGetKey;
     
-    bool Beta => GitRepository.IsOnDevelopBranch() || GitRepository.IsOnFeatureBranch();
+    bool Beta => GitRepository.IsOnDevelopBranch() || GitRepository.IsOnReleaseBranch();
     IEnumerable<AbsolutePath> PackageFiles => ArtifactsDirectory.GlobFiles("*.nupkg");
     
     AbsolutePath SourceDirectory => RootDirectory / "src";
