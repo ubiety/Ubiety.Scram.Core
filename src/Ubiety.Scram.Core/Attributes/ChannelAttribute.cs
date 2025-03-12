@@ -26,6 +26,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace Ubiety.Scram.Core.Attributes
 {
@@ -52,6 +53,7 @@ namespace Ubiety.Scram.Core.Attributes
         /// <summary>
         /// Initializes a new instance of the <see cref="ChannelAttribute"/> class.
         /// </summary>
+        [UsedImplicitly]
         public ChannelAttribute()
             : base(ChannelName)
         {
@@ -62,11 +64,13 @@ namespace Ubiety.Scram.Core.Attributes
         /// <summary>
         /// Gets the string representation of the GS2 header.
         /// </summary>
+        [UsedImplicitly]
         public string Header { get; }
 
         /// <summary>
         /// Gets the token representing the channel for binding.
         /// </summary>
+        [UsedImplicitly]
         public byte[]? Token { get; }
 
         /// <summary>
