@@ -25,6 +25,7 @@
 
 using System;
 using System.Linq;
+using System.Text;
 using JetBrains.Annotations;
 using Ubiety.Scram.Core.Attributes;
 using Ubiety.Scram.Core.Exceptions;
@@ -42,7 +43,7 @@ namespace Ubiety.Scram.Core.Messages
         /// <param name="iterations">Iterations to use when hashing the password.</param>
         /// <param name="nonce">String value of the server nonce.</param>
         /// <param name="salt">Byte array of the password salt.</param>
-        /// <param name="message">Message received from the server</param>
+        /// <param name="message">Message received from the server.</param>
         public ServerFirstMessage(int iterations, string nonce, byte[] salt, string message)
         {
             Iterations = new IterationsAttribute(iterations);
@@ -89,7 +90,23 @@ namespace Ubiety.Scram.Core.Messages
         /// <summary>
         /// Gets the server message as received.
         /// </summary>
-        internal string Message { get; init; }
+        internal string Message { get; private init; }
+
+        /// <summary>
+        /// Implicitly converts a string to a <see cref="ServerFirstMessage"/> instance by parsing it.
+        /// </summary>
+        /// <param name="message">The SCRAM server first message string to convert.</param>
+        /// <returns>A new <see cref="ServerFirstMessage"/> instance parsed from the message.</returns>
+        /// <exception cref="MessageParseException">Thrown when the message cannot be parsed.</exception>
+        public static implicit operator ServerFirstMessage(string message) => Parse(message);
+
+        /// <summary>
+        /// Implicitly converts a byte array to a <see cref="ServerFirstMessage"/> instance by parsing it.
+        /// </summary>
+        /// <param name="message">The SCRAM server first message as a byte array to convert.</param>
+        /// <returns>A new <see cref="ServerFirstMessage"/> instance parsed from the message.</returns>
+        /// <exception cref="MessageParseException">Thrown when the message cannot be parsed.</exception>
+        public static implicit operator ServerFirstMessage(byte[] message) => Parse(Encoding.UTF8.GetString(message));
 
         /// <summary>
         /// Parses the given SCRAM server first message string and returns a <see cref="ServerFirstMessage"/> instance.
@@ -142,7 +159,7 @@ namespace Ubiety.Scram.Core.Messages
                         case SaltAttribute a:
                             firstMessage.Salt = a;
                             break;
-                        case ErrorAttribute a:
+                        case ErrorAttribute:
                             return false;
                     }
                 }
