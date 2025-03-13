@@ -56,6 +56,32 @@ namespace Ubiety.Scram.Core.Attributes
         }
 
         /// <summary>
+        /// Compares a <see cref="ServerSignatureAttribute"/> instance with a string representation of a server signature.
+        /// </summary>
+        /// <param name="left">The <see cref="ServerSignatureAttribute"/> instance to compare.</param>
+        /// <param name="right">The string representation of a server signature to compare against.</param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="left"/> instance's value matches the base64-decoded value of <paramref name="right"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool operator ==(ServerSignatureAttribute? left, string right)
+        {
+            return Equals(left, new ServerSignatureAttribute(right));
+        }
+
+        /// <summary>
+        /// Compares a <see cref="ServerSignatureAttribute"/> instance with a string representation of a server signature for inequality.
+        /// </summary>
+        /// <param name="left">The <see cref="ServerSignatureAttribute"/> instance to compare.</param>
+        /// <param name="right">The string representation of a server signature to compare against.</param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="left"/> instance's value does not match the base64-decoded value of <paramref name="right"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool operator !=(ServerSignatureAttribute? left, string right)
+        {
+            return !Equals(left, new ServerSignatureAttribute(right));
+        }
+
+        /// <summary>
         /// Determines whether the specified object is equal to the current <see cref="ServerSignatureAttribute"/> instance.
         /// </summary>
         /// <param name="obj">The object to compare with the current instance.</param>
@@ -86,7 +112,7 @@ namespace Ubiety.Scram.Core.Attributes
         /// </returns>
         public bool Equals(ServerSignatureAttribute? other)
         {
-            return other != null && (ReferenceEquals(this, other) || Value.SequenceEqual(other.Value));
+            return other is not null && (ReferenceEquals(this, other) || Value.SequenceEqual(other.Value));
         }
 
         /// <summary>
