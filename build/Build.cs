@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.CI;
+using Nuke.Common.CI.AppVeyor;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
@@ -35,6 +36,11 @@ using static Nuke.Common.Tools.SonarScanner.SonarScannerTasks;
     InvokedTargets = [nameof(Test), nameof(Publish)],
     EnableGitHubToken = true,
     FetchDepth = 0)]
+[AppVeyor(
+    AppVeyorImage.VisualStudioLatest,
+    InvokedTargets = [nameof(Test), nameof(SonarEnd)],
+    SkipTags = true,
+    AutoGenerate = false)]
 [UnsetVisualStudioEnvironmentVariables]
 class Build : NukeBuild
 {
