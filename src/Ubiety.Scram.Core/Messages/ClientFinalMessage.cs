@@ -102,7 +102,11 @@ namespace Ubiety.Scram.Core.Messages
             var auth = Encoding.UTF8.GetBytes(authMessage);
 
             var signature = hash.ComputeHash(auth, storedKey);
-            ServerSignature = Encoding.UTF8.GetString(hash.ComputeHash(auth, serverKey));
+
+            // The signature is raw MAC output, so it has to be base64 encoded to match
+            // the "v=" value the server sends. Decoding it as UTF-8 would replace every
+            // invalid byte sequence with U+FFFD and make the comparison impossible.
+            ServerSignature = Convert.ToBase64String(hash.ComputeHash(auth, serverKey));
 
             Proof = new ClientProofAttribute(clientKey.ExclusiveOr(signature));
         }
