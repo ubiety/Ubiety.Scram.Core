@@ -25,14 +25,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
     /// Represents a SCRAM attribute used in the SCRAM authentication mechanism.
     /// </summary>
-    public partial class ScramAttribute
+    public class ScramAttribute
     {
         /// <summary>
         /// Represents the attribute name for the authorization identity in the SCRAM authentication mechanism.
@@ -103,26 +102,32 @@ namespace Ubiety.Scram.Core.Attributes
         /// </summary>
         /// <param name="attributes">The string containing concatenated attribute values to parse.</param>
         /// <returns>A collection of <see cref="ScramAttribute"/> objects representing the parsed attributes.</returns>
+        /// <exception cref="FormatException">Thrown when the message is empty or an attribute is malformed.</exception>
         public static ICollection<ScramAttribute> ParseAll(string attributes)
         {
-            var match = ScramRegex().Match(attributes);
-
-            if (!match.Success)
+            if (string.IsNullOrEmpty(attributes))
             {
-                throw new FormatException();
+                throw new FormatException("A SCRAM message cannot be empty.");
             }
 
+            var parts = attributes.Split(',');
             var attrs = new List<ScramAttribute>();
+            var index = 0;
 
-            if (match.Groups["gs2"].Success)
+            // A gs2-header ("gs2-cbind-flag ',' [authzid] ','") only ever leads a
+            // client-first-message. Its flag is a bare 'n'/'y' or a "p=<cb-name>" pair,
+            // which is what distinguishes it from an ordinary "<name>=<value>" attribute.
+            if (parts.Length > 2 && IsChannelBindingFlag(parts[0]))
             {
-                var gs2 = new Gs2Attribute(match.Groups["gs2"].Value);
-                attrs.Add(gs2);
+                attrs.Add(new Gs2Attribute(parts[0]));
+
+                // Skip the authzid slot when the client did not supply one.
+                index = parts[1].Length == 0 ? 2 : 1;
             }
 
-            foreach (Capture attribute in match.Groups["attr"].Captures)
+            for (; index < parts.Length; ++index)
             {
-                attrs.Add(Parse(attribute.Value));
+                attrs.Add(Parse(parts[index]));
             }
 
             return attrs;
@@ -145,7 +150,7 @@ namespace Ubiety.Scram.Core.Attributes
                 throw new FormatException();
             }
 
-            if (parts[0].Length > 1)
+            if (parts[0].Length != 1)
             {
                 throw new FormatException();
             }
@@ -161,12 +166,13 @@ namespace Ubiety.Scram.Core.Attributes
                 ClientProofName => new ClientProofAttribute(parts[1]),
                 ServerSignatureName => new ServerSignatureAttribute(parts[1]),
                 ErrorName => new ErrorAttribute(parts[1]),
-                _ => new UnknownAttribute(parts[0][0], parts[1])
+                _ => new UnknownAttribute(parts[0][0], parts[1]),
             };
         }
 
-        // language=regex
-        [GeneratedRegex(@"(?:(?<gs2>^[ny]?(?:p=.+?)?),)?(?:,?(?<attr>.=[a-zA-Z0-9\+\=]+?),?)+$", RegexOptions.CultureInvariant)]
-        private static partial Regex ScramRegex();
+        private static bool IsChannelBindingFlag(string value)
+        {
+            return value is "n" or "y" || value.StartsWith("p=", StringComparison.Ordinal);
+        }
     }
 }
