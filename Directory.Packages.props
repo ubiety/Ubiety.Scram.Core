@@ -1,0 +1,40 @@
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+
+    <!-- Lets the PackageVersion entries below raise transitive dependencies no project references directly. -->
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <!--
+    Every PackageReference version in the repository lives here. Projects declare which packages
+    they need; this file decides which version they get.
+
+    PackageDownload items are not governed by central package management and keep their inline
+    version ranges in build/_build.csproj.
+  -->
+  <!--
+    Transitive pins. Nuke.Common pulls in versions of these with published advisories. They are
+    build-only dependencies, but pinning them forward keeps restore clean. Drop these entries if
+    Nuke ships a release that already resolves patched versions.
+  -->
+  <ItemGroup>
+    <PackageVersion Include="NuGet.Packaging" Version="7.6.0" />
+    <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="coverlet.msbuild" Version="10.0.1" />
+    <PackageVersion Include="JetBrains.Annotations" Version="2026.2.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
+    <PackageVersion Include="Nuke.Common" Version="10.1.0" />
+    <PackageVersion Include="Shouldly" Version="4.3.0" />
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
+    <PackageVersion Include="Ubiety.Stringprep.Core" Version="0.4.2" />
+    <PackageVersion Include="Ubiety.StyleCop" Version="0.0.5" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+  </ItemGroup>
+
+</Project>
