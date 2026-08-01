@@ -1,0 +1,27 @@
+<Project>
+
+  <!--
+    Settings shared by every project in the repository. Projects override individual values by
+    redeclaring them in their own PropertyGroup, which is evaluated after this file.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+
+    <!--
+      NuGet audit warnings stay warnings. They are raised by advisories published upstream, so as
+      errors they would break a previously green build with no change to this repository, and the
+      fix is not always ours to make. They still fail loudly in the build log.
+    -->
+    <WarningsNotAsErrors>NU1901;NU1902;NU1903;NU1904</WarningsNotAsErrors>
+  </PropertyGroup>
+
+  <!-- Ubiety.Scram.Core is the only shipping package; everything else opts back in explicitly. -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+</Project>

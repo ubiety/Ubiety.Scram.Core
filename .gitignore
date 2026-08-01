@@ -472,3 +472,8 @@ ASALocalRun/
 healthchecksdb
 
 # End of https://www.gitignore.io/api/git,cake,wyam,rider,docfx,sonarqube,dotsettings,visualstudio,visualstudiocode
+
+# DocFX: generated API metadata and rendered site. api/index.md is hand written.
+docs/api/*.yml
+docs/api/.manifest
+docs/_site/
