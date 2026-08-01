@@ -57,7 +57,7 @@ namespace Ubiety.Scram.Core.Attributes
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"{Name} = {Convert.ToBase64String(Value)}";
+            return $"{Name}={Convert.ToBase64String(Value)}";
         }
     }
 }

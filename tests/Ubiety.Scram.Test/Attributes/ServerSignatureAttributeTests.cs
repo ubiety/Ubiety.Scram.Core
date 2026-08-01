@@ -49,5 +49,42 @@ namespace Ubiety.Scram.Test.Attributes
 
             first.GetHashCode().ShouldBe(second.GetHashCode());
         }
+
+        [Fact]
+        public void When_ConvertedToAString_ShouldUseTheWireFormat()
+        {
+            var attribute = new ServerSignatureAttribute("rmF9pqV8S7suAoZWja4dJRkFsKQ=");
+
+            attribute.ToString().ShouldBe("v=rmF9pqV8S7suAoZWja4dJRkFsKQ=");
+        }
+
+        [Fact]
+        public void When_ComparedToAMatchingString_ShouldBeEqual()
+        {
+            var attribute = new ServerSignatureAttribute("rmF9pqV8S7suAoZWja4dJRkFsKQ=");
+
+            (attribute == "rmF9pqV8S7suAoZWja4dJRkFsKQ=").ShouldBeTrue();
+            (attribute != "rmF9pqV8S7suAoZWja4dJRkFsKQ=").ShouldBeFalse();
+        }
+
+        [Theory]
+        [InlineData("not base64 at all")]
+        [InlineData("")]
+        public void When_ComparedToAnInvalidString_ShouldNotBeEqualAndShouldNotThrow(string value)
+        {
+            var attribute = new ServerSignatureAttribute("rmF9pqV8S7suAoZWja4dJRkFsKQ=");
+
+            (attribute == value).ShouldBeFalse();
+            (attribute != value).ShouldBeTrue();
+        }
+
+        [Fact]
+        public void When_SignaturesDiffer_ShouldNotBeEqual()
+        {
+            var first = new ServerSignatureAttribute("rmF9pqV8S7suAoZWja4dJRkFsKQ=");
+            var second = new ServerSignatureAttribute("cmF9pqV8S7suAoZWja4dJRkFsKQ=");
+
+            first.Equals(second).ShouldBeFalse();
+        }
     }
 }

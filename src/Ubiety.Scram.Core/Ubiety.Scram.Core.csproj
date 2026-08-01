@@ -1,15 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <IsPackable>true</IsPackable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <LangVersion>preview</LangVersion>
-    <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
 
+  <!-- The package version comes from GitVersion via the Pack target; see build/Build.cs. -->
   <PropertyGroup>
-    <Version>2.0.1</Version>
     <Authors>Dieter Lunn</Authors>
     <PackageDescription>Implementation of SCRAM for .NET</PackageDescription>
     <PackageIcon>icon128.png</PackageIcon>
@@ -19,20 +17,17 @@
     <PackageTags>ubiety;scram;challenge-response;authentication;dotnet</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <None Include="..\..\icon128.png" Pack="true" PackagePath="\" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Ubiety.Stringprep.Core" Version="0.4.2" />
-    <PackageReference Include="Ubiety.StyleCop" Version="0.0.5" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.Annotations" />
+    <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" />
+    <PackageReference Include="Ubiety.Stringprep.Core" />
+    <PackageReference Include="Ubiety.StyleCop" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

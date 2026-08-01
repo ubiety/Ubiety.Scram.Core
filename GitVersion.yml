@@ -1,7 +1,2 @@
+workflow: GitFlow/v1
 mode: ContinuousDelivery
-branches:
-  master:
-    regex: (^master$|^origin\/master$|^main$|^origin\/main$)
-    mode: ContinuousDeployment
-ignore:
-  sha: []

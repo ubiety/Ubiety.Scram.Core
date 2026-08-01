@@ -17,7 +17,7 @@ namespace Ubiety.Scram.Test.Messages
 
             response.Iterations?.Value.ShouldBe(4096);
             response.Nonce?.Value.ShouldBe("fyko+d2lbbFgONRv9qkxdawL3rfcNHYJY1ZVvWVs7j");
-            response.Salt?.ToString().ShouldBe("s = QSXCR+Q6sek8bf92");
+            response.Salt?.ToString().ShouldBe("s=QSXCR+Q6sek8bf92");
         }
 
         [Theory]
@@ -53,7 +53,7 @@ namespace Ubiety.Scram.Test.Messages
 
             message.Iterations?.Value.ShouldBe(4096);
             message.Nonce?.Value.ShouldBe("nonce");
-            message.Salt?.ToString().ShouldBe("s = salt");
+            message.Salt?.ToString().ShouldBe("s=salt");
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace Ubiety.Scram.Test.Messages
 
             message.Iterations?.Value.ShouldBe(4096);
             message.Nonce?.Value.ShouldBe("nonce");
-            message.Salt?.ToString().ShouldBe("s = salt");
+            message.Salt?.ToString().ShouldBe("s=salt");
         }
     }
 }

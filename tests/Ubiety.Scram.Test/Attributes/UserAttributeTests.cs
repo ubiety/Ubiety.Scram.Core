@@ -47,5 +47,16 @@ namespace Ubiety.Scram.Test.Attributes
                 var _ = new UserAttribute("user=5F", true);
             });
         }
+
+        [Theory]
+        [InlineData("user=")]
+        [InlineData("user=3")]
+        public void When_UsernameContainsTruncatedEscapeSequence_ShouldThrowFormatException(string value)
+        {
+            Should.Throw<FormatException>(() =>
+            {
+                var _ = new UserAttribute(value, true);
+            });
+        }
     }
 }

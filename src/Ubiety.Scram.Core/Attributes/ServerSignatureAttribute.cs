@@ -24,7 +24,7 @@
 // For more information, please refer to <http://unlicense.org/>
 
 using System;
-using System.Linq;
+using System.Security.Cryptography;
 
 namespace Ubiety.Scram.Core.Attributes
 {
@@ -65,7 +65,7 @@ namespace Ubiety.Scram.Core.Attributes
         /// </returns>
         public static bool operator ==(ServerSignatureAttribute? left, string right)
         {
-            return Equals(left, new ServerSignatureAttribute(right));
+            return TryDecode(right, out var decoded) && Equals(left, decoded);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Ubiety.Scram.Core.Attributes
         /// </returns>
         public static bool operator !=(ServerSignatureAttribute? left, string right)
         {
-            return !Equals(left, new ServerSignatureAttribute(right));
+            return !(left == right);
         }
 
         /// <summary>
@@ -98,9 +98,9 @@ namespace Ubiety.Scram.Core.Attributes
         /// </summary>
         /// <param name="other">A byte array to compare with the current instance.</param>
         /// <returns>True if the current instance is equal to the provided byte array; otherwise, false.</returns>
-        public bool Equals(byte[] other)
+        public bool Equals(byte[]? other)
         {
-            return Equals(new ServerSignatureAttribute(other));
+            return other is not null && CryptographicOperations.FixedTimeEquals(Value, other);
         }
 
         /// <summary>
@@ -112,7 +112,16 @@ namespace Ubiety.Scram.Core.Attributes
         /// </returns>
         public bool Equals(ServerSignatureAttribute? other)
         {
-            return other is not null && (ReferenceEquals(this, other) || Value.SequenceEqual(other.Value));
+            // The signature is a MAC, so compare it in constant time to avoid
+            // leaking how much of a forged value matched.
+            return other is not null
+                   && (ReferenceEquals(this, other) || CryptographicOperations.FixedTimeEquals(Value, other.Value));
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Name}={Convert.ToBase64String(Value)}";
         }
 
         /// <summary>
@@ -120,11 +129,32 @@ namespace Ubiety.Scram.Core.Attributes
         /// </summary>
         /// <returns>
         /// An integer representing the hash code of the <see cref="ServerSignatureAttribute"/> instance,
-        /// which is derived from the attribute name.
+        /// which is derived from the signature value.
         /// </returns>
         public override int GetHashCode()
         {
-            return Name.GetHashCode();
+            var hash = default(HashCode);
+            hash.AddBytes(Value);
+            return hash.ToHashCode();
+        }
+
+        private static bool TryDecode(string? value, out ServerSignatureAttribute? signature)
+        {
+            signature = null;
+
+            if (value is null)
+            {
+                return false;
+            }
+
+            var buffer = new byte[((value.Length * 3) + 3) / 4];
+            if (!Convert.TryFromBase64String(value, buffer, out var written))
+            {
+                return false;
+            }
+
+            signature = new ServerSignatureAttribute(buffer[..written]);
+            return true;
         }
     }
 }

@@ -36,13 +36,13 @@ namespace Ubiety.Scram.Core
     /// </summary>
     public class Hash
     {
-        private readonly HashAlgorithm _hashAlgorithm;
-        private readonly Func<byte[], HMAC> _hmacFactory;
+        private readonly HashAlgorithmName _algorithm;
+        private readonly int _hashLength;
 
-        private Hash(HashAlgorithm algorithm, Func<byte[], HMAC> hmacFactory)
+        private Hash(HashAlgorithmName algorithm, int hashLength)
         {
-            _hashAlgorithm = algorithm;
-            _hmacFactory = hmacFactory;
+            _algorithm = algorithm;
+            _hashLength = hashLength;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Ubiety.Scram.Core
         /// <returns><see cref="Hash"/> set to use SHA1.</returns>
         public static Hash Sha1()
         {
-            return new Hash(SHA1.Create(), GetHmacSha1);
+            return new Hash(HashAlgorithmName.SHA1, SHA1.HashSizeInBytes);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Ubiety.Scram.Core
         /// <returns><see cref="Hash"/> set to use SHA256.</returns>
         public static Hash Sha256()
         {
-            return new Hash(SHA256.Create(), GetHmacSha256);
+            return new Hash(HashAlgorithmName.SHA256, SHA256.HashSizeInBytes);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Ubiety.Scram.Core
         /// <returns><see cref="Hash"/> set to use SHA512.</returns>
         public static Hash Sha512()
         {
-            return new Hash(SHA512.Create(), GetHmacSha512);
+            return new Hash(HashAlgorithmName.SHA512, SHA512.HashSizeInBytes);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Ubiety.Scram.Core
         /// <returns>A byte array representing the computed hash.</returns>
         public byte[] ComputeHash(byte[] value)
         {
-            return _hashAlgorithm.ComputeHash(value);
+            return CryptographicOperations.HashData(_algorithm, value);
         }
 
         /// <summary>
@@ -90,8 +90,7 @@ namespace Ubiety.Scram.Core
         /// <returns>A byte array containing the computed hash.</returns>
         public byte[] ComputeHash(byte[] value, byte[] key)
         {
-            var hmacAlgorithm = _hmacFactory(key);
-            return hmacAlgorithm.ComputeHash(value);
+            return CryptographicOperations.HmacData(_algorithm, key, value);
         }
 
         /// <summary>
@@ -101,41 +100,18 @@ namespace Ubiety.Scram.Core
         /// <param name="salt">The byte array used as the salt for the hash.</param>
         /// <param name="iterations">The number of iterations to perform on the hash.</param>
         /// <returns>A byte array containing the computed hash value.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="iterations"/> is less than one.</exception>
         public byte[] ComputeHash(byte[] password, IEnumerable<byte> salt, int iterations)
         {
-            var one = BitConverter.GetBytes(1);
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(one);
-            }
+            ArgumentOutOfRangeException.ThrowIfLessThan(iterations, 1);
 
-            var completeSalt = salt.Concat(one).ToArray();
-            var iteration = ComputeHash(completeSalt, password);
-            var final = iteration;
-
-            for (var i = 1; i < iterations; ++i)
-            {
-                var temp = ComputeHash(iteration, password);
-                final = final.ExclusiveOr(temp);
-                iteration = temp;
-            }
-
-            return final;
-        }
-
-        private static HMACSHA1 GetHmacSha1(byte[] key)
-        {
-            return new HMACSHA1(key);
-        }
-
-        private static HMACSHA256 GetHmacSha256(byte[] key)
-        {
-            return new HMACSHA256(key);
-        }
-
-        private static HMACSHA512 GetHmacSha512(byte[] key)
-        {
-            return new HMACSHA512(key);
+            // The SCRAM Hi() function is PBKDF2 with an output length of one hash block.
+            return Rfc2898DeriveBytes.Pbkdf2(
+                password,
+                salt as byte[] ?? salt.ToArray(),
+                iterations,
+                _algorithm,
+                _hashLength);
         }
     }
 }

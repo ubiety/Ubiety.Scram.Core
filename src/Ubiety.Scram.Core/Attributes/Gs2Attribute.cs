@@ -23,6 +23,8 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
+using System;
+
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
@@ -47,15 +49,31 @@ namespace Ubiety.Scram.Core.Attributes
         ///     Initializes a new instance of the <see cref="Gs2Attribute"/> class.
         /// </summary>
         /// <param name="header">String version of the header.</param>
+        /// <exception cref="FormatException">Thrown when the header is empty.</exception>
         public Gs2Attribute(string header)
             : base('p')
         {
+            if (string.IsNullOrEmpty(header))
+            {
+                throw new FormatException("A GS2 header cannot be empty.");
+            }
+
             ChannelBindingStatus = header[0] switch
             {
                 'n' => ChannelBindingStatus.NotSupported,
                 'y' => ChannelBindingStatus.ClientSupport,
                 'p' => ChannelBindingStatus.Required,
-                _ => ChannelBindingStatus.NotSupported
+                _ => ChannelBindingStatus.NotSupported,
+            };
+
+            // A "p=<cb-name>" flag also names the binding, which has to survive the
+            // round trip so ToString rebuilds the header the peer actually sent.
+            Version = header switch
+            {
+                "p=tls-exporter" => TlsVersion.TlsExporter,
+                "p=tls-unique" => TlsVersion.TlsUnique,
+                "p=tls-server-end-point" => TlsVersion.TlsServerEndpoint,
+                _ => TlsVersion.TlsUnique,
             };
         }
 
@@ -101,7 +119,7 @@ namespace Ubiety.Scram.Core.Attributes
                 TlsVersion.TlsExporter => "p=tls-exporter,,",
                 TlsVersion.TlsUnique => "p=tls-unique,,",
                 TlsVersion.TlsServerEndpoint => "p=tls-server-end-point,,",
-                _ => "p=tls-unique,,"
+                _ => "p=tls-unique,,",
             };
 
             return ChannelBindingStatus switch
@@ -109,7 +127,7 @@ namespace Ubiety.Scram.Core.Attributes
                 ChannelBindingStatus.ClientSupport => "y,,",
                 ChannelBindingStatus.NotSupported => "n,,",
                 ChannelBindingStatus.Required => tls,
-                _ => "n,,"
+                _ => "n,,",
             };
         }
     }
