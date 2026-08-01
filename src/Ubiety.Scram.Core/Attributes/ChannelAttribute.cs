@@ -24,7 +24,6 @@
 // For more information, please refer to <http://unlicense.org/>
 
 using System;
-using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
 
@@ -86,11 +85,14 @@ namespace Ubiety.Scram.Core.Attributes
         /// <returns>String representation of the attribute.</returns>
         public override string ToString()
         {
-            var attribute = (Token is null)
-                ? Encoding.UTF8.GetBytes(Header)
-                : (byte[])Encoding.UTF8.GetBytes($"{Header},,").Concat(Token);
+            // RFC 5802 defines the channel attribute as base64(gs2-header + cbind-data).
+            // Header already carries the header's trailing separators.
+            var header = Encoding.UTF8.GetBytes(Header);
+            var attribute = Token is null
+                ? header
+                : [.. header, .. Token];
 
-            return $"c={Convert.ToBase64String(attribute)}";
+            return $"{Name}={Convert.ToBase64String(attribute)}";
         }
     }
 }

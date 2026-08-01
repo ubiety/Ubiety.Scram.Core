@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Shouldly;
 using Ubiety.Scram.Core.Attributes;
 using Xunit;
@@ -69,6 +70,44 @@ namespace Ubiety.Scram.Test.Attributes
             var attribute = ScramAttribute.Parse("h=name");
 
             attribute.ShouldBeOfType<UnknownAttribute>();
+        }
+
+        [Fact]
+        public void When_TheNameIsMissing_ShouldThrowAnException()
+        {
+            Should.Throw<FormatException>(() =>
+            {
+                var _ = ScramAttribute.Parse("=name");
+            });
+        }
+
+        [Fact]
+        public void When_AValueContainsABase64Slash_ShouldStillParseTheAttribute()
+        {
+            var attributes = ScramAttribute.ParseAll("r=nonce,s=ab/cd+ef,i=4096");
+
+            attributes.OfType<NonceAttribute>().ShouldHaveSingleItem();
+            attributes.OfType<SaltAttribute>().ShouldHaveSingleItem();
+            attributes.OfType<IterationsAttribute>().ShouldHaveSingleItem();
+        }
+
+        [Fact]
+        public void When_TheMessageIsEmpty_ShouldThrowAnException()
+        {
+            Should.Throw<FormatException>(() =>
+            {
+                var _ = ScramAttribute.ParseAll(string.Empty);
+            });
+        }
+
+        [Fact]
+        public void When_TheGs2HeaderCarriesAnAuthzid_ShouldParseBoth()
+        {
+            var attributes = ScramAttribute.ParseAll("n,a=admin,n=user,r=nonce");
+
+            attributes.OfType<Gs2Attribute>().ShouldHaveSingleItem();
+            attributes.OfType<AuthorizationIdentityAttribute>().ShouldHaveSingleItem()
+                .Value.ShouldBe("admin");
         }
     }
 }

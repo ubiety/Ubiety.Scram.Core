@@ -68,12 +68,18 @@ namespace Ubiety.Scram.Core.Attributes
             var lastIndex = -1;
             while ((lastIndex = value.IndexOf('=', lastIndex + 1)) > -1)
             {
+                // An '=' too close to the end cannot start a complete escape sequence.
+                if (lastIndex + 3 > value.Length)
+                {
+                    throw new FormatException($"Username contains a truncated escape sequence at index {lastIndex}.");
+                }
+
                 var escapeCheck = value.Substring(lastIndex, 3);
                 value = escapeCheck switch
                 {
                     EqualReplacement => Replace(value, lastIndex, '=', EqualReplacement.Length),
                     CommaReplacement => Replace(value, lastIndex, ',', CommaReplacement.Length),
-                    _ => throw new FormatException()
+                    _ => throw new FormatException($"Username contains an invalid escape sequence '{escapeCheck}'."),
                 };
             }
 
