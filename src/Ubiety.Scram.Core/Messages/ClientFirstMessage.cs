@@ -48,7 +48,7 @@ namespace Ubiety.Scram.Core.Messages
         {
             Username = new UserAttribute(username);
             Nonce = new NonceAttribute(nonce);
-            Gs2Header = new Gs2Attribute { ChannelBindingStatus = bindingStatus, Version = tlsVersion };
+            Gs2Header = new Gs2Attribute(bindingStatus, tlsVersion);
         }
 
         private ClientFirstMessage()

@@ -79,6 +79,17 @@ namespace Ubiety.Scram.Test.Attributes
         }
 
         [Fact]
+        public void When_ComparedToANullString_ShouldNotBeEqualAndShouldNotThrow()
+        {
+            // A server that sends no "v=" at all leaves the caller holding a null, and comparing
+            // it must fail closed rather than throw out of the verification path.
+            var attribute = new ServerSignatureAttribute("rmF9pqV8S7suAoZWja4dJRkFsKQ=");
+
+            (attribute == null).ShouldBeFalse();
+            (attribute != null).ShouldBeTrue();
+        }
+
+        [Fact]
         public void When_SignaturesDiffer_ShouldNotBeEqual()
         {
             var first = new ServerSignatureAttribute("rmF9pqV8S7suAoZWja4dJRkFsKQ=");

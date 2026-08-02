@@ -41,9 +41,18 @@ namespace Ubiety.Scram.Core.Messages
         /// <param name="serverFirstMessage">First server message.</param>
         /// <param name="password">User password.</param>
         /// <param name="hash"><see cref="Hash"/> to use when calculating proof.</param>
-        /// <param name="token">Token to use for channel binding.</param>
+        /// <param name="token">
+        /// Channel binding token. Required when the client first message declared
+        /// <see cref="ChannelBindingStatus.Required"/>, and must be omitted otherwise.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the token does not match the channel binding status of
+        /// <paramref name="clientFirstMessage"/>.
+        /// </exception>
         public ClientFinalMessage(ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage, string password, Hash hash, byte[]? token = null)
         {
+            ValidateChannelBinding(clientFirstMessage.Gs2Header.ChannelBindingStatus, token);
+
             Channel = new ChannelAttribute(clientFirstMessage.Gs2Header, token);
             Nonce = new NonceAttribute(serverFirstMessage.Nonce?.Value);
 
@@ -88,6 +97,39 @@ namespace Ubiety.Scram.Core.Messages
         /// <param name="message">The client final message to convert.</param>
         /// <returns>A byte array containing the UTF-8 encoded message.</returns>
         public static implicit operator byte[](ClientFinalMessage message) => Encoding.UTF8.GetBytes(message.Message);
+
+        /// <summary>
+        /// Rejects a token that contradicts the GS2 header the client already committed to.
+        /// </summary>
+        /// <remarks>
+        /// RFC 5802 defines the channel attribute as base64(gs2-header + cbind-data), where the
+        /// cbind-data is present only for a "p=" header. Both mismatches produce a message a
+        /// conforming server rejects, so failing here turns a silent authentication failure into
+        /// an error that names the cause.
+        /// </remarks>
+        /// <param name="status">Binding status declared in the client first message.</param>
+        /// <param name="token">Channel binding token supplied by the caller.</param>
+        /// <exception cref="ArgumentException">Thrown when the two disagree.</exception>
+        private static void ValidateChannelBinding(ChannelBindingStatus status, byte[]? token)
+        {
+            var hasToken = token is { Length: > 0 };
+
+            if (status == ChannelBindingStatus.Required && !hasToken)
+            {
+                throw new ArgumentException(
+                    "The client first message requires channel binding, so a channel binding token is required. " +
+                    "Without one the message advertises a binding it does not carry.",
+                    nameof(token));
+            }
+
+            if (status != ChannelBindingStatus.Required && hasToken)
+            {
+                throw new ArgumentException(
+                    $"The client first message declared {status}, so a channel binding token cannot be used. " +
+                    $"Use {nameof(ChannelBindingStatus)}.{nameof(ChannelBindingStatus.Required)} to bind the exchange to the channel.",
+                    nameof(token));
+            }
+        }
 
         private void CalculateProof(string password, Hash hash, ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage)
         {
