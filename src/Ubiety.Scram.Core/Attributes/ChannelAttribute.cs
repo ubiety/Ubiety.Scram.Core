@@ -40,7 +40,11 @@ namespace Ubiety.Scram.Core.Attributes
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChannelAttribute"/> class.
         /// </summary>
-        /// <param name="header">String representation of the GS2 header.</param>
+        /// <param name="header">
+        /// String representation of the GS2 header, including its trailing separators - "n,,",
+        /// "y,,", or "p=&lt;cb-name&gt;,,". This is the unencoded header; to build the attribute
+        /// from the base64 value on the wire, use <see cref="FromWire"/>.
+        /// </param>
         /// <param name="token">Channel binding token.</param>
         public ChannelAttribute(string header, byte[]? token = null)
             : base(ChannelName)
@@ -83,6 +87,44 @@ namespace Ubiety.Scram.Core.Attributes
         /// <param name="attribute">Attribute to convert.</param>
         /// <returns>String representation of the <see cref="ChannelAttribute"/>.</returns>
         public static implicit operator string(ChannelAttribute attribute) => attribute.ToString();
+
+        /// <summary>
+        /// Builds a <see cref="ChannelAttribute"/> from the base64 value carried on the wire.
+        /// </summary>
+        /// <remarks>
+        /// RFC 5802 defines the attribute as base64(gs2-header + cbind-data), and the header is
+        /// "gs2-cbind-flag ',' [authzid] ','" - so the second comma ends the header and everything
+        /// after it is the binding data. Splitting the two apart is what lets a peer verify the
+        /// binding: the header has to match what the client committed to in its first message, and
+        /// the data has to match the token the TLS connection produced.
+        /// </remarks>
+        /// <param name="value">Base64 value of the attribute, without the leading "c=".</param>
+        /// <returns>The parsed attribute.</returns>
+        /// <exception cref="FormatException">
+        /// Thrown when the value is not valid base64 or does not contain a complete GS2 header.
+        /// </exception>
+        public static ChannelAttribute FromWire(string value)
+        {
+            var decoded = Convert.FromBase64String(value);
+
+            var firstComma = Array.IndexOf(decoded, (byte)',');
+            var secondComma = firstComma < 0 ? -1 : Array.IndexOf(decoded, (byte)',', firstComma + 1);
+
+            if (secondComma < 0)
+            {
+                throw new FormatException(
+                    "The channel attribute does not contain a complete GS2 header, which ends at " +
+                    "the second comma.");
+            }
+
+            // The header keeps its trailing separators, so re-encoding reproduces the value byte
+            // for byte - the peer signed its proof over these exact bytes.
+            var headerLength = secondComma + 1;
+            var header = Encoding.UTF8.GetString(decoded, 0, headerLength);
+            var token = decoded.Length > headerLength ? decoded[headerLength..] : null;
+
+            return new ChannelAttribute(header, token);
+        }
 
         /// <summary>
         /// Converts instance to a string.

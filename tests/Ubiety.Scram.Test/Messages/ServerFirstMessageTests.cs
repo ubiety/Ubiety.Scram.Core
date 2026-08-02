@@ -36,6 +36,22 @@ namespace Ubiety.Scram.Test.Messages
         }
 
         [Theory]
+        [InlineData("r=nonce,s=QSXCR+Q6sek8bf92,i=99999999999")]
+        [InlineData("r=nonce,s=QSXCR+Q6sek8bf92,i=-99999999999")]
+        [InlineData("r=nonce,s=QSXCR+Q6sek8bf92,i=notanumber")]
+        public void When_TheIterationCountIsNotRepresentable_ItShouldBeAParseFailure(string response)
+        {
+            // The count comes from the peer, so an out of range value has to surface as a parse
+            // failure rather than an OverflowException escaping TryParse.
+            ServerFirstMessage.TryParse(response, out _).ShouldBeFalse();
+
+            Should.Throw<MessageParseException>(() =>
+            {
+                var _ = ServerFirstMessage.Parse(response);
+            });
+        }
+
+        [Theory]
         [InlineData("e=message")]
         [InlineData("r=data,e=message")]
         public void When_ProvidedWithAnError_ParseShouldThrowAnException(string response)

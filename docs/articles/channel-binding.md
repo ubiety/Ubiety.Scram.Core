@@ -49,6 +49,16 @@ exchange.
 `tls-unique` is the default for backwards compatibility, but it is not defined for TLS 1.3 — use
 `tls-exporter` on a TLS 1.3 connection.
 
+Those three names are the only ones the library reads. A header naming anything else — or carrying
+a flag that is not `n`, `y`, or `p=` — is a parse failure rather than a value quietly rounded down
+to the nearest thing the library does understand:
+
+- An unrecognised flag read as `n,,` would be indistinguishable from a client that never asked for
+  binding, which is exactly the downgrade the flag is there to make visible.
+- An unrecognised binding type read as `tls-unique` would come back out of `ToString` as
+  `p=tls-unique,,`, so the reconstructed header would no longer be the one the peer signed its
+  proof over.
+
 ## Supplying the token
 
 The binding data itself comes from the TLS stack, not from this library, and is passed to
@@ -106,3 +116,23 @@ TLS 1.3 at all.
 
 Pass whichever token you obtained, and make sure `TlsVersion` names the same binding type — the
 name goes into the signed header, so a mismatch fails the exchange.
+
+## Reading the attribute back
+
+Verifying a binding — the server's half of the exchange — means taking the `c=` attribute apart
+again. <xref:Ubiety.Scram.Core.Attributes.ChannelAttribute.FromWire(System.String)> decodes the
+base64 and splits it at the second comma, which is where RFC 5802's `gs2-cbind-flag "," [authzid]
+","` ends:
+
+```csharp
+var channel = ChannelAttribute.FromWire(value);
+
+channel.Header;  // "p=tls-exporter,," — compare against the client first message
+channel.Token;   // the binding data, or null when the header is "n,," or "y,,"
+```
+
+The constructor takes the *unencoded* header instead, which is what building a message needs;
+`FromWire` is the one to use on a value read off the wire. Re-encoding a parsed attribute
+reproduces the original value byte for byte, because the proof is signed over exactly those bytes.
+A value that is not valid base64, or that has no complete GS2 header, throws `FormatException` —
+which the message `TryParse` methods report as a parse failure.

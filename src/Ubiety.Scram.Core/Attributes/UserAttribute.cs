@@ -24,6 +24,7 @@
 // For more information, please refer to <http://unlicense.org/>
 
 using System;
+using Ubiety.Stringprep.Core.Exceptions;
 
 namespace Ubiety.Scram.Core.Attributes
 {
@@ -40,8 +41,20 @@ namespace Ubiety.Scram.Core.Attributes
         /// </summary>
         /// <param name="value">String value of the username.</param>
         /// <param name="fromWire">Indicates if the value is escaped from the server.</param>
+        /// <exception cref="FormatException">
+        /// Thrown when <paramref name="fromWire"/> is <c>true</c> and the value is not a valid
+        /// escaped, SASLprep'd username.
+        /// </exception>
+        /// <exception cref="ProhibitedValueException">
+        /// Thrown when <paramref name="fromWire"/> is <c>false</c> and the username contains a
+        /// character SASLprep prohibits.
+        /// </exception>
+        /// <exception cref="BidirectionalFormatException">
+        /// Thrown when <paramref name="fromWire"/> is <c>false</c> and the username mixes text
+        /// directions in a way SASLprep forbids.
+        /// </exception>
         public UserAttribute(string value, bool fromWire = false)
-            : base(UserName, Replace(value, fromWire))
+            : base(UserName, Prepare(value, fromWire))
         {
         }
 
@@ -56,6 +69,65 @@ namespace Ubiety.Scram.Core.Attributes
         {
             var printableValue = Value.Replace("=", EqualReplacement).Replace(",", CommaReplacement);
             return $"{Name}={printableValue}";
+        }
+
+        /// <summary>
+        /// Unescapes the wire form of a username and applies SASLprep to it.
+        /// </summary>
+        /// <remarks>
+        /// RFC 5802 section 5.1 requires the username to be SASLprep'd, so that two Unicode
+        /// spellings of the same name cannot authenticate as two different principals. Preparing
+        /// a value on its way out is a transformation; a value arriving from the wire was already
+        /// prepared by the peer, so it is only verified. Rewriting an inbound username would
+        /// change the bytes the peer signed its proof over and break verification.
+        /// </remarks>
+        /// <param name="value">Username, escaped when it comes from the wire.</param>
+        /// <param name="fromWire">Whether the value arrived from the wire.</param>
+        /// <returns>The prepared username.</returns>
+        private static string Prepare(string value, bool fromWire)
+        {
+            var unescaped = Replace(value, fromWire);
+
+            return fromWire ? VerifyPrepared(unescaped) : SaslPrep.Run(unescaped);
+        }
+
+        /// <summary>
+        /// Rejects an inbound username that is not already SASLprep'd.
+        /// </summary>
+        /// <remarks>
+        /// The stringprep failures become a <see cref="FormatException"/> because that is what the
+        /// message TryParse methods treat as a parse failure; letting the original types through
+        /// would turn a malformed message from a peer into an exception escaping TryParse.
+        /// </remarks>
+        /// <param name="value">Unescaped username as it arrived.</param>
+        /// <returns>The value unchanged.</returns>
+        /// <exception cref="FormatException">Thrown when the value is not a valid SASLprep'd username.</exception>
+        private static string VerifyPrepared(string value)
+        {
+            string prepared;
+
+            try
+            {
+                prepared = SaslPrep.Run(value);
+            }
+            catch (ProhibitedValueException exception)
+            {
+                throw new FormatException("The username contains a character SASLprep prohibits.", exception);
+            }
+            catch (BidirectionalFormatException exception)
+            {
+                throw new FormatException("The username mixes text directions in a way SASLprep forbids.", exception);
+            }
+
+            if (!string.Equals(prepared, value, StringComparison.Ordinal))
+            {
+                throw new FormatException(
+                    "The username is not SASLprep'd, so it does not match the form RFC 5802 requires " +
+                    "on the wire. Accepting it would let a second spelling of a name authenticate as " +
+                    "that name.");
+            }
+
+            return value;
         }
 
         private static string Replace(string value, bool doReplace)

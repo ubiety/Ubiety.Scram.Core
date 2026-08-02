@@ -160,7 +160,7 @@ namespace Ubiety.Scram.Core.Attributes
                 AuthorizationIdentityName => new AuthorizationIdentityAttribute(parts[1]),
                 UserName => new UserAttribute(parts[1], true),
                 NonceName => new NonceAttribute(parts[1]),
-                ChannelName => new ChannelAttribute(parts[1]),
+                ChannelName => ChannelAttribute.FromWire(parts[1]),
                 SaltName => new SaltAttribute(parts[1]),
                 IterationsName => new IterationsAttribute(parts[1]),
                 ClientProofName => new ClientProofAttribute(parts[1]),
@@ -172,7 +172,7 @@ namespace Ubiety.Scram.Core.Attributes
 
         private static bool IsChannelBindingFlag(string value)
         {
-            return value is "n" or "y" || value.StartsWith("p=", StringComparison.Ordinal);
+            return value is "n" or "y" || value.StartsWith(Gs2Attribute.BindingTypePrefix, StringComparison.Ordinal);
         }
     }
 }

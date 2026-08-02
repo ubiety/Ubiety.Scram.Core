@@ -35,6 +35,24 @@ namespace Ubiety.Scram.Core.Messages
     public class ClientFinalMessage
     {
         /// <summary>
+        /// The smallest iteration count a server may ask for, as required by RFC 7677 section 4.
+        /// </summary>
+        /// <remarks>
+        /// The iteration count is chosen by the server, so a client that accepts whatever it is
+        /// sent lets a hostile or compromised server weaken its own password derivation.
+        /// </remarks>
+        public const int MinimumIterations = 4096;
+
+        /// <summary>
+        /// The largest iteration count this library will derive a key for.
+        /// </summary>
+        /// <remarks>
+        /// Well above anything a real deployment uses, and low enough that a server cannot stall
+        /// the client indefinitely by asking for an absurd amount of work.
+        /// </remarks>
+        public const int MaximumIterations = 10_000_000;
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="ClientFinalMessage"/> class.
         /// </summary>
         /// <param name="clientFirstMessage">First client message.</param>
@@ -45,13 +63,21 @@ namespace Ubiety.Scram.Core.Messages
         /// Channel binding token. Required when the client first message declared
         /// <see cref="ChannelBindingStatus.Required"/>, and must be omitted otherwise.
         /// </param>
+        /// <param name="minimumIterations">
+        /// Smallest iteration count to accept from the server. Defaults to
+        /// <see cref="MinimumIterations"/>; lower it only to interoperate with a legacy server
+        /// that predates RFC 7677, and understand that doing so weakens the derivation.
+        /// </param>
         /// <exception cref="ArgumentException">
         /// Thrown when the token does not match the channel binding status of
-        /// <paramref name="clientFirstMessage"/>.
+        /// <paramref name="clientFirstMessage"/>, or when the server first message does not
+        /// carry the nonce or iteration count the protocol requires.
         /// </exception>
-        public ClientFinalMessage(ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage, string password, Hash hash, byte[]? token = null)
+        public ClientFinalMessage(ClientFirstMessage clientFirstMessage, ServerFirstMessage serverFirstMessage, string password, Hash hash, byte[]? token = null, int minimumIterations = MinimumIterations)
         {
             ValidateChannelBinding(clientFirstMessage.Gs2Header.ChannelBindingStatus, token);
+            ValidateNonce(clientFirstMessage.Nonce?.Value, serverFirstMessage.Nonce?.Value);
+            ValidateIterations(serverFirstMessage.Iterations?.Value, minimumIterations);
 
             Channel = new ChannelAttribute(clientFirstMessage.Gs2Header, token);
             Nonce = new NonceAttribute(serverFirstMessage.Nonce?.Value);
@@ -128,6 +154,87 @@ namespace Ubiety.Scram.Core.Messages
                     $"The client first message declared {status}, so a channel binding token cannot be used. " +
                     $"Use {nameof(ChannelBindingStatus)}.{nameof(ChannelBindingStatus.Required)} to bind the exchange to the channel.",
                     nameof(token));
+            }
+        }
+
+        /// <summary>
+        /// Rejects a server nonce that does not extend the nonce the client chose.
+        /// </summary>
+        /// <remarks>
+        /// RFC 5802 section 5.1 requires the client to verify that the initial part of the nonce
+        /// in the server first message is the nonce it sent. Skipping the check hands the server
+        /// sole control of the nonce, which is the client's half of the replay protection: an
+        /// attacker replaying a captured server first message would otherwise be answered with a
+        /// proof over a nonce the client never contributed to.
+        /// </remarks>
+        /// <param name="clientNonce">Nonce sent in the client first message.</param>
+        /// <param name="serverNonce">Nonce returned in the server first message.</param>
+        /// <exception cref="ArgumentException">Thrown when the server nonce does not extend the client nonce.</exception>
+        private static void ValidateNonce(string? clientNonce, string? serverNonce)
+        {
+            if (string.IsNullOrEmpty(clientNonce))
+            {
+                throw new ArgumentException(
+                    "The client first message has no nonce, so the server nonce cannot be verified against it.",
+                    nameof(clientNonce));
+            }
+
+            if (serverNonce is null)
+            {
+                throw new ArgumentException(
+                    "The server first message has no nonce.",
+                    nameof(serverNonce));
+            }
+
+            if (!serverNonce.StartsWith(clientNonce, StringComparison.Ordinal))
+            {
+                throw new ArgumentException(
+                    "The server nonce does not begin with the client nonce, so the server did not " +
+                    "echo the nonce this exchange started with. Treat the exchange as compromised.",
+                    nameof(serverNonce));
+            }
+
+            // A server that echoes the client nonce unchanged has contributed no randomness of its
+            // own, leaving the exchange replayable from the server's side.
+            if (serverNonce.Length == clientNonce.Length)
+            {
+                throw new ArgumentException(
+                    "The server nonce is the client nonce with nothing appended, so the server " +
+                    "contributed no randomness to the exchange.",
+                    nameof(serverNonce));
+            }
+        }
+
+        /// <summary>
+        /// Rejects an iteration count outside the range this library will derive a key for.
+        /// </summary>
+        /// <param name="iterations">Iteration count from the server first message.</param>
+        /// <param name="minimum">Smallest acceptable iteration count.</param>
+        /// <exception cref="ArgumentException">Thrown when the count is missing or out of range.</exception>
+        private static void ValidateIterations(int? iterations, int minimum)
+        {
+            if (iterations is not { } value)
+            {
+                throw new ArgumentException(
+                    "The server first message has no iteration count.",
+                    nameof(iterations));
+            }
+
+            if (value < minimum)
+            {
+                throw new ArgumentException(
+                    $"The server asked for {value} iterations, below the minimum of {minimum}. " +
+                    $"RFC 7677 requires at least {MinimumIterations}; a lower count weakens the " +
+                    "derived key against an attacker who captures the proof.",
+                    nameof(iterations));
+            }
+
+            if (value > MaximumIterations)
+            {
+                throw new ArgumentException(
+                    $"The server asked for {value} iterations, above the maximum of {MaximumIterations}. " +
+                    "Deriving the key would take long enough to stall the client.",
+                    nameof(iterations));
             }
         }
 
