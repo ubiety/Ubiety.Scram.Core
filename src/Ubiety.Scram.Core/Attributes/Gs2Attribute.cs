@@ -34,13 +34,37 @@ namespace Ubiety.Scram.Core.Attributes
     public class Gs2Attribute : ScramAttribute
     {
         /// <summary>
+        /// The prefix a gs2-cbind-flag carries when it names a channel binding type.
+        /// </summary>
+        internal const string BindingTypePrefix = "p=";
+
+        private const string TlsExporterName = "tls-exporter";
+        private const string TlsUniqueName = "tls-unique";
+        private const string TlsServerEndpointName = "tls-server-end-point";
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="Gs2Attribute"/> class.
         /// </summary>
         /// <param name="bindingStatus">Channel binding status.</param>
         /// <param name="version">TLS version of the socket.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when either value is not one the enum defines. Rejecting it here keeps the
+        /// header this attribute renders honest, rather than falling back to a flag the caller
+        /// did not ask for.
+        /// </exception>
         public Gs2Attribute(ChannelBindingStatus bindingStatus, TlsVersion version)
             : base('p')
         {
+            if (!Enum.IsDefined(bindingStatus))
+            {
+                throw new ArgumentOutOfRangeException(nameof(bindingStatus), bindingStatus, "Unknown channel binding status.");
+            }
+
+            if (!Enum.IsDefined(version))
+            {
+                throw new ArgumentOutOfRangeException(nameof(version), version, "Unknown channel binding type.");
+            }
+
             ChannelBindingStatus = bindingStatus;
             Version = version;
         }
@@ -48,8 +72,14 @@ namespace Ubiety.Scram.Core.Attributes
         /// <summary>
         ///     Initializes a new instance of the <see cref="Gs2Attribute"/> class.
         /// </summary>
-        /// <param name="header">String version of the header.</param>
-        /// <exception cref="FormatException">Thrown when the header is empty.</exception>
+        /// <param name="header">
+        /// The gs2-cbind-flag as it appeared on the wire: "n", "y", or "p=&lt;cb-name&gt;", without
+        /// the trailing separators.
+        /// </param>
+        /// <exception cref="FormatException">
+        /// Thrown when the flag is empty, is not one RFC 5802 defines, or names a channel binding
+        /// type this library does not implement.
+        /// </exception>
         public Gs2Attribute(string header)
             : base('p')
         {
@@ -58,23 +88,25 @@ namespace Ubiety.Scram.Core.Attributes
                 throw new FormatException("A GS2 header cannot be empty.");
             }
 
-            ChannelBindingStatus = header[0] switch
+            // The whole flag has to be recognised, not just its first character. Falling back to
+            // "no binding requested" would let a tampered or unreadable flag read as a client that
+            // never asked for binding, which is the downgrade the flag exists to make detectable.
+            ChannelBindingStatus = header switch
             {
-                'n' => ChannelBindingStatus.NotSupported,
-                'y' => ChannelBindingStatus.ClientSupport,
-                'p' => ChannelBindingStatus.Required,
-                _ => ChannelBindingStatus.NotSupported,
+                "n" => ChannelBindingStatus.NotSupported,
+                "y" => ChannelBindingStatus.ClientSupport,
+                _ when header.StartsWith(BindingTypePrefix, StringComparison.Ordinal) => ChannelBindingStatus.Required,
+                _ => throw new FormatException(
+                    $"'{header}' is not a GS2 channel binding flag. RFC 5802 defines 'n', 'y', and 'p=<cb-name>'."),
             };
 
-            // A "p=<cb-name>" flag also names the binding, which has to survive the
-            // round trip so ToString rebuilds the header the peer actually sent.
-            Version = header switch
-            {
-                "p=tls-exporter" => TlsVersion.TlsExporter,
-                "p=tls-unique" => TlsVersion.TlsUnique,
-                "p=tls-server-end-point" => TlsVersion.TlsServerEndpoint,
-                _ => TlsVersion.TlsUnique,
-            };
+            // A "p=<cb-name>" flag also names the binding, which has to survive the round trip so
+            // ToString rebuilds the header the peer actually sent. A name with no TlsVersion to
+            // hold it could not survive, so it is rejected rather than quietly rewritten to a
+            // different binding type.
+            Version = ChannelBindingStatus == ChannelBindingStatus.Required
+                ? ParseBindingType(header)
+                : TlsVersion.TlsUnique;
         }
 
         /// <summary>
@@ -114,20 +146,50 @@ namespace Ubiety.Scram.Core.Attributes
         /// </returns>
         public override string ToString()
         {
-            var tls = Version switch
-            {
-                TlsVersion.TlsExporter => "p=tls-exporter,,",
-                TlsVersion.TlsUnique => "p=tls-unique,,",
-                TlsVersion.TlsServerEndpoint => "p=tls-server-end-point,,",
-                _ => "p=tls-unique,,",
-            };
-
+            // Both constructors reject a status the enum does not define, so the final arm only
+            // ever covers NotSupported. It is written as the default because ToString must not
+            // throw, not because an unrecognised status should render as "no binding requested".
             return ChannelBindingStatus switch
             {
                 ChannelBindingStatus.ClientSupport => "y,,",
-                ChannelBindingStatus.NotSupported => "n,,",
-                ChannelBindingStatus.Required => tls,
+                ChannelBindingStatus.Required => $"{BindingTypePrefix}{BindingTypeName(Version)},,",
                 _ => "n,,",
+            };
+        }
+
+        /// <summary>
+        /// Maps the cb-name in a "p=" flag to the binding type it names.
+        /// </summary>
+        /// <param name="header">The whole flag, including its "p=" prefix.</param>
+        /// <returns>The binding type.</returns>
+        /// <exception cref="FormatException">Thrown when the name is not one this library implements.</exception>
+        private static TlsVersion ParseBindingType(string header)
+        {
+            return header switch
+            {
+                BindingTypePrefix + TlsExporterName => TlsVersion.TlsExporter,
+                BindingTypePrefix + TlsUniqueName => TlsVersion.TlsUnique,
+                BindingTypePrefix + TlsServerEndpointName => TlsVersion.TlsServerEndpoint,
+                _ => throw new FormatException(
+                    $"'{header[BindingTypePrefix.Length..]}' is not a channel binding type this library " +
+                    "implements. RFC 5802 requires a peer that does not support the named type to reject " +
+                    "the exchange rather than continue over a different one."),
+            };
+        }
+
+        /// <summary>
+        /// Names a binding type the way it appears in a "p=" flag.
+        /// </summary>
+        /// <param name="version">The binding type.</param>
+        /// <returns>The cb-name, without the "p=" prefix.</returns>
+        private static string BindingTypeName(TlsVersion version)
+        {
+            return version switch
+            {
+                TlsVersion.TlsExporter => TlsExporterName,
+                TlsVersion.TlsUnique => TlsUniqueName,
+                TlsVersion.TlsServerEndpoint => TlsServerEndpointName,
+                _ => throw new InvalidOperationException($"'{version}' is not a channel binding type."),
             };
         }
     }

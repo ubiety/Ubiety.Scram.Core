@@ -23,6 +23,9 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
+using System;
+using System.Globalization;
+
 namespace Ubiety.Scram.Core.Attributes
 {
     /// <summary>
@@ -43,9 +46,32 @@ namespace Ubiety.Scram.Core.Attributes
         ///     Initializes a new instance of the <see cref="IterationsAttribute"/> class.
         /// </summary>
         /// <param name="value">String value of the iterations.</param>
+        /// <exception cref="FormatException">Thrown when the value is not an integer this library can represent.</exception>
         public IterationsAttribute(string value)
-            : base(IterationsName, int.Parse(value))
+            : base(IterationsName, ParseCount(value))
         {
+        }
+
+        /// <summary>
+        /// Converts the wire value to an integer.
+        /// </summary>
+        /// <remarks>
+        /// A count too large for <see cref="int"/> has to fail as a malformed attribute rather
+        /// than an <see cref="OverflowException"/>: the value comes from the peer, and the
+        /// TryParse methods that read these messages only treat a
+        /// <see cref="FormatException"/> as a parse failure.
+        /// </remarks>
+        /// <param name="value">String value of the iterations.</param>
+        /// <returns>The iteration count.</returns>
+        /// <exception cref="FormatException">Thrown when the value is not an integer this library can represent.</exception>
+        private static int ParseCount(string value)
+        {
+            if (!int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var iterations))
+            {
+                throw new FormatException($"'{value}' is not a valid iteration count.");
+            }
+
+            return iterations;
         }
     }
 }

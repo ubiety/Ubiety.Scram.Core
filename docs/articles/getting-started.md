@@ -32,6 +32,14 @@ var nonce = Convert.ToBase64String(RandomNumberGenerator.GetBytes(24));
 ```
 
 The username is prepared with SASLprep before it goes on the wire, so pass it as the user typed it.
+RFC 5802 requires this: without it, two Unicode spellings of one name are two different principals.
+A username SASLprep rejects outright — a control character, or mixed text directions — throws
+`ProhibitedValueException` or `BidirectionalFormatException` from the constructor.
+
+Parsing works the other way around. An inbound username is *verified* to be SASLprep'd rather than
+rewritten, because rewriting it would change the bytes the peer signed its proof over. One that is
+not prepped is a malformed message, so `ClientFirstMessage.TryParse` returns `false` for it and
+`Parse` throws `MessageParseException`.
 
 ### 2. Server first
 
@@ -65,6 +73,24 @@ Send(clientFinal.Message);
 ```
 
 Deriving the key runs the iteration count the server asked for, so this call is deliberately slow.
+
+Both of the values the server chose are checked before any of that work happens, and a failure
+throws `ArgumentException`:
+
+- The server nonce must begin with the nonce the client sent and must append something of its own.
+  RFC 5802 requires the client to make this check; without it the server picks the whole nonce and
+  the client's half of the replay protection is gone.
+- The iteration count must be at least `ClientFinalMessage.MinimumIterations` (4096, the RFC 7677
+  floor) and at most `ClientFinalMessage.MaximumIterations`. A server that asks for too few
+  weakens the derived key; one that asks for too many stalls the client.
+
+If you have to talk to a legacy server that predates the 4096 floor, lower the bar explicitly
+rather than skipping the check:
+
+```csharp
+var clientFinal = new ClientFinalMessage(
+    clientFirst, serverFirst, "pencil", Hash.Sha256(), token: null, minimumIterations: 1000);
+```
 
 ### 4. Server final, and verifying it
 
