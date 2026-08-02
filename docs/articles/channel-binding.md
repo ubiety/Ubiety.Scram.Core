@@ -86,9 +86,20 @@ take from `SslStream.RemoteCertificate`.
 
 `tls-exporter` is not. RFC 9266 defines it as the TLS exporter output for label
 `EXPORTER-Channel-Binding` with an empty context and a length of 32 bytes, and as of .NET 10
-`SslStream` exposes no keying material export API to produce it. Using `TlsVersion.TlsExporter`
-therefore requires obtaining the exporter value from a TLS implementation other than `SslStream`.
-The library will encode whatever you hand it correctly — it just cannot obtain it for you.
+`SslStream` exposes no keying material export API to produce it. Both the API and the feature are
+still open proposals upstream:
+
+- [dotnet/runtime#112529](https://github.com/dotnet/runtime/issues/112529) — Export Keying Material
+  for TLS sessions
+- [dotnet/runtime#73118](https://github.com/dotnet/runtime/issues/73118) — RFC 9266 channel
+  bindings
+
+Beware of sample code calling `SslStream.ExportKeyingMaterial`: it matches the shape of the
+proposed API, but no shipped .NET version has that method. Until it lands, using
+`TlsVersion.TlsExporter` means obtaining the exporter value from a TLS implementation other than
+`SslStream` — native interop or a managed stack that exposes one. The library encodes whatever you
+hand it correctly; it just cannot obtain it for you. When the API ships, this code path works
+unchanged — callers simply gain a way to fill the argument.
 
 `tls-unique` is likewise unavailable from `SslStream`, and RFC 9266 notes it is not defined for
 TLS 1.3 at all.
