@@ -67,8 +67,42 @@ The `c=` attribute is then `base64(gs2-header + token)`, as RFC 5802 requires. O
 the attribute is `base64(gs2-header)` alone — which is what `n,,` exchanges send, and why an
 unbound client final message always carries `c=biws`.
 
-Getting the token out of .NET's TLS stack is the awkward part.
-`SslStream.NegotiatedCipherSuite` and friends do not expose `tls-unique` or `tls-exporter`, so on
-most platforms this means either `tls-server-end-point` — the hash of the server certificate,
-which you can compute from `SslStream.RemoteCertificate` — or a native handle into the platform's
-TLS library. Pass whichever you obtained, and make sure `TlsVersion` names the same one.
+The token and the status have to agree, and `ClientFinalMessage` throws `ArgumentException` when
+they do not:
+
+- `Required` without a token would advertise a binding the message does not carry.
+- A token under `NotSupported` or `ClientSupport` would append binding data that RFC 5802 only
+  permits behind a `p=` header.
+
+Both produce a message a conforming server rejects, so the exception replaces an authentication
+failure that otherwise gives no hint as to its cause.
+
+## Getting the token out of .NET
+
+This is the awkward part, and it constrains which binding type is actually reachable.
+
+`tls-server-end-point` is computable today: it is the hash of the server certificate, which you can
+take from `SslStream.RemoteCertificate`.
+
+`tls-exporter` is not. RFC 9266 defines it as the TLS exporter output for label
+`EXPORTER-Channel-Binding` with an empty context and a length of 32 bytes, and as of .NET 10
+`SslStream` exposes no keying material export API to produce it. Both the API and the feature are
+still open proposals upstream:
+
+- [dotnet/runtime#112529](https://github.com/dotnet/runtime/issues/112529) — Export Keying Material
+  for TLS sessions
+- [dotnet/runtime#73118](https://github.com/dotnet/runtime/issues/73118) — RFC 9266 channel
+  bindings
+
+Beware of sample code calling `SslStream.ExportKeyingMaterial`: it matches the shape of the
+proposed API, but no shipped .NET version has that method. Until it lands, using
+`TlsVersion.TlsExporter` means obtaining the exporter value from a TLS implementation other than
+`SslStream` — native interop or a managed stack that exposes one. The library encodes whatever you
+hand it correctly; it just cannot obtain it for you. When the API ships, this code path works
+unchanged — callers simply gain a way to fill the argument.
+
+`tls-unique` is likewise unavailable from `SslStream`, and RFC 9266 notes it is not defined for
+TLS 1.3 at all.
+
+Pass whichever token you obtained, and make sure `TlsVersion` names the same binding type — the
+name goes into the signed header, so a mismatch fails the exchange.

@@ -59,11 +59,15 @@ namespace Ubiety.Scram.Core.Attributes
         /// Compares a <see cref="ServerSignatureAttribute"/> instance with a string representation of a server signature.
         /// </summary>
         /// <param name="left">The <see cref="ServerSignatureAttribute"/> instance to compare.</param>
-        /// <param name="right">The string representation of a server signature to compare against.</param>
+        /// <param name="right">
+        /// The string representation of a server signature to compare against. A null or
+        /// undecodable value is never equal, so a server that omitted the signature fails the
+        /// comparison rather than throwing.
+        /// </param>
         /// <returns>
         /// <c>true</c> if the <paramref name="left"/> instance's value matches the base64-decoded value of <paramref name="right"/>; otherwise, <c>false</c>.
         /// </returns>
-        public static bool operator ==(ServerSignatureAttribute? left, string right)
+        public static bool operator ==(ServerSignatureAttribute? left, string? right)
         {
             return TryDecode(right, out var decoded) && Equals(left, decoded);
         }
@@ -76,7 +80,7 @@ namespace Ubiety.Scram.Core.Attributes
         /// <returns>
         /// <c>true</c> if the <paramref name="left"/> instance's value does not match the base64-decoded value of <paramref name="right"/>; otherwise, <c>false</c>.
         /// </returns>
-        public static bool operator !=(ServerSignatureAttribute? left, string right)
+        public static bool operator !=(ServerSignatureAttribute? left, string? right)
         {
             return !(left == right);
         }

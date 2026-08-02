@@ -23,6 +23,7 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Nuke.Common;
@@ -51,12 +52,24 @@ namespace _build;
     GitHubActionsImage.MacOsLatest,
     GitHubActionsImage.UbuntuLatest,
     OnPushBranchesIgnore = [ReleaseBranchPrefix, MasterBranch],
-    OnPullRequestBranches = [DevelopBranch],
     PublishArtifacts = false,
     InvokedTargets = [nameof(Test), nameof(Publish)],
     EnableGitHubToken = true,
     ReadPermissions = [GitHubActionsPermissions.Contents],
     WritePermissions = [GitHubActionsPermissions.Packages],
+    FetchDepth = 0)]
+// Pull requests test only. A pull_request event checks out the detached merge ref, so there is no
+// branch for GitRepository to resolve, Beta is false whatever the source branch is called, and
+// Publish would demand a nuget.org key this workflow has no reason to hold. Keeping Publish out
+// of the pull request build lets it keep a hard Requires for the release path.
+[GitHubActions("pr",
+    GitHubActionsImage.WindowsLatest,
+    GitHubActionsImage.MacOsLatest,
+    GitHubActionsImage.UbuntuLatest,
+    OnPullRequestBranches = [DevelopBranch, MasterBranch],
+    PublishArtifacts = false,
+    InvokedTargets = [nameof(Test)],
+    ReadPermissions = [GitHubActionsPermissions.Contents],
     FetchDepth = 0)]
 // Releases go to nuget.org via trusted publishing, which needs id-token to exchange the OIDC
 // token for a short-lived key. A single image keeps the push from racing itself.
@@ -234,5 +247,24 @@ class Build : NukeBuild
                 true);
         });
 
-    public static int Main() => Execute<Build>(x => x.Test);
+    public static int Main()
+    {
+        // GitVersion normalises the repository before calculating a version, and on AppVeyor that
+        // normalisation moves HEAD and then aborts because it moved:
+        //
+        //   GitVersion has a bug, your HEAD has moved after repo normalisation after step
+        //   'EnsureLocalBranchExistsForCurrentBranch'
+        //
+        // Every AppVeyor build has failed on this since 2.0.1, which also means SonarCloud has had
+        // no analysis in that time - AppVeyor is the only host that runs SonarEnd. The variable is
+        // GitVersion's own documented escape hatch for it. Setting it here rather than in
+        // appveyor.yml keeps it from being dropped the next time Nuke regenerates that file, and
+        // scoping it to AppVeyor leaves the check in force everywhere else.
+        if (Environment.GetEnvironmentVariable("APPVEYOR") is not null)
+        {
+            Environment.SetEnvironmentVariable("IGNORE_NORMALISATION_GIT_HEAD_MOVE", "1");
+        }
+
+        return Execute<Build>(x => x.Test);
+    }
 }

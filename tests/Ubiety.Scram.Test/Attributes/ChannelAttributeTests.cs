@@ -17,6 +17,16 @@ namespace Ubiety.Scram.Test.Attributes
         }
 
         [Fact]
+        public void When_ConvertedToAString_ShouldUseTheWireFormat()
+        {
+            ChannelAttribute attribute = new("n,,");
+
+            string converted = attribute;
+
+            converted.ShouldBe("c=biws");
+        }
+
+        [Fact]
         public void When_ThereIsAToken_ShouldEncodeTheHeaderFollowedByTheToken()
         {
             var token = new byte[] { 1, 2, 3 };

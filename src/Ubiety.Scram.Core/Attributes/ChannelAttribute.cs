@@ -50,9 +50,14 @@ namespace Ubiety.Scram.Core.Attributes
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChannelAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ChannelAttribute"/> class with no header
+        /// and no binding token.
         /// </summary>
-        [UsedImplicitly]
+        /// <remarks>
+        /// Nothing in the library constructs the attribute this way - a channel attribute is only
+        /// meaningful alongside the GS2 header it encodes. Kept because removing it would break
+        /// the public API; a candidate for removal in the next major version.
+        /// </remarks>
         public ChannelAttribute()
             : base(ChannelName)
         {
