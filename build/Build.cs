@@ -23,6 +23,7 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Nuke.Common;
@@ -246,5 +247,24 @@ class Build : NukeBuild
                 true);
         });
 
-    public static int Main() => Execute<Build>(x => x.Test);
+    public static int Main()
+    {
+        // GitVersion normalises the repository before calculating a version, and on AppVeyor that
+        // normalisation moves HEAD and then aborts because it moved:
+        //
+        //   GitVersion has a bug, your HEAD has moved after repo normalisation after step
+        //   'EnsureLocalBranchExistsForCurrentBranch'
+        //
+        // Every AppVeyor build has failed on this since 2.0.1, which also means SonarCloud has had
+        // no analysis in that time - AppVeyor is the only host that runs SonarEnd. The variable is
+        // GitVersion's own documented escape hatch for it. Setting it here rather than in
+        // appveyor.yml keeps it from being dropped the next time Nuke regenerates that file, and
+        // scoping it to AppVeyor leaves the check in force everywhere else.
+        if (Environment.GetEnvironmentVariable("APPVEYOR") is not null)
+        {
+            Environment.SetEnvironmentVariable("IGNORE_NORMALISATION_GIT_HEAD_MOVE", "1");
+        }
+
+        return Execute<Build>(x => x.Test);
+    }
 }
